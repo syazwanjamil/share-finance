@@ -1,0 +1,370 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Frequency {
+  weekly
+  monthly
+}
+
+enum MemberRole {
+  organizer
+  member
+}
+
+enum MemberStatus {
+  active
+  invited
+  empty
+}
+
+enum PayoutOrderMethod {
+  assigned
+  random
+  join_order
+}
+
+enum RoundStatus {
+  upcoming
+  current
+  held
+  paid_out
+}
+
+enum PaymentStatus {
+  unpaid
+  paid
+  paid_late
+  failed
+}
+
+enum PaymentMethod {
+  fpx
+  ewallet
+  qr
+}
+
+enum PriorityRequestStatus {
+  pending
+  approved
+  declined
+}
+
+enum NotifyChannel {
+  whatsapp
+  in_app
+  sms
+}
+
+enum ExtensionStatus {
+  pending
+  approved
+  declined
+}
+
+enum NotificationTemplate {
+  otp
+  payout_order_change
+  payment_reminder
+  payment_receipt
+  payout_receipt
+  payout_hold
+  extension_request
+  group_invite
+}
+
+enum NotificationStatus {
+  queued
+  sent
+  failed
+}
+
+model User {
+  id               String    @id @default(cuid())
+  phone            String    @unique
+  name             String?
+  initials         String?
+  phoneVerified    Boolean   @default(false) @map("phone_verified")
+  mykadVerified    Boolean   @default(false) @map("mykad_verified")
+  mykadVerifiedAt  DateTime? @map("mykad_verified_at")
+  bankAccountLabel String?   @map("bank_account_label")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  memberships              Member[]
+  organizedGroups          Group[]                   @relation("GroupOrganizer")
+  refreshTokens            RefreshToken[]
+  otpCodes                 OtpCode[]
+  autopaySettings          Autopay[]
+  payoutOrderChangesMade   PayoutOrderChangeLog[]    @relation("ChangedBy")
+  payoutHoldsPlaced        PayoutHold[]              @relation("HoldPlacedBy")
+  extensionRequestsMade    PaymentExtensionRequest[] @relation("RequestedBy")
+  extensionRequestsHandled PaymentExtensionRequest[] @relation("HandledBy")
+
+  @@map("users")
+}
+
+model OtpCode {
+  id          String    @id @default(cuid())
+  userId      String?   @map("user_id")
+  phone       String
+  codeHash    String    @map("code_hash")
+  attempts    Int       @default(0)
+  maxAttempts Int       @default(5) @map("max_attempts")
+  expiresAt   DateTime  @map("expires_at")
+  consumedAt  DateTime? @map("consumed_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([phone, consumedAt])
+  @@map("otp_codes")
+}
+
+model RefreshToken {
+  id                String    @id @default(cuid())
+  userId            String    @map("user_id")
+  tokenHash         String    @unique @map("token_hash")
+  expiresAt         DateTime  @map("expires_at")
+  revokedAt         DateTime? @map("revoked_at")
+  replacedByTokenId String?   @map("replaced_by_token_id")
+  createdAt         DateTime  @default(now()) @map("created_at")
+  userAgent         String?   @map("user_agent")
+  ip                String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}
+
+model Group {
+  id                   String            @id @default(cuid())
+  slug                 String            @unique
+  name                 String
+  contributionAmount   Decimal           @map("contribution_amount") @db.Decimal(10, 2)
+  frequency            Frequency
+  totalSlots           Int               @map("total_slots")
+  totalRounds          Int               @map("total_rounds")
+  currentRound         Int               @default(1) @map("current_round")
+  trustAccountVerified Boolean           @default(false) @map("trust_account_verified")
+  organizerId          String            @map("organizer_id")
+  lateFeeAmount        Decimal           @default(0) @map("late_fee_amount") @db.Decimal(10, 2)
+  lateFeeGraceDays     Int               @default(3) @map("late_fee_grace_days")
+  payoutOrderMethod    PayoutOrderMethod @default(assigned) @map("payout_order_method")
+  inviteCode           String            @unique @map("invite_code")
+  startedAt            DateTime          @map("started_at")
+  createdAt            DateTime          @default(now()) @map("created_at")
+  updatedAt            DateTime          @updatedAt @map("updated_at")
+
+  organizer          User                      @relation("GroupOrganizer", fields: [organizerId], references: [id], onDelete: Restrict)
+  members            Member[]
+  rounds             Round[]
+  payments           Payment[]
+  autopaySettings    Autopay[]
+  payoutOrderChanges PayoutOrderChangeLog[]
+  payoutHolds        PayoutHold[]
+  extensionRequests  PaymentExtensionRequest[]
+  notificationLogs   NotificationLog[]
+
+  @@index([organizerId])
+  @@map("groups")
+}
+
+model Member {
+  id           String       @id @default(cuid())
+  groupId      String       @map("group_id")
+  userId       String?      @map("user_id")
+  role         MemberRole   @default(member)
+  status       MemberStatus @default(empty)
+  invitedPhone String?      @map("invited_phone")
+  joinedAt     DateTime?    @map("joined_at")
+  createdAt    DateTime     @default(now()) @map("created_at")
+  updatedAt    DateTime     @updatedAt @map("updated_at")
+
+  group Group @relation(fields: [groupId], references: [id], onDelete: Restrict)
+  user  User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  recipientOfRounds   Round[]                   @relation("RoundRecipient")
+  payments            Payment[]
+  priorityRequests    PriorityRequest[]
+  payoutOrderChangesTo PayoutOrderChangeLog[]   @relation("NewRecipient")
+  extensionRequests   PaymentExtensionRequest[]
+
+  @@unique([groupId, userId])
+  @@index([groupId])
+  @@index([userId])
+  @@map("members")
+}
+
+model Round {
+  id                String      @id @default(cuid())
+  groupId           String      @map("group_id")
+  roundNumber       Int         @map("round_number")
+  recipientMemberId String      @map("recipient_member_id")
+  scheduledDate     DateTime    @map("scheduled_date")
+  status            RoundStatus @default(upcoming)
+  autoRelease       Boolean     @default(true) @map("auto_release")
+  paidOutAt         DateTime?   @map("paid_out_at")
+  paidOutRef        String?     @map("paid_out_ref")
+  movedUpFrom       Int?        @map("moved_up_from")
+  createdAt         DateTime    @default(now()) @map("created_at")
+  updatedAt         DateTime    @updatedAt @map("updated_at")
+
+  group     Group  @relation(fields: [groupId], references: [id], onDelete: Restrict)
+  recipient Member @relation("RoundRecipient", fields: [recipientMemberId], references: [id], onDelete: Restrict)
+
+  payments           Payment[]
+  priorityRequest    PriorityRequest?
+  payoutOrderChanges PayoutOrderChangeLog[]
+  holds              PayoutHold[]
+  extensionRequests  PaymentExtensionRequest[]
+
+  @@unique([groupId, roundNumber])
+  @@index([groupId, status])
+  @@map("rounds")
+}
+
+model PriorityRequest {
+  id         String                @id @default(cuid())
+  roundId    String                @unique @map("round_id")
+  memberId   String                @map("member_id")
+  reason     String                @db.Text
+  status     PriorityRequestStatus @default(pending)
+  createdAt  DateTime              @default(now()) @map("created_at")
+  resolvedAt DateTime?             @map("resolved_at")
+
+  round  Round  @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  member Member @relation(fields: [memberId], references: [id], onDelete: Restrict)
+
+  @@map("priority_requests")
+}
+
+model Payment {
+  id             String         @id @default(cuid())
+  groupId        String         @map("group_id")
+  memberId       String         @map("member_id")
+  roundId        String         @map("round_id")
+  roundNumber    Int            @map("round_number")
+  status         PaymentStatus  @default(unpaid)
+  amount         Decimal        @db.Decimal(10, 2)
+  lateFeeApplied Decimal        @default(0) @map("late_fee_applied") @db.Decimal(10, 2)
+  method         PaymentMethod?
+  ref            String?        @unique
+  paidAt         DateTime?      @map("paid_at")
+  createdAt      DateTime       @default(now()) @map("created_at")
+  updatedAt      DateTime       @updatedAt @map("updated_at")
+
+  group             Group                     @relation(fields: [groupId], references: [id], onDelete: Restrict)
+  member            Member                    @relation(fields: [memberId], references: [id], onDelete: Restrict)
+  round             Round                     @relation(fields: [roundId], references: [id], onDelete: Restrict)
+  extensionRequests PaymentExtensionRequest[]
+
+  @@unique([memberId, roundNumber])
+  @@index([groupId, roundNumber])
+  @@map("payments")
+}
+
+model PayoutOrderChangeLog {
+  id                        String        @id @default(cuid())
+  batchId                   String        @map("batch_id")
+  groupId                   String        @map("group_id")
+  roundId                   String        @map("round_id")
+  previousRecipientMemberId String        @map("previous_recipient_member_id")
+  newRecipientMemberId      String        @map("new_recipient_member_id")
+  reason                    String        @db.Text
+  notifyChannel             NotifyChannel @default(whatsapp) @map("notify_channel")
+  requireConfirm            Boolean       @default(false) @map("require_confirm")
+  changedByUserId           String        @map("changed_by_user_id")
+  createdAt                 DateTime      @default(now()) @map("created_at")
+
+  group        Group  @relation(fields: [groupId], references: [id], onDelete: Restrict)
+  round        Round  @relation(fields: [roundId], references: [id], onDelete: Restrict)
+  newRecipient Member @relation("NewRecipient", fields: [newRecipientMemberId], references: [id], onDelete: Restrict)
+  changedBy    User   @relation("ChangedBy", fields: [changedByUserId], references: [id], onDelete: Restrict)
+
+  @@index([groupId, batchId])
+  @@map("payout_order_change_logs")
+}
+
+model Autopay {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  groupId   String   @map("group_id")
+  enabled   Boolean  @default(false)
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  group Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, groupId])
+  @@map("autopay_settings")
+}
+
+// Not unique on roundId: a round can be held and released more than once over its
+// lifetime (e.g. two separate disputes), so this keeps full history. "Active hold for
+// a round" is queried as releasedAt IS NULL rather than assumed to be the only row.
+model PayoutHold {
+  id             String    @id @default(cuid())
+  roundId        String    @map("round_id")
+  groupId        String    @map("group_id")
+  reason         String    @db.Text
+  placedByUserId String    @map("placed_by_user_id")
+  releasedAt     DateTime? @map("released_at")
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  round    Round @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  group    Group @relation(fields: [groupId], references: [id], onDelete: Restrict)
+  placedBy User  @relation("HoldPlacedBy", fields: [placedByUserId], references: [id], onDelete: Restrict)
+
+  @@index([roundId, releasedAt])
+  @@map("payout_holds")
+}
+
+model PaymentExtensionRequest {
+  id                String          @id @default(cuid())
+  groupId           String          @map("group_id")
+  roundId           String          @map("round_id")
+  memberId          String          @map("member_id")
+  paymentId         String?         @map("payment_id")
+  reason            String          @db.Text
+  status            ExtensionStatus @default(pending)
+  requestedByUserId String          @map("requested_by_user_id")
+  handledByUserId   String?         @map("handled_by_user_id")
+  createdAt         DateTime        @default(now()) @map("created_at")
+  resolvedAt        DateTime?       @map("resolved_at")
+
+  group       Group    @relation(fields: [groupId], references: [id], onDelete: Restrict)
+  round       Round    @relation(fields: [roundId], references: [id], onDelete: Restrict)
+  member      Member   @relation(fields: [memberId], references: [id], onDelete: Restrict)
+  payment     Payment? @relation(fields: [paymentId], references: [id], onDelete: SetNull)
+  requestedBy User     @relation("RequestedBy", fields: [requestedByUserId], references: [id], onDelete: Restrict)
+  handledBy   User?    @relation("HandledBy", fields: [handledByUserId], references: [id], onDelete: SetNull)
+
+  @@index([groupId, status])
+  @@map("payment_extension_requests")
+}
+
+model NotificationLog {
+  id                String               @id @default(cuid())
+  groupId           String?              @map("group_id")
+  toPhone           String               @map("to_phone")
+  template          NotificationTemplate
+  payload           Json
+  provider          String
+  providerMessageId String?              @map("provider_message_id")
+  status            NotificationStatus   @default(queued)
+  errorMessage      String?              @map("error_message")
+  createdAt         DateTime             @default(now()) @map("created_at")
+  sentAt            DateTime?            @map("sent_at")
+
+  group Group? @relation(fields: [groupId], references: [id], onDelete: SetNull)
+
+  @@index([toPhone, createdAt])
+  @@map("notification_logs")
+}

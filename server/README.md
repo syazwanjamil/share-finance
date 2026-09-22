@@ -1,0 +1,86 @@
+# ShareFinance API
+
+Node.js + Express + TypeScript + Prisma/MySQL backend for ShareFinance.
+
+## Setup
+
+1. Copy the env template and fill in your credentials:
+   ```bash
+   cp .env.example .env
+   ```
+   At minimum you need to set:
+   - `DATABASE_URL` — your MySQL connection string
+   - `JWT_ACCESS_SECRET` — any long random string
+   - `TEEKRR_API_BASE_URL` / `TEEKRR_API_KEY` — once you have them (leave `NOTIFICATION_PROVIDER=mock` until then; OTP codes will be logged to the console instead of sent over WhatsApp)
+
+2. Install dependencies (already done if you just cloned/pulled):
+   ```bash
+   npm install
+   ```
+
+3. Create the database schema:
+   ```bash
+   npm run prisma:migrate -- --name init
+   ```
+
+4. Seed demo data (recreates the two mock groups — Ibu-Ibu Blok C and Warung Circle — with their full member/round/payment history):
+   ```bash
+   npm run prisma:seed
+   ```
+
+5. Start the dev server:
+   ```bash
+   npm run dev
+   ```
+   Runs on `http://localhost:4000` by default. `GET /health` checks DB connectivity.
+
+## Trying it out
+
+With `NOTIFICATION_PROVIDER=mock` (the default), OTP codes are logged to the server console instead of sent over WhatsApp — look for `[MockWhatsAppService] otp -> <phone>` in the terminal, or set `DEBUG_OTP_ECHO=true` in `.env` to have the code returned directly in the `/auth/otp/request` response (dev only, never enable in production).
+
+Seeded users' phones (E.164), e.g. Sari W. (organizer of Ibu-Ibu Blok C): `+60123456789`.
+
+```bash
+# 1. Request an OTP
+curl -X POST localhost:4000/auth/otp/request -H 'Content-Type: application/json' \
+  -d '{"phone":"+60123456789"}'
+
+# 2. Verify it (use the code from the server console, or the debugCode field if DEBUG_OTP_ECHO=true)
+curl -X POST localhost:4000/auth/otp/verify -H 'Content-Type: application/json' \
+  -d '{"phone":"+60123456789","code":"123456"}'
+
+# 3. Use the returned accessToken
+curl localhost:4000/me/dashboard -H 'Authorization: Bearer <accessToken>'
+```
+
+## Scripts
+
+| Script | What it does |
+|---|---|
+| `npm run dev` | Start with hot reload (`tsx watch`) |
+| `npm run build` | Type-check + compile to `dist/` |
+| `npm start` | Run the compiled build |
+| `npm run typecheck` | Type-check only, no output |
+| `npm run prisma:migrate` | Create/apply a migration in dev |
+| `npm run prisma:deploy` | Apply migrations in prod (no schema drift prompts) |
+| `npm run prisma:seed` | Re-run the seed script (idempotent — skips groups that already exist) |
+| `npm run prisma:studio` | Open Prisma Studio to browse the DB |
+
+## Switching on real providers later
+
+- **WhatsApp (Teekrr)**: set `NOTIFICATION_PROVIDER=teekrr` plus `TEEKRR_API_BASE_URL`/`TEEKRR_API_KEY`. The client (`src/services/notification/TeekrrWhatsAppService.ts`) is wired to Teekrr's real `POST /whatsapp` "quick broadcast" endpoint. Create the following templates on the Teekrr platform — names must match `TEMPLATES` in that file exactly, or update the file to match whatever you actually name them:
+
+  | Template name | Used for | `templateParams` |
+  |---|---|---|
+  | `c1_otp_share_finance` | Login OTP | `verificationCode` |
+  | `c1_payment_reminder_share_finance` | Nudge an unpaid member before/at the due date | `groupName`, `roundNumber`, `amount`, `dueDate` |
+  | `c1_payment_receipt_share_finance` | Confirmation after a contribution is paid | `groupName`, `roundNumber`, `amount`, `reference` |
+  | `c1_payout_order_change_share_finance` | Organizer reorders/locks the payout schedule | `groupName`, `roundNumber`, `reason` |
+  | `c1_payout_receipt_share_finance` | Confirmation after a round's pool is disbursed | `groupName`, `roundNumber`, `amount`, `reference` |
+  | `c1_payout_hold_share_finance` | Organizer places a round on hold | `groupName`, `roundNumber`, `reason` |
+  | `c1_extension_request_share_finance` | Member asks the organizer for more time to pay | `groupName`, `roundNumber`, `memberName`, `reason` |
+  | `c1_group_invite_share_finance` | Organizer invites a phone number into a group | `groupName`, `inviteCode` |
+
+  `amount` is sent as a pre-formatted string like `"RM 500.00"`, not a raw number. `recipients` are sent without the leading `+` (e.g. `60123456789`), matching what Teekrr expects.
+
+- **Payment gateway**: set `PAYMENT_GATEWAY_PROVIDER` and implement a new class alongside `src/services/payment-gateway/SimulatedPaymentGatewayService.ts`, wired into `src/services/payment-gateway/index.ts`'s factory switch.
