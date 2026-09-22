@@ -2,14 +2,31 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/ui/Button";
 import { StatusPill } from "../../components/ui/StatusPill";
+import { ApiRequestError, requestOtp, toE164 } from "../../lib/api";
 import styles from "./AuthLayout.module.css";
 
 export function LoginPage() {
   const navigate = useNavigate();
-  const [phone, setPhone] = useState("12-345 6789");
+  const [phone, setPhone] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
-  function handleContinue() {
-    navigate("/verify", { state: { phone } });
+  async function handleContinue() {
+    const e164Phone = toE164(phone);
+    setError(null);
+    setSubmitting(true);
+    try {
+      await requestOtp(e164Phone);
+      navigate("/verify", { state: { phone: e164Phone } });
+    } catch (err) {
+      setError(
+        err instanceof ApiRequestError
+          ? err.message
+          : "Couldn't send the code. Please try again.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -26,8 +43,8 @@ export function LoginPage() {
             without the notebook.
           </div>
           <p className={styles.subcopy}>
-            Contributions collected automatically, payout order agreed in the open, every ringgit in one
-            ledger.
+            Contributions collected automatically, payout order agreed in the
+            open, every ringgit in one ledger.
           </p>
           <div className={styles.illustration}>illustration / product shot</div>
           <div className={styles.badges}>
@@ -38,11 +55,13 @@ export function LoginPage() {
 
         <div className={styles.formPanel}>
           <div className={styles.title}>Sign in or sign up</div>
-          <p className={styles.hint}>We'll text you a 6-digit code. No password to forget.</p>
+          <p className={styles.hint}>
+            We'll text you a 6-digit code. No password to forget.
+          </p>
           <div className={styles.field}>
             <span className={styles.fieldLabel}>PHONE NUMBER</span>
             <div className={styles.fieldValue}>
-              <span>🇲🇾 +60</span>
+              <span className={styles.countryCode}>🇲🇾 +60</span>
               <input
                 className={styles.input}
                 value={phone}
@@ -51,16 +70,17 @@ export function LoginPage() {
               />
             </div>
           </div>
-          <Button block onClick={handleContinue}>
-            Continue
+          {error && <p className={styles.hint}>{error}</p>}
+          <Button block onClick={handleContinue} disabled={submitting}>
+            {submitting ? "Sending…" : "Continue"}
           </Button>
           <div className={styles.divider}>or</div>
           <Button variant="ghost" block type="button">
             Continue with an invite code
           </Button>
           <p className={styles.legal}>
-            By continuing you agree to the group terms. Your number is visible only to members of groups you
-            join.
+            By continuing you agree to the group terms. Your number is visible
+            only to members of groups you join.
           </p>
         </div>
       </div>

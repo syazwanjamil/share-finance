@@ -141,13 +141,24 @@
   align-items: center;
 }
 
+.countryCode {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  white-space: nowrap;
+  font-size: 14px;
+  color: var(--text-h);
+}
+
 .input {
   border: none;
   outline: none;
   font-size: 14px;
   color: var(--text-h);
   background: transparent;
-  width: 100%;
+  flex: 1;
+  min-width: 0;
   font-family: var(--sans);
 }
 

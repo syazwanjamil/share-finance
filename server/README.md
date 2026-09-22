@@ -68,19 +68,40 @@ curl localhost:4000/me/dashboard -H 'Authorization: Bearer <accessToken>'
 
 ## Switching on real providers later
 
-- **WhatsApp (Teekrr)**: set `NOTIFICATION_PROVIDER=teekrr` plus `TEEKRR_API_BASE_URL`/`TEEKRR_API_KEY`. The client (`src/services/notification/TeekrrWhatsAppService.ts`) is wired to Teekrr's real `POST /whatsapp` "quick broadcast" endpoint. Create the following templates on the Teekrr platform — names must match `TEMPLATES` in that file exactly, or update the file to match whatever you actually name them:
+- **WhatsApp (Teekrr)**: set `NOTIFICATION_PROVIDER=teekrr` plus `TEEKRR_API_BASE_URL`/`TEEKRR_API_KEY`. The client (`src/services/notification/TeekrrWhatsAppService.ts`) is wired to Teekrr's real `POST /whatsapp` "quick broadcast" endpoint. Create the following templates on the Teekrr platform — names must match `TEMPLATES` in that file exactly, or update the file to match whatever you actually name them. `amount` is always sent as a pre-formatted string like `"RM 500.00"`, not a raw number; `recipients` are sent without the leading `+` (e.g. `60123456789`).
 
-  | Template name | Used for | `templateParams` |
-  |---|---|---|
-  | `c1_otp_share_finance` | Login OTP | `verificationCode` |
-  | `c1_payment_reminder_share_finance` | Nudge an unpaid member before/at the due date | `groupName`, `roundNumber`, `amount`, `dueDate` |
-  | `c1_payment_receipt_share_finance` | Confirmation after a contribution is paid | `groupName`, `roundNumber`, `amount`, `reference` |
-  | `c1_payout_order_change_share_finance` | Organizer reorders/locks the payout schedule | `groupName`, `roundNumber`, `reason` |
-  | `c1_payout_receipt_share_finance` | Confirmation after a round's pool is disbursed | `groupName`, `roundNumber`, `amount`, `reference` |
-  | `c1_payout_hold_share_finance` | Organizer places a round on hold | `groupName`, `roundNumber`, `reason` |
-  | `c1_extension_request_share_finance` | Member asks the organizer for more time to pay | `groupName`, `roundNumber`, `memberName`, `reason` |
-  | `c1_group_invite_share_finance` | Organizer invites a phone number into a group | `groupName`, `inviteCode` |
+  Message content below is in Bahasa Malaysia, ready to paste into Teekrr's template editor — swap the `{{param}}` placeholder syntax for whatever Teekrr's editor actually expects (named `{{param}}` vs positional `{{1}}`, `{{2}}`...) if it differs.
 
-  `amount` is sent as a pre-formatted string like `"RM 500.00"`, not a raw number. `recipients` are sent without the leading `+` (e.g. `60123456789`), matching what Teekrr expects.
+  ### `c1_otp_share_finance`
+  Params: `verificationCode`
+  > Kod pengesahan ShareFinance anda ialah *{{verificationCode}}*. Kod ini sah selama 5 minit. Jangan kongsi kod ini dengan sesiapa.
+
+  ### `c1_payment_reminder_share_finance`
+  Params: `groupName`, `roundNumber`, `amount`, `dueDate`
+  > Peringatan mesra: Sumbangan anda untuk kumpulan *{{groupName}}* (pusingan {{roundNumber}}) sebanyak *{{amount}}* perlu dibayar sebelum {{dueDate}}. Sila buat pembayaran melalui app ShareFinance.
+
+  ### `c1_payment_receipt_share_finance`
+  Params: `groupName`, `roundNumber`, `amount`, `reference`
+  > Pembayaran diterima! Sumbangan *{{amount}}* untuk kumpulan *{{groupName}}* (pusingan {{roundNumber}}) telah berjaya diproses. No. rujukan: {{reference}}. Terima kasih atas pembayaran anda.
+
+  ### `c1_payout_order_change_share_finance`
+  Params: `groupName`, `roundNumber`, `reason`
+  > Susunan giliran pengeluaran untuk kumpulan *{{groupName}}* (pusingan {{roundNumber}}) telah dikemas kini. Sebab: {{reason}}. Sila semak app ShareFinance untuk butiran penuh.
+
+  ### `c1_payout_receipt_share_finance`
+  Params: `groupName`, `roundNumber`, `amount`, `reference`
+  > Bayaran pengeluaran telah dihantar! *{{amount}}* untuk kumpulan *{{groupName}}* (pusingan {{roundNumber}}) telah dikreditkan ke akaun anda. No. rujukan: {{reference}}.
+
+  ### `c1_payout_hold_share_finance`
+  Params: `groupName`, `roundNumber`, `reason`
+  > Pengeluaran untuk kumpulan *{{groupName}}* (pusingan {{roundNumber}}) telah digantung buat sementara waktu. Sebab: {{reason}}. Dana anda kekal selamat dalam akaun amanah — sila semak app untuk maklumat lanjut.
+
+  ### `c1_extension_request_share_finance`
+  Params: `groupName`, `roundNumber`, `memberName`, `reason`
+  > *{{memberName}}* memohon lanjutan masa untuk pembayaran pusingan {{roundNumber}} dalam kumpulan *{{groupName}}*. Sebab: {{reason}}. Sila semak app ShareFinance untuk meluluskan atau menolak permohonan ini.
+
+  ### `c1_group_invite_share_finance`
+  Params: `groupName`, `inviteCode`
+  > Anda dijemput menyertai kumpulan kutu *{{groupName}}* di ShareFinance! Gunakan kod jemputan *{{inviteCode}}* untuk menyertai. Muat turun app ShareFinance untuk bermula.
 
 - **Payment gateway**: set `PAYMENT_GATEWAY_PROVIDER` and implement a new class alongside `src/services/payment-gateway/SimulatedPaymentGatewayService.ts`, wired into `src/services/payment-gateway/index.ts`'s factory switch.
