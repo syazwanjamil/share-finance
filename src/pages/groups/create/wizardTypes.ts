@@ -11,11 +11,11 @@ export interface GroupDraft {
 }
 
 export const initialDraft: GroupDraft = {
-  name: "Ibu-Ibu Blok C",
-  contributionAmount: 500,
+  name: "",
+  contributionAmount: 0,
   frequency: "monthly",
-  totalSlots: 10,
-  firstPayoutDate: "2026-10-25",
-  lateFeeEnabled: true,
+  totalSlots: 2,
+  firstPayoutDate: "",
+  lateFeeEnabled: false,
   payoutOrderMethod: "assigned",
 };

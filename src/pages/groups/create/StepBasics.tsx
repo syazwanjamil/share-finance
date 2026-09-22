@@ -15,8 +15,8 @@ interface StepBasicsProps {
 
 export function StepBasics({ draft, onChange, onNext, onBack }: StepBasicsProps) {
   const pool = draft.contributionAmount * draft.totalSlots;
-  const endDate = new Date(draft.firstPayoutDate);
-  endDate.setMonth(endDate.getMonth() + (draft.totalSlots - 1));
+  const endDate = draft.firstPayoutDate ? new Date(draft.firstPayoutDate) : null;
+  endDate?.setMonth(endDate.getMonth() + (draft.totalSlots - 1));
 
   return (
     <>
@@ -75,8 +75,8 @@ export function StepBasics({ draft, onChange, onNext, onBack }: StepBasicsProps)
         <div className={styles.summaryText}>
           <span className={styles.summaryLabel}>Pool paid out each round</span>
           <span className={styles.summarySub}>
-            {draft.totalSlots} members × {formatRM(draft.contributionAmount)} · {draft.totalSlots} rounds ·
-            ends {formatMonthYear(endDate.toISOString())}
+            {draft.totalSlots} members × {formatRM(draft.contributionAmount)} · {draft.totalSlots} rounds
+            {endDate ? ` · ends ${formatMonthYear(endDate.toISOString())}` : ""}
           </span>
         </div>
         <span className={styles.summaryValue}>{formatRM(pool)}</span>
@@ -113,7 +113,10 @@ export function StepBasics({ draft, onChange, onNext, onBack }: StepBasicsProps)
         <Button variant="secondary" onClick={onBack}>
           Back
         </Button>
-        <Button onClick={onNext} disabled={!draft.name.trim()}>
+        <Button
+          onClick={onNext}
+          disabled={!draft.name.trim() || draft.contributionAmount <= 0 || !draft.firstPayoutDate}
+        >
           Next: payout order
         </Button>
       </div>
