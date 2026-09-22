@@ -21,7 +21,7 @@ const initialState: AppState = {
 
 interface AppDataActions {
   refresh: () => Promise<void>;
-  markPaymentPaid: (groupId: string, roundNumber: number, method: "fpx" | "ewallet" | "qr") => Promise<void>;
+  markPaymentPaid: (groupId: string, roundNumber: number, method: "fpx" | "ewallet" | "qr" | "card") => Promise<void>;
   applyPayoutOrderChange: (
     groupId: string,
     changes: api.PayoutOrderChangeInput[],
@@ -30,6 +30,7 @@ interface AppDataActions {
   releasePayout: (groupId: string, roundNumber: number) => Promise<void>;
   toggleAutopay: (groupId: string) => Promise<void>;
   addGroup: (input: GroupDraftInput) => Promise<GroupBundle>;
+  joinGroup: (inviteCode: string) => Promise<GroupBundle>;
   logout: () => Promise<void>;
 }
 
@@ -79,7 +80,13 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
     () => ({
       refresh,
       async markPaymentPaid(groupId, roundNumber, method) {
-        const { gatewayRef } = await api.initiatePayment(groupId, roundNumber, method);
+        const { redirectUrl, gatewayRef } = await api.initiatePayment(groupId, roundNumber, method);
+        if (redirectUrl) {
+          // Hands off to Stripe-hosted Checkout; confirmation happens via webhook + the
+          // /pay/:groupId/:round/return page once the browser comes back.
+          window.location.href = redirectUrl;
+          return;
+        }
         await api.confirmPayment(groupId, roundNumber, gatewayRef);
         await refreshGroup(groupId);
       },
@@ -101,6 +108,14 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
       async addGroup(input) {
         const bundle = await api.createGroup(input);
         setState((s) => ({ ...s, groups: [...s.groups, bundle] }));
+        return bundle;
+      },
+      async joinGroup(inviteCode) {
+        const bundle = await api.joinGroup(inviteCode);
+        setState((s) => ({
+          ...s,
+          groups: s.groups.some((b) => b.group.id === bundle.group.id) ? s.groups : [...s.groups, bundle],
+        }));
         return bundle;
       },
       async logout() {

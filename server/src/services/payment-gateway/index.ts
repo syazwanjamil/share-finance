@@ -1,9 +1,12 @@
 import { config } from "../../config/env.js";
 import { SimulatedPaymentGatewayService } from "./SimulatedPaymentGatewayService.js";
+import { StripePaymentGatewayService } from "./StripePaymentGatewayService.js";
 import type { PaymentGatewayService } from "./PaymentGatewayService.js";
 
 function createPaymentGatewayService(): PaymentGatewayService {
   switch (config.PAYMENT_GATEWAY_PROVIDER) {
+    case "stripe":
+      return new StripePaymentGatewayService();
     case "simulated":
     default:
       // billplz | toyyibpay | curlec real implementations plug in here later,

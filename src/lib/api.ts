@@ -173,6 +173,7 @@ interface RawUser {
   mykadVerified: boolean;
   mykadVerifiedAt: string | null;
   bankAccountLabel: string | null;
+  stripeConnectOnboarded: boolean;
 }
 
 interface RawMember {
@@ -272,6 +273,7 @@ function normalizeUser(raw: RawUser): User {
     mykadVerified: raw.mykadVerified,
     mykadVerifiedDate: raw.mykadVerifiedAt ?? undefined,
     bankAccount: raw.bankAccountLabel ?? undefined,
+    stripeConnectOnboarded: raw.stripeConnectOnboarded,
   };
 }
 
@@ -408,7 +410,7 @@ export async function holdRound(groupId: string, roundNumber: number, reason: st
 export async function initiatePayment(
   groupId: string,
   roundNumber: number,
-  method: "fpx" | "ewallet" | "qr",
+  method: "fpx" | "ewallet" | "qr" | "card",
 ): Promise<{ paymentId: string; gatewayRef: string; redirectUrl: string | null }> {
   return post(`/groups/${groupId}/rounds/${roundNumber}/payments`, { method });
 }
@@ -417,6 +419,16 @@ export async function confirmPayment(groupId: string, roundNumber: number, gatew
   return normalizePayment(
     await post<RawPayment>(`/groups/${groupId}/rounds/${roundNumber}/payments/confirm`, { gatewayRef }),
   );
+}
+
+// ---- Stripe Connect payout onboarding ----
+
+export async function getConnectStatus(): Promise<{ onboarded: boolean; accountId: string | null }> {
+  return get("/connect/status");
+}
+
+export async function createConnectOnboardingLink(): Promise<{ url: string }> {
+  return post("/connect/onboarding-link");
 }
 
 // ---- Payout order ----

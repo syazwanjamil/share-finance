@@ -11,6 +11,10 @@ export function findPaymentForMemberRound(memberId: string, roundNumber: number)
   });
 }
 
+export function findPaymentByGatewaySessionId(gatewaySessionId: string): Promise<Payment | null> {
+  return prisma.payment.findUnique({ where: { gatewaySessionId } });
+}
+
 export interface UpsertPaymentInput {
   groupId: string;
   memberId: string;
@@ -22,6 +26,10 @@ export interface UpsertPaymentInput {
   ref?: string | null;
   paidAt?: Date | null;
   lateFeeApplied?: number;
+  gatewayProvider?: string | null;
+  gatewaySessionId?: string | null;
+  gatewayPaymentIntentId?: string | null;
+  gatewayFailureReason?: string | null;
 }
 
 export function upsertPayment(input: UpsertPaymentInput): Promise<Payment> {

@@ -53,7 +53,15 @@ export function CheckoutSuccessPage() {
           </div>
           <div className={styles.detailRow}>
             <span>Method</span>
-            <span>{flow.method === "fpx" ? "Maybank FPX ···4821" : flow.method === "ewallet" ? "Touch 'n Go eWallet" : "DuitNow QR"}</span>
+            <span>
+              {flow.method === "fpx"
+                ? "Maybank FPX ···4821"
+                : flow.method === "ewallet"
+                  ? "Touch 'n Go eWallet"
+                  : flow.method === "card"
+                    ? "Card (Stripe)"
+                    : "DuitNow QR"}
+            </span>
           </div>
           <div className={styles.detailRow}>
             <span>Group</span>

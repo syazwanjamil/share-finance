@@ -108,6 +108,24 @@
   color: var(--text-h);
 }
 
+.codeInput {
+  font: inherit;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  color: var(--text-h);
+  background: none;
+  border: none;
+  padding: 0;
+  outline: none;
+  width: 100%;
+}
+
+.joinError {
+  font-size: 11px;
+  color: var(--danger, #c0392b);
+  margin: 0;
+}
+
 .banner {
   width: 100%;
   border: 1px solid var(--border);

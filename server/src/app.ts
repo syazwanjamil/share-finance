@@ -3,6 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import { config } from "./config/env.js";
 import { apiRouter } from "./routes/index.js";
+import { webhooksRouter } from "./routes/webhooks.routes.js";
 import { requestLogger } from "./middleware/requestLogger.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 import { ApiError } from "./lib/ApiError.js";
@@ -18,6 +19,10 @@ export function createApp() {
       methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
     }),
   );
+
+  // Mounted before express.json() — Stripe signature verification needs the raw request body.
+  app.use("/webhooks", express.raw({ type: "application/json" }), webhooksRouter);
+
   app.use(express.json({ limit: "1mb" }));
 
   app.use(apiRouter);

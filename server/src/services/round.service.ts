@@ -11,6 +11,8 @@ import { findMembersForGroup } from "../repositories/member.repository.js";
 import { createPayoutHold, findActiveHoldForRound, releaseHold } from "../repositories/payoutHold.repository.js";
 import { notify, whatsAppService } from "./notification/notify.js";
 import { formatRM } from "../lib/currency.js";
+import { config } from "../config/env.js";
+import { stripe } from "../lib/stripeClient.js";
 import type { Round } from "@prisma/client";
 
 async function getRoundOrThrow(groupId: string, roundNumber: number): Promise<Round> {
@@ -77,11 +79,50 @@ export async function releasePayout(
     });
   }
 
+  const members = await findMembersForGroup(groupId);
+  const recipient = members.find((m) => m.id === round.recipientMemberId);
+
+  let gatewayTransferId: string | undefined;
+  if (config.PAYMENT_GATEWAY_PROVIDER === "stripe") {
+    if (!recipient?.user?.stripeConnectOnboarded || !recipient.user.stripeConnectAccountId) {
+      throw ApiError.conflict(
+        "RECIPIENT_PAYOUT_NOT_SET_UP",
+        "The recipient hasn't finished setting up their payout account yet",
+      );
+    }
+
+    // Short-lived guard against a double-release race during the Stripe API round-trip.
+    // stripe.transfers.create() to a Connect Express account is synchronous — it either
+    // succeeds or throws in this same call, so no webhook is needed to confirm it.
+    await updateRound(round.id, { status: "payout_pending" });
+    try {
+      const transfer = await stripe!.transfers.create(
+        {
+          amount: Math.round((collection.collected + collection.lateFeesCollected) * 100),
+          currency: "myr",
+          destination: recipient.user.stripeConnectAccountId,
+          transfer_group: `round_${round.id}`,
+        },
+        { idempotencyKey: `payout-${round.id}` },
+      );
+      gatewayTransferId = transfer.id;
+    } catch (err) {
+      await updateRound(round.id, {
+        status: "current",
+        payoutFailureReason: err instanceof Error ? err.message : String(err),
+      });
+      throw ApiError.badRequest("PAYOUT_TRANSFER_FAILED", "Could not send the payout to Stripe", {
+        cause: err instanceof Error ? err.message : String(err),
+      });
+    }
+  }
+
   const paidOutRef = generatePayoutRef();
   const updated = await updateRound(round.id, {
     status: "paid_out",
     paidOutAt: new Date(),
     paidOutRef,
+    gatewayTransferId,
   });
 
   const nextRoundNumber = roundNumber + 1;
@@ -93,8 +134,6 @@ export async function releasePayout(
     }
   }
 
-  const members = await findMembersForGroup(groupId);
-  const recipient = members.find((m) => m.id === round.recipientMemberId);
   if (recipient?.user?.phone) {
     const amount = collection.collected + collection.lateFeesCollected;
     await notify({

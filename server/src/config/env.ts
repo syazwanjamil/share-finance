@@ -22,9 +22,13 @@ const envSchema = z.object({
   TEEKRR_API_KEY: z.string().optional().default(""),
 
   PAYMENT_GATEWAY_PROVIDER: z
-    .enum(["simulated", "billplz", "toyyibpay", "curlec"])
+    .enum(["simulated", "billplz", "toyyibpay", "curlec", "stripe"])
     .default("simulated"),
   PAYMENT_GATEWAY_API_KEY: z.string().optional().default(""),
+
+  STRIPE_SECRET_KEY: z.string().optional().default(""),
+  STRIPE_WEBHOOK_SECRET: z.string().optional().default(""),
+  FRONTEND_BASE_URL: z.string().optional().default("http://localhost:5173"),
 
   CORS_ORIGINS: z
     .string()
@@ -34,6 +38,15 @@ const envSchema = z.object({
   LOG_LEVEL: z.enum(["fatal", "error", "warn", "info", "debug", "trace", "silent"]).default("info"),
 
   DEBUG_OTP_ECHO: z.coerce.boolean().default(false),
+}).superRefine((val, ctx) => {
+  if (val.PAYMENT_GATEWAY_PROVIDER === "stripe") {
+    if (!val.STRIPE_SECRET_KEY) {
+      ctx.addIssue({ code: "custom", path: ["STRIPE_SECRET_KEY"], message: "required when PAYMENT_GATEWAY_PROVIDER=stripe" });
+    }
+    if (!val.STRIPE_WEBHOOK_SECRET) {
+      ctx.addIssue({ code: "custom", path: ["STRIPE_WEBHOOK_SECRET"], message: "required when PAYMENT_GATEWAY_PROVIDER=stripe" });
+    }
+  }
 });
 
 const parsed = envSchema.safeParse(process.env);

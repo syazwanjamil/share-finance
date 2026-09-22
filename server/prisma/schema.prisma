@@ -33,6 +33,7 @@ enum RoundStatus {
   upcoming
   current
   held
+  payout_pending
   paid_out
 }
 
@@ -47,6 +48,14 @@ enum PaymentMethod {
   fpx
   ewallet
   qr
+  card
+}
+
+enum PaymentGatewayEventStatus {
+  received
+  processed
+  ignored
+  failed
 }
 
 enum PriorityRequestStatus {
@@ -93,6 +102,13 @@ model User {
   mykadVerified    Boolean   @default(false) @map("mykad_verified")
   mykadVerifiedAt  DateTime? @map("mykad_verified_at")
   bankAccountLabel String?   @map("bank_account_label")
+
+  stripeConnectAccountId        String?   @unique @map("stripe_connect_account_id")
+  stripeConnectDetailsSubmitted Boolean   @default(false) @map("stripe_connect_details_submitted")
+  stripeConnectPayoutsEnabled   Boolean   @default(false) @map("stripe_connect_payouts_enabled")
+  stripeConnectOnboarded        Boolean   @default(false) @map("stripe_connect_onboarded")
+  stripeConnectUpdatedAt        DateTime? @map("stripe_connect_updated_at")
+
   createdAt        DateTime  @default(now()) @map("created_at")
   updatedAt        DateTime  @updatedAt @map("updated_at")
 
@@ -212,6 +228,8 @@ model Round {
   autoRelease       Boolean     @default(true) @map("auto_release")
   paidOutAt         DateTime?   @map("paid_out_at")
   paidOutRef        String?     @map("paid_out_ref")
+  gatewayTransferId String?     @map("gateway_transfer_id")
+  payoutFailureReason String?   @map("payout_failure_reason")
   movedUpFrom       Int?        @map("moved_up_from")
   createdAt         DateTime    @default(now()) @map("created_at")
   updatedAt         DateTime    @updatedAt @map("updated_at")
@@ -256,6 +274,10 @@ model Payment {
   lateFeeApplied Decimal        @default(0) @map("late_fee_applied") @db.Decimal(10, 2)
   method         PaymentMethod?
   ref            String?        @unique
+  gatewayProvider        String? @map("gateway_provider")
+  gatewaySessionId       String? @unique @map("gateway_session_id")
+  gatewayPaymentIntentId String? @map("gateway_payment_intent_id")
+  gatewayFailureReason   String? @map("gateway_failure_reason")
   paidAt         DateTime?      @map("paid_at")
   createdAt      DateTime       @default(now()) @map("created_at")
   updatedAt      DateTime       @updatedAt @map("updated_at")
@@ -367,4 +389,19 @@ model NotificationLog {
 
   @@index([toPhone, createdAt])
   @@map("notification_logs")
+}
+
+model PaymentGatewayEvent {
+  id           String                    @id @default(cuid())
+  provider     String
+  eventId      String                    @unique @map("event_id")
+  eventType    String                    @map("event_type")
+  status       PaymentGatewayEventStatus @default(received)
+  payload      Json
+  errorMessage String?                   @map("error_message")
+  createdAt    DateTime                  @default(now()) @map("created_at")
+  processedAt  DateTime?                 @map("processed_at")
+
+  @@index([provider, eventType, createdAt])
+  @@map("payment_gateway_events")
 }

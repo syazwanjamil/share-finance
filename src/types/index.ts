@@ -9,6 +9,7 @@ export interface User {
   mykadVerified: boolean;
   mykadVerifiedDate?: string;
   bankAccount?: string;
+  stripeConnectOnboarded: boolean;
 }
 
 export type MemberStatus = "active" | "invited" | "empty";

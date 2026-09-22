@@ -46,7 +46,6 @@ export function LoginPage() {
             Contributions collected automatically, payout order agreed in the
             open, every ringgit in one ledger.
           </p>
-          <div className={styles.illustration}>illustration / product shot</div>
           <div className={styles.badges}>
             <StatusPill variant="success">🔒 BNM-licensed gateway</StatusPill>
             <StatusPill variant="neutral">Funds held in trust</StatusPill>

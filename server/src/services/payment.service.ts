@@ -8,13 +8,18 @@ import {
   findMemberWithUserById,
 } from "../repositories/member.repository.js";
 import { findRoundByNumber } from "../repositories/round.repository.js";
-import { findPaymentForMemberRound, upsertPayment } from "../repositories/payment.repository.js";
+import {
+  findPaymentByGatewaySessionId,
+  findPaymentForMemberRound,
+  upsertPayment,
+} from "../repositories/payment.repository.js";
 import { createExtensionRequest } from "../repositories/extension.repository.js";
 import { findAutopay, setAutopay as setAutopayRepo } from "../repositories/autopay.repository.js";
+import { config } from "../config/env.js";
 import { paymentGatewayService } from "./payment-gateway/index.js";
 import { notify, whatsAppService } from "./notification/notify.js";
 import type { GatewayPaymentMethod } from "./payment-gateway/PaymentGatewayService.js";
-import type { Payment } from "@prisma/client";
+import type { Group, Member, Payment, Round } from "@prisma/client";
 
 async function requireGroupRoundMember(groupId: string, roundNumber: number, userId: string) {
   const group = await findGroupById(groupId);
@@ -54,7 +59,14 @@ export async function initiatePayment(
 
   const amount = Number(group.contributionAmount);
   const reference = generatePaymentRef(groupId);
-  const { gatewayRef, redirectUrl } = await paymentGatewayService.initiate({ amount, method, reference });
+  const { gatewayRef, redirectUrl } = await paymentGatewayService.initiate({
+    amount,
+    method,
+    reference,
+    groupId,
+    roundNumber,
+    memberId: member.id,
+  });
 
   const payment = await upsertPayment({
     groupId,
@@ -64,9 +76,100 @@ export async function initiatePayment(
     amount,
     method,
     status: "unpaid",
+    gatewayProvider: config.PAYMENT_GATEWAY_PROVIDER,
+    gatewaySessionId: gatewayRef,
   });
 
   return { paymentId: payment.id, gatewayRef, redirectUrl };
+}
+
+/**
+ * Marks a Payment as successfully paid: computes the late fee, upserts the row, and sends
+ * the WhatsApp receipt. Shared by the simulated synchronous path and the Stripe webhook path.
+ */
+async function applySuccessfulPayment(
+  group: Group,
+  round: Round,
+  member: Member,
+  paymentIntentId?: string,
+): Promise<Payment> {
+  const isLate = new Date() > new Date(round.scheduledDate.getTime() + group.lateFeeGraceDays * 86_400_000);
+  const lateFeeApplied = isLate ? Number(group.lateFeeAmount) : 0;
+  const ref = generatePaymentRef(group.id);
+
+  const payment = await upsertPayment({
+    groupId: group.id,
+    memberId: member.id,
+    roundId: round.id,
+    roundNumber: round.roundNumber,
+    amount: Number(group.contributionAmount),
+    status: isLate ? "paid_late" : "paid",
+    paidAt: new Date(),
+    lateFeeApplied,
+    ref,
+    gatewayPaymentIntentId: paymentIntentId ?? undefined,
+  });
+
+  const memberWithUser = await findMemberWithUserById(member.id);
+  if (memberWithUser?.user?.phone) {
+    const amount = Number(payment.amount) + lateFeeApplied;
+    const phone = memberWithUser.user.phone;
+    await notify({
+      phone,
+      groupId: group.id,
+      template: "payment_receipt",
+      payload: { roundNumber: round.roundNumber, amount, ref },
+      send: () =>
+        whatsAppService.sendPaymentReceipt(phone, {
+          groupName: group.name,
+          roundNumber: round.roundNumber,
+          amountLabel: formatRM(amount),
+          ref,
+        }),
+    });
+  }
+
+  return payment;
+}
+
+export type FinalizePaymentOutcome =
+  | { success: true; paymentIntentId?: string }
+  | { success: false; failureReason: string };
+
+/** Called from the Stripe webhook handler — the authoritative source of payment-in confirmation. */
+export async function finalizePaymentFromWebhook(
+  gatewaySessionId: string,
+  outcome: FinalizePaymentOutcome,
+): Promise<Payment> {
+  const payment = await findPaymentByGatewaySessionId(gatewaySessionId);
+  if (!payment) {
+    throw ApiError.notFound("PAYMENT_NOT_FOUND", `No payment found for gateway session ${gatewaySessionId}`);
+  }
+
+  if (payment.status === "paid" || payment.status === "paid_late") {
+    return payment; // already applied — idempotent no-op (e.g. webhook retried)
+  }
+
+  if (!outcome.success) {
+    return upsertPayment({
+      groupId: payment.groupId,
+      memberId: payment.memberId,
+      roundId: payment.roundId,
+      roundNumber: payment.roundNumber,
+      amount: Number(payment.amount),
+      status: "failed",
+      gatewayFailureReason: outcome.failureReason,
+    });
+  }
+
+  const group = await findGroupById(payment.groupId);
+  if (!group) throw ApiError.notFound("GROUP_NOT_FOUND", "Group not found");
+  const round = await findRoundByNumber(payment.groupId, payment.roundNumber);
+  if (!round) throw ApiError.notFound("ROUND_NOT_FOUND", "Round not found");
+  const member = await findMemberWithUserById(payment.memberId);
+  if (!member) throw ApiError.notFound("MEMBER_NOT_FOUND", "Member not found");
+
+  return applySuccessfulPayment(group, round, member, outcome.paymentIntentId);
 }
 
 export async function confirmPayment(
@@ -77,8 +180,19 @@ export async function confirmPayment(
 ): Promise<Payment> {
   const { group, round, member } = await requireGroupRoundMember(groupId, roundNumber, userId);
 
-  const result = await paymentGatewayService.confirm(gatewayRef);
-  if (!result.success) {
+  const existing = await findPaymentForMemberRound(member.id, roundNumber);
+  if (existing?.status === "paid" || existing?.status === "paid_late") {
+    return existing; // webhook already landed — this is now just a status read-through
+  }
+
+  const result = await paymentGatewayService.lookup(gatewayRef);
+
+  if (result.status === "pending") {
+    if (existing) return existing;
+    throw ApiError.badRequest("PAYMENT_PENDING", "Payment has not been confirmed yet");
+  }
+
+  if (result.status === "failed") {
     const failed = await upsertPayment({
       groupId,
       memberId: member.id,
@@ -86,48 +200,14 @@ export async function confirmPayment(
       roundNumber,
       amount: Number(group.contributionAmount),
       status: "failed",
+      gatewayFailureReason: result.failureReason,
     });
     throw ApiError.badRequest("PAYMENT_FAILED", result.failureReason ?? "Payment could not be confirmed", {
       payment: failed,
     });
   }
 
-  const isLate = new Date() > new Date(round.scheduledDate.getTime() + group.lateFeeGraceDays * 86_400_000);
-  const lateFeeApplied = isLate ? Number(group.lateFeeAmount) : 0;
-  const ref = generatePaymentRef(groupId);
-
-  const payment = await upsertPayment({
-    groupId,
-    memberId: member.id,
-    roundId: round.id,
-    roundNumber,
-    amount: Number(group.contributionAmount),
-    status: isLate ? "paid_late" : "paid",
-    paidAt: new Date(),
-    lateFeeApplied,
-    ref,
-  });
-
-  const memberWithUser = await findMemberWithUserById(member.id);
-  if (memberWithUser?.user?.phone) {
-    const amount = Number(payment.amount) + lateFeeApplied;
-    const phone = memberWithUser.user.phone;
-    await notify({
-      phone,
-      groupId,
-      template: "payment_receipt",
-      payload: { roundNumber, amount, ref },
-      send: () =>
-        whatsAppService.sendPaymentReceipt(phone, {
-          groupName: group.name,
-          roundNumber,
-          amountLabel: formatRM(amount),
-          ref,
-        }),
-    });
-  }
-
-  return payment;
+  return applySuccessfulPayment(group, round, member, result.paymentIntentId);
 }
 
 export async function requestExtension(

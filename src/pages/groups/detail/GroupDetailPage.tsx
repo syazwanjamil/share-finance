@@ -10,6 +10,7 @@ import {
 } from "../../../lib/selectors";
 import { StatusPill } from "../../../components/ui/StatusPill";
 import { StatTile } from "../../../components/ui/StatTile";
+import { PayoutSetupBanner } from "../../../components/PayoutSetupBanner";
 import { Button } from "../../../components/ui/Button";
 import { Tabs } from "../../../components/ui/Tabs";
 import { formatRM } from "../../../lib/currency";
@@ -73,6 +74,7 @@ export function GroupDetailPage() {
 
   return (
     <>
+      {!currentUser.stripeConnectOnboarded && <PayoutSetupBanner />}
       <div className={styles.header}>
         <div className={styles.identity}>
           <span className={styles.avatar}>{initialsFor(group.name)}</span>

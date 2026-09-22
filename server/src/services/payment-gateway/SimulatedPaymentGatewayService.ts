@@ -1,8 +1,8 @@
 import crypto from "node:crypto";
 import type {
-  ConfirmPaymentResult,
   InitiatePaymentInput,
   InitiatePaymentResult,
+  LookupPaymentResult,
   PaymentGatewayService,
 } from "./PaymentGatewayService.js";
 
@@ -14,8 +14,8 @@ export class SimulatedPaymentGatewayService implements PaymentGatewayService {
     return { gatewayRef, redirectUrl: null };
   }
 
-  async confirm(gatewayRef: string): Promise<ConfirmPaymentResult> {
+  async lookup(gatewayRef: string): Promise<LookupPaymentResult> {
     void gatewayRef;
-    return { success: true };
+    return { status: "succeeded" };
   }
 }

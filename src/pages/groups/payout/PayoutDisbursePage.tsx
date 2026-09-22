@@ -16,6 +16,7 @@ export function PayoutDisbursePage() {
   const bundle = useGroupBundle(groupId);
   const { actions } = useAppData();
   const [autoRelease, setAutoRelease] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   if (!bundle) return <div>Group not found.</div>;
 
@@ -24,12 +25,18 @@ export function PayoutDisbursePage() {
   const recipient = getMembersWithUsers(bundle).find((m) => m.member.id === payoutRound?.recipientMemberId);
   const total = collection.collected + collection.lateFeesCollected;
   const poolComplete = collection.paidCount === collection.totalCount;
+  const recipientNotOnboarded = !!recipient?.user && !recipient.user.stripeConnectOnboarded;
 
   async function handleRelease() {
-    await actions.releasePayout(groupId!, roundNumber);
-    navigate(`/groups/${groupId}/payout/${roundNumber}/receipt`, {
-      state: { amount: total, recipientName: recipient?.user?.name, roundNumber },
-    });
+    setError(null);
+    try {
+      await actions.releasePayout(groupId!, roundNumber);
+      navigate(`/groups/${groupId}/payout/${roundNumber}/receipt`, {
+        state: { amount: total, recipientName: recipient?.user?.name, roundNumber },
+      });
+    } catch {
+      setError("Couldn't release this payout — the recipient's payout account may not be set up yet.");
+    }
   }
 
   return (
@@ -49,6 +56,7 @@ export function PayoutDisbursePage() {
             <span className={styles.recipientMeta}>
               {recipient?.user?.bankAccount ?? "Bank not on file"} · name matched ✓
             </span>
+            {recipientNotOnboarded && <StatusPill variant="warning">Payout account not set up</StatusPill>}
             {recipient?.user?.mykadVerifiedDate ? (
               <span className={styles.recipientMeta}>
                 MyKad verified {formatDateFull(recipient.user.mykadVerifiedDate)}
@@ -114,6 +122,11 @@ export function PayoutDisbursePage() {
         </button>
       </div>
 
+      {error && (
+        <span className={styles.securityNote} style={{ color: "var(--warning)" }}>
+          {error}
+        </span>
+      )}
       <Button block onClick={handleRelease} disabled={!poolComplete}>
         Release {formatRM(total)} now
       </Button>

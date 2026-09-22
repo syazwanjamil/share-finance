@@ -1,7 +1,7 @@
 import { createContext, useContext, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 
-export type PaymentMethod = "fpx" | "ewallet" | "qr";
+export type PaymentMethod = "fpx" | "ewallet" | "qr" | "card";
 
 interface PaymentFlowState {
   groupId: string | null;
