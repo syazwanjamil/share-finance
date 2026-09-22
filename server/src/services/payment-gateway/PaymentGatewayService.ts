@@ -1,4 +1,4 @@
-export type GatewayPaymentMethod = "fpx" | "ewallet" | "qr" | "card";
+export type GatewayPaymentMethod = "card";
 
 export interface InitiatePaymentInput {
   amount: number;
@@ -11,7 +11,7 @@ export interface InitiatePaymentInput {
 
 export interface InitiatePaymentResult {
   gatewayRef: string;
-  /** Some real gateways require a redirect for FPX/bank login or hosted checkout — null when not needed. */
+  /** Hosted-checkout gateways (e.g. Stripe) require a redirect — null when not needed. */
   redirectUrl: string | null;
 }
 
@@ -25,9 +25,8 @@ export interface LookupPaymentResult {
 
 /**
  * Abstraction over the payment processor. `SimulatedPaymentGatewayService` resolves
- * instantly (mirroring the current frontend's simulated FPX/e-wallet/QR flow); a real
- * gateway (Stripe/Billplz/ToyyibPay/Curlec/etc.) implements the same interface later and is
- * selected via `PAYMENT_GATEWAY_PROVIDER`, with zero call-site changes.
+ * instantly, for local dev without live Stripe keys; `StripePaymentGatewayService` is the
+ * real implementation, selected via `PAYMENT_GATEWAY_PROVIDER`, with zero call-site changes.
  *
  * `lookup` is a read-through status check, not a confirmation trigger: for gateways whose
  * confirmation is webhook-driven (e.g. Stripe Checkout), the authoritative state change

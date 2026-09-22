@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useCurrentUser, useGroupBundle } from "../../../state/AppDataContext";
+import { useAppData, useCurrentUser, useGroupBundle } from "../../../state/AppDataContext";
 import {
   computePoolSummary,
   computeRoundCollection,
@@ -35,8 +35,11 @@ export function GroupDetailPage() {
   const navigate = useNavigate();
   const currentUser = useCurrentUser();
   const bundle = useGroupBundle(groupId);
+  const { actions } = useAppData();
   const organizer = bundle ? isOrganizer(bundle, currentUser.id) : false;
   const [tab, setTab] = useState<string>(organizer ? "matrix" : "timeline");
+  const [reminding, setReminding] = useState(false);
+  const [remindError, setRemindError] = useState<string | null>(null);
 
   useEffect(() => {
     setTab(organizer ? "matrix" : "timeline");
@@ -57,6 +60,18 @@ export function GroupDetailPage() {
 
   const { group } = bundle;
   const unpaidCount = collection ? collection.totalCount - collection.paidCount : 0;
+
+  async function handleRemindUnpaid() {
+    setRemindError(null);
+    setReminding(true);
+    try {
+      await actions.remindUnpaid(group.id);
+    } catch {
+      setRemindError("Couldn't send reminders — please try again.");
+    } finally {
+      setReminding(false);
+    }
+  }
 
   const tabs = organizer
     ? [
@@ -96,10 +111,15 @@ export function GroupDetailPage() {
             <Button variant="secondary" onClick={() => navigate(`/groups/${group.id}/payout-order`)}>
               Manage payout order
             </Button>
-            <Button>Remind unpaid ({unpaidCount})</Button>
+            <Button onClick={handleRemindUnpaid} disabled={unpaidCount === 0 || reminding}>
+              {reminding ? "Sending…" : `Remind unpaid (${unpaidCount})`}
+            </Button>
           </div>
         ) : null}
       </div>
+      {remindError && (
+        <div style={{ color: "var(--warning)", marginTop: "0.5rem" }}>{remindError}</div>
+      )}
 
       {collection && currentRound && poolSummary ? (
         <div className={styles.statsRow}>

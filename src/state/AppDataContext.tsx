@@ -21,13 +21,14 @@ const initialState: AppState = {
 
 interface AppDataActions {
   refresh: () => Promise<void>;
-  markPaymentPaid: (groupId: string, roundNumber: number, method: "fpx" | "ewallet" | "qr" | "card") => Promise<void>;
+  markPaymentPaid: (groupId: string, roundNumber: number, method: "card") => Promise<void>;
   applyPayoutOrderChange: (
     groupId: string,
     changes: api.PayoutOrderChangeInput[],
     reason: string,
   ) => Promise<void>;
   releasePayout: (groupId: string, roundNumber: number) => Promise<void>;
+  remindUnpaid: (groupId: string) => Promise<{ remindedCount: number }>;
   toggleAutopay: (groupId: string) => Promise<void>;
   addGroup: (input: GroupDraftInput) => Promise<GroupBundle>;
   joinGroup: (inviteCode: string) => Promise<GroupBundle>;
@@ -97,6 +98,9 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
       async releasePayout(groupId, roundNumber) {
         await api.releaseRound(groupId, roundNumber);
         await refreshGroup(groupId);
+      },
+      async remindUnpaid(groupId) {
+        return api.remindUnpaid(groupId);
       },
       async toggleAutopay(groupId) {
         setState((s) => {

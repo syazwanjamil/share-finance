@@ -54,10 +54,7 @@ export function CheckoutFailedPage() {
 
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           <Button block onClick={() => navigate(`/pay/${bundle.group.id}/${flow.roundNumber}`)}>
-            Try another method
-          </Button>
-          <Button variant="secondary" block onClick={() => navigate("/pay/confirm")}>
-            Retry {flow.method === "fpx" ? "Maybank ···4821" : "payment"}
+            Retry payment
           </Button>
           <button type="button" className={styles.linkButton}>
             Tell the organizer I need more time

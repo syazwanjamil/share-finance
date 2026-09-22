@@ -410,7 +410,7 @@ export async function holdRound(groupId: string, roundNumber: number, reason: st
 export async function initiatePayment(
   groupId: string,
   roundNumber: number,
-  method: "fpx" | "ewallet" | "qr" | "card",
+  method: "card",
 ): Promise<{ paymentId: string; gatewayRef: string; redirectUrl: string | null }> {
   return post(`/groups/${groupId}/rounds/${roundNumber}/payments`, { method });
 }

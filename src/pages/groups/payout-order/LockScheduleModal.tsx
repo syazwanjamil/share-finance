@@ -19,9 +19,14 @@ interface LockScheduleModalProps {
   onConfirm: (reason: string) => void;
 }
 
-const CHANNELS = ["WhatsApp", "in-app", "SMS"] as const;
+const CHANNELS = ["WhatsApp", "in-app"] as const;
 
-export function LockScheduleModal({ diff, totalMembers, onClose, onConfirm }: LockScheduleModalProps) {
+export function LockScheduleModal({
+  diff,
+  totalMembers,
+  onClose,
+  onConfirm,
+}: LockScheduleModalProps) {
   const [reason, setReason] = useState(
     diff.length > 0
       ? `${diff[0].newName} asked for an earlier turn. ${diff[0].oldName} agreed to swap.`
@@ -36,7 +41,8 @@ export function LockScheduleModal({ diff, totalMembers, onClose, onConfirm }: Lo
         Lock this schedule?
       </span>
       <p className={styles.body}>
-        All {totalMembers} members get a WhatsApp message with the new order and your reason.
+        All {totalMembers} members get a WhatsApp message with the new order and
+        your reason.
       </p>
 
       <div className={styles.changesBox}>
@@ -47,14 +53,17 @@ export function LockScheduleModal({ diff, totalMembers, onClose, onConfirm }: Lo
               Round {d.roundNumber} · {formatDate(d.scheduledDate)}
             </span>
             <span>
-              <span className={styles.oldName}>{d.oldName}</span> → <strong>{d.newName}</strong>
+              <span className={styles.oldName}>{d.oldName}</span> →{" "}
+              <strong>{d.newName}</strong>
             </span>
           </div>
         ))}
       </div>
 
       <div className={styles.reasonBox}>
-        <span className={styles.reasonLabel}>REASON (SHARED WITH THE GROUP)</span>
+        <span className={styles.reasonLabel}>
+          REASON (SHARED WITH THE GROUP)
+        </span>
         <textarea
           className={styles.textarea}
           value={reason}
@@ -66,20 +75,40 @@ export function LockScheduleModal({ diff, totalMembers, onClose, onConfirm }: Lo
         <span className={styles.notifyLabel}>Notify by</span>
         <div className={styles.channels}>
           {CHANNELS.map((c) => (
-            <button key={c} type="button" onClick={() => setChannel(c)} style={{ background: "none", border: "none", padding: 0, cursor: "pointer" }}>
-              <StatusPill variant={channel === c ? "success" : "neutral"}>{c}</StatusPill>
+            <button
+              key={c}
+              type="button"
+              onClick={() => setChannel(c)}
+              style={{
+                background: "none",
+                border: "none",
+                padding: 0,
+                cursor: "pointer",
+              }}
+            >
+              <StatusPill variant={channel === c ? "success" : "neutral"}>
+                {c}
+              </StatusPill>
             </button>
           ))}
         </div>
       </div>
 
       <label className={styles.confirmNote}>
-        <input type="checkbox" checked={requireConfirm} onChange={(e) => setRequireConfirm(e.target.checked)} />
+        <input
+          type="checkbox"
+          checked={requireConfirm}
+          onChange={(e) => setRequireConfirm(e.target.checked)}
+        />
         Require the other member to confirm the swap before it takes effect
       </label>
 
       <div className={styles.footer}>
-        <Button block disabled={!reason.trim()} onClick={() => onConfirm(reason)}>
+        <Button
+          block
+          disabled={!reason.trim()}
+          onClick={() => onConfirm(reason)}
+        >
           Lock &amp; notify {totalMembers} members
         </Button>
         <Button variant="secondary" block onClick={onClose}>

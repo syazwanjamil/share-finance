@@ -25,7 +25,7 @@ export async function getMyPayment(req: Request, res: Response): Promise<void> {
 
 export async function initiatePayment(req: Request, res: Response): Promise<void> {
   const { id } = requireUser(req);
-  const { method } = req.body as { method: "fpx" | "ewallet" | "qr" };
+  const { method } = req.body as { method: "card" };
   const result = await paymentService.initiatePayment(
     param(req, "groupId"),
     Number(param(req, "roundNumber")),
