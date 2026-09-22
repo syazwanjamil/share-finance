@@ -1,7 +1,15 @@
 import { config } from "../../config/env.js";
+import { ApiError } from "../../lib/ApiError.js";
 import { createNotificationLog } from "../../repositories/notificationLog.repository.js";
 import { whatsAppService } from "./index.js";
 import type { NotificationTemplate } from "@prisma/client";
+
+function describeError(error: unknown): string {
+  if (error instanceof ApiError && error.details) {
+    return `${error.message}: ${String(error.details)}`;
+  }
+  return error instanceof Error ? error.message : String(error);
+}
 
 /**
  * Sends a WhatsApp message via the configured provider and always records the attempt
@@ -35,7 +43,7 @@ export async function notify<T>(input: {
       payload: input.payload as object,
       provider: config.NOTIFICATION_PROVIDER,
       status: "failed",
-      errorMessage: error instanceof Error ? error.message : String(error),
+      errorMessage: describeError(error),
     });
   }
 }

@@ -38,7 +38,7 @@ interface TeekrrRequestBody {
   campaignName: string;
   type: "quick broadcast";
   recipients: string[];
-  variables: { templateParams: Record<string, string | number> };
+  variables: { templateParams: Record<string, string> };
 }
 
 export class TeekrrWhatsAppService implements WhatsAppService {
@@ -60,12 +60,18 @@ export class TeekrrWhatsAppService implements WhatsAppService {
   ): Promise<SendResult> {
     this.assertConfigured();
 
+    // Teekrr's template engine rejects non-string variable values (e.g. a raw
+    // roundNumber) with a 400, so every param is coerced to a string here.
+    const stringParams = Object.fromEntries(
+      Object.entries(templateParams).map(([key, value]) => [key, String(value)]),
+    );
+
     const body: TeekrrRequestBody = {
       templateName,
       campaignName,
       type: "quick broadcast",
       recipients: [toTeekrrRecipient(phone)],
-      variables: { templateParams },
+      variables: { templateParams: stringParams },
     };
 
     const response = await fetch(`${config.TEEKRR_API_BASE_URL}/whatsapp`, {
