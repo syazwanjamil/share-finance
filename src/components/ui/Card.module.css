@@ -1,0 +1,16 @@
+.card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 14px;
+}
+
+.highlight {
+  border-color: var(--accent);
+  border-width: 1.5px;
+  background: var(--accent-bg);
+}
+
+.subtle {
+  background: var(--surface);
+}

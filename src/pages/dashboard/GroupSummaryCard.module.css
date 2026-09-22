@@ -1,0 +1,54 @@
+.card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  background: var(--bg);
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.identity {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+}
+
+.names {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+.meta {
+  font-size: 10.5px;
+  color: var(--text);
+}
+
+.pills {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10.5px;
+  color: var(--text);
+}

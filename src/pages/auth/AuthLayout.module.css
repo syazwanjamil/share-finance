@@ -1,0 +1,195 @@
+.page {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.split {
+  width: 100%;
+  max-width: 920px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  display: flex;
+  min-height: 480px;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+}
+
+.marketing {
+  width: 42%;
+  background: var(--surface-alt);
+  border-right: 1px solid var(--border);
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.marketingBrand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.logo {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background: var(--accent);
+}
+
+.brandName {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text-h);
+}
+
+.headline {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--text-h);
+}
+
+.subcopy {
+  font-size: 12.5px;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.illustration {
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--surface),
+    var(--surface) 5px,
+    var(--bg) 5px,
+    var(--bg) 10px
+  );
+  height: 110px;
+  display: grid;
+  place-items: center;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-tertiary);
+}
+
+.badges {
+  margin-top: auto;
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.formPanel {
+  flex: 1;
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  justify-content: center;
+}
+
+.center {
+  width: 100%;
+  max-width: 420px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--bg);
+  padding: 30px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: var(--shadow);
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+.hint {
+  font-size: 11.5px;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.field {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 11px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fieldLabel {
+  font: 700 9px var(--mono);
+  letter-spacing: 0.1em;
+  color: var(--text);
+}
+
+.fieldValue {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.input {
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: var(--text-h);
+  background: transparent;
+  width: 100%;
+  font-family: var(--sans);
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-tertiary);
+  font-size: 10px;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.legal {
+  font-size: 10.5px;
+  color: var(--text-tertiary);
+  line-height: 1.5;
+}
+
+.tip {
+  border-left: 3px solid var(--success);
+  background: var(--success-bg);
+  border-radius: 0 8px 8px 0;
+  padding: 9px 11px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tipTitle {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+.tipBody {
+  font-size: 10.5px;
+  color: var(--text);
+}

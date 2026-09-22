@@ -1,0 +1,19 @@
+.bar {
+  display: flex;
+  gap: 3px;
+}
+
+.segment {
+  flex: 1;
+  height: 7px;
+  border-radius: 3px;
+  background: var(--border);
+}
+
+.done {
+  background: var(--success);
+}
+
+.current {
+  background: var(--accent);
+}

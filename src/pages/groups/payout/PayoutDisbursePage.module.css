@@ -1,0 +1,158 @@
+.recipientCard {
+  border: 1.5px solid var(--accent);
+  background: var(--accent-bg);
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.recipientLeft {
+  display: flex;
+  gap: 11px;
+  align-items: center;
+}
+
+.recipientAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--avatar-bg);
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  flex-shrink: 0;
+}
+
+.recipientNames {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.recipientName {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+.recipientMeta {
+  font-size: 10.5px;
+  color: var(--text);
+}
+
+.recipientRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.recipientAmountLabel {
+  font-size: 10px;
+  color: var(--text);
+}
+
+.recipientAmount {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-h);
+}
+
+.toggleRow {
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 11px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.toggleText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.toggleTitle {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+.toggleSub {
+  font-size: 10.5px;
+  color: var(--text);
+}
+
+.toggle {
+  width: 34px;
+  height: 19px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  border: none;
+  cursor: pointer;
+}
+
+.toggleOn {
+  background: var(--success);
+  justify-content: flex-end;
+}
+
+.toggleOff {
+  background: var(--border);
+  justify-content: flex-start;
+}
+
+.toggleKnob {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.holdBox {
+  border: 1px solid var(--warning-border);
+  background: var(--warning-bg);
+  border-radius: 9px;
+  padding: 11px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.holdTitle {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+.holdSub {
+  font-size: 10.5px;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.holdLink {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  align-self: flex-start;
+}
+
+.securityNote {
+  font-size: 10.5px;
+  color: var(--text-tertiary);
+  text-align: center;
+  line-height: 1.5;
+}

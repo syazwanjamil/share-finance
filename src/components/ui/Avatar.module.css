@@ -1,0 +1,15 @@
+.avatar {
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--avatar-bg);
+  color: var(--text);
+  font-weight: 700;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.accent {
+  background: var(--accent);
+  color: #fff;
+}

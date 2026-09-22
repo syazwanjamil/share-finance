@@ -1,0 +1,153 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+.subtitle {
+  font-size: 11px;
+  color: var(--text);
+}
+
+.headerActions {
+  display: flex;
+  gap: 7px;
+}
+
+.infoBox {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 8px;
+  padding: 9px 11px;
+  font-size: 11px;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 11px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  gap: 10px;
+}
+
+.rowLocked {
+  opacity: 0.5;
+  border-color: var(--border-subtle);
+}
+
+.rowChanged {
+  border: 1.5px solid var(--accent);
+  background: var(--accent-bg);
+}
+
+.rowLeft {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+}
+
+.roundNumber {
+  font: 700 10px var(--mono);
+  color: var(--text);
+  width: 14px;
+}
+
+.roundNumberChanged {
+  color: var(--accent);
+}
+
+.names {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.memberName {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-h);
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.reasonText {
+  font-size: 10px;
+  color: var(--text);
+}
+
+.rowRight {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.iconButton {
+  border: none;
+  background: none;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  padding: 4px;
+}
+
+.iconButton:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.dropTarget {
+  border: 1px dashed var(--accent);
+  border-radius: 8px;
+  padding: 10px 11px;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border);
+  padding-top: 11px;
+  margin-top: 2px;
+}
+
+.unsavedText {
+  font-size: 11px;
+  color: var(--text);
+}
+
+.undoLink {
+  color: var(--accent);
+  font-weight: 700;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-size: 11px;
+}

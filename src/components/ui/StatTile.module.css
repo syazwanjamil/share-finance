@@ -1,0 +1,29 @@
+.tile {
+  flex: 1;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 11px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.label {
+  font-size: 10px;
+  color: var(--text);
+  font-family: var(--mono);
+  letter-spacing: 0.04em;
+}
+
+.value {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-h);
+  letter-spacing: -0.02em;
+}
+
+.sub {
+  font-size: 10px;
+  color: var(--text);
+}

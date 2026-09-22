@@ -1,0 +1,132 @@
+:root {
+  --text: #6f6858;
+  --text-h: #1a1a1a;
+  --text-tertiary: #8a8273;
+  --bg: #fff;
+  --page-bg: #efedE8;
+  --surface: #faf8f5;
+  --surface-alt: #f6f1ea;
+  --avatar-bg: #efece5;
+  --border: #e4e0d8;
+  --border-subtle: #f2efe9;
+  --code-bg: #f4f3ec;
+
+  --accent: #b4562f;
+  --accent-bg: #fdf7f3;
+  --accent-border: #e0d2c8;
+
+  --success: #3f7d5a;
+  --success-bg: #f3f8f4;
+  --success-border: #cfe0d4;
+
+  --warning: #c07a1e;
+  --warning-bg: #fdf6ea;
+  --warning-border: #ecd9b8;
+
+  --social-bg: rgba(244, 243, 236, 0.5);
+  --shadow:
+    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+
+  --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --heading: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, Consolas, monospace;
+
+  --radius-card: 10px;
+  --radius-pill: 20px;
+  --radius-control: 6px;
+
+  font: 16px/145% var(--sans);
+  letter-spacing: 0.1px;
+  color-scheme: light dark;
+  color: var(--text);
+  background: var(--page-bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #a9a196;
+    --text-h: #f3f1ea;
+    --text-tertiary: #7d7669;
+    --bg: #211f1c;
+    --page-bg: #181715;
+    --surface: #29271f;
+    --surface-alt: #2c2a24;
+    --avatar-bg: #38352c;
+    --border: #3a372e;
+    --border-subtle: #2c2a24;
+    --code-bg: #1f2028;
+
+    --accent: #e0895e;
+    --accent-bg: rgba(224, 137, 94, 0.14);
+    --accent-border: rgba(224, 137, 94, 0.4);
+
+    --success: #6fae8a;
+    --success-bg: rgba(111, 174, 138, 0.14);
+    --success-border: rgba(111, 174, 138, 0.4);
+
+    --warning: #e0a94f;
+    --warning-bg: rgba(224, 169, 79, 0.14);
+    --warning-border: rgba(224, 169, 79, 0.4);
+
+    --social-bg: rgba(47, 48, 58, 0.5);
+    --shadow:
+      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+  }
+
+  #social .button-icon {
+    filter: invert(1) brightness(2);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--page-bg);
+  min-height: 100svh;
+}
+
+#root {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--heading);
+  font-weight: 700;
+  color: var(--text-h);
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+button {
+  font: inherit;
+  letter-spacing: inherit;
+}
+
+code,
+.counter {
+  font-family: var(--mono);
+  display: inline-flex;
+  border-radius: 4px;
+  color: var(--text-h);
+}
+
+code {
+  font-size: 13px;
+  line-height: 135%;
+  padding: 4px 8px;
+  background: var(--code-bg);
+}

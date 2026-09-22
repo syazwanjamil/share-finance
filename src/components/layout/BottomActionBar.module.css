@@ -1,0 +1,26 @@
+.bar {
+  border-top: 1px solid var(--border);
+  background: var(--accent-bg);
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.due {
+  font-size: 10px;
+  color: var(--text);
+}
+
+.amount {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-h);
+}
