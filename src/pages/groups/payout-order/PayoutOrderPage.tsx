@@ -11,7 +11,7 @@ import {
 import type { DragEndEvent } from "@dnd-kit/core";
 import { SortableContext, arrayMove, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { useAppData, useGroupBundle } from "../../../state/AppDataContext";
-import { getMembersWithUsers } from "../../../mock/selectors";
+import { getMembersWithUsers } from "../../../lib/selectors";
 import { Button } from "../../../components/ui/Button";
 import { SortableOrderRow } from "./SortableOrderRow";
 import { LockScheduleModal } from "./LockScheduleModal";
@@ -28,7 +28,7 @@ export function PayoutOrderPage() {
   const { groupId } = useParams();
   const navigate = useNavigate();
   const bundle = useGroupBundle(groupId);
-  const { dispatch } = useAppData();
+  const { actions } = useAppData();
 
   const membersWithUsers = useMemo(() => (bundle ? getMembersWithUsers(bundle) : []), [bundle]);
 
@@ -120,13 +120,12 @@ export function PayoutOrderPage() {
       };
     });
 
-  function handleConfirmLock(reason: string) {
-    dispatch({
-      type: "APPLY_PAYOUT_ORDER_CHANGE",
-      groupId: bundle!.group.id,
-      changes: order.map((o) => ({ roundNumber: o.roundNumber, newRecipientMemberId: o.memberId, reason })),
+  async function handleConfirmLock(reason: string) {
+    await actions.applyPayoutOrderChange(
+      bundle!.group.id,
+      order.map((o) => ({ roundNumber: o.roundNumber, newRecipientMemberId: o.memberId })),
       reason,
-    });
+    );
     setShowModal(false);
     navigate(`/groups/${bundle!.group.id}`);
   }

@@ -1,4 +1,4 @@
-import type { DashboardPayoutNext } from "../../mock/selectors";
+import type { DashboardPayoutNext } from "../../lib/selectors";
 import { CollectionProgressBar } from "../../components/ui/CollectionProgressBar";
 import { formatRM } from "../../lib/currency";
 import { formatDate } from "../../lib/date";

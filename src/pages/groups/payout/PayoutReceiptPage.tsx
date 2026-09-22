@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useGroupBundle } from "../../../state/AppDataContext";
-import { getRoundByNumber } from "../../../mock/selectors";
+import { getRoundByNumber } from "../../../lib/selectors";
 import { Button } from "../../../components/ui/Button";
 import { formatRM } from "../../../lib/currency";
 import { formatDateFull } from "../../../lib/date";

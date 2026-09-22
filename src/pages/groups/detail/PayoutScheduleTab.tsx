@@ -1,5 +1,5 @@
-import type { GroupBundle } from "../../../mock/groups";
-import { getMembersWithUsers } from "../../../mock/selectors";
+import type { GroupBundle } from "../../../lib/api";
+import { getMembersWithUsers } from "../../../lib/selectors";
 import { StatusPill } from "../../../components/ui/StatusPill";
 import { formatDate } from "../../../lib/date";
 import styles from "./GroupDetailPage.module.css";

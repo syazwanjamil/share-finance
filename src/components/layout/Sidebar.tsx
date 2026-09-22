@@ -1,13 +1,14 @@
 import { Bell, BookText, Home, Users, Wallet } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
-import { useAppData } from "../../state/AppDataContext";
-import { hasUserPaidCurrentRound } from "../../mock/selectors";
+import { useAppData, useCurrentUser } from "../../state/AppDataContext";
+import { hasUserPaidCurrentRound } from "../../lib/selectors";
 import { Avatar } from "../ui/Avatar";
 import { formatDateFull } from "../../lib/date";
 import styles from "./Sidebar.module.css";
 
 export function Sidebar() {
   const { state } = useAppData();
+  const currentUser = useCurrentUser();
   const location = useLocation();
   const onGroupsSection = location.pathname.startsWith("/groups") || location.pathname === "/home";
 
@@ -35,7 +36,7 @@ export function Sidebar() {
         {state.groups.map(({ group }) => {
           const unpaid = !hasUserPaidCurrentRound(
             state.groups.find((b) => b.group.id === group.id)!,
-            state.currentUser.id,
+            currentUser.id,
           );
           const active = location.pathname.includes(group.id);
           return (
@@ -68,14 +69,14 @@ export function Sidebar() {
         <div className={styles.verifyCard}>
           <span className={styles.verifyTitle}>Identity verified</span>
           <span className={styles.verifySub}>
-            {state.currentUser.mykadVerifiedDate
-              ? `MyKad checked ${formatDateFull(state.currentUser.mykadVerifiedDate)}. Payouts enabled.`
+            {currentUser.mykadVerifiedDate
+              ? `MyKad checked ${formatDateFull(currentUser.mykadVerifiedDate)}. Payouts enabled.`
               : "MyKad not verified yet."}
           </span>
         </div>
         <div className={styles.userRow}>
-          <Avatar initials={state.currentUser.initials} size={22} />
-          {state.currentUser.name}
+          <Avatar initials={currentUser.initials} size={22} />
+          {currentUser.name}
         </div>
       </div>
     </aside>

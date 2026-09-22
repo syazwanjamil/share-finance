@@ -20,6 +20,7 @@ export interface Member {
   role: "organizer" | "member";
   status: MemberStatus;
   invitedPhone?: string;
+  user?: User;
 }
 
 export type PayoutOrderMethod = "assigned" | "random" | "join-order";
@@ -46,7 +47,7 @@ export interface Group {
   startedAt: string;
 }
 
-export type RoundStatus = "paid-out" | "current" | "upcoming";
+export type RoundStatus = "paid-out" | "current" | "upcoming" | "held";
 
 export interface PriorityRequest {
   memberId: string;
@@ -81,3 +82,15 @@ export interface Payment {
 }
 
 export type ViewerRole = "organizer" | "member";
+
+export interface GroupDraftInput {
+  name: string;
+  contributionAmount: number;
+  frequency: Frequency;
+  totalSlots: number;
+  firstPayoutDate: string;
+  lateFeeEnabled: boolean;
+  lateFeeAmount: number;
+  lateFeeGraceDays: number;
+  payoutOrderMethod: PayoutOrderMethod;
+}

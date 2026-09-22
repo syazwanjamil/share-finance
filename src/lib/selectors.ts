@@ -1,6 +1,5 @@
-import type { GroupBundle } from "./groups";
+import type { GroupBundle } from "../lib/api";
 import type { Member, Payment, Round, User } from "../types";
-import { getUserById } from "./users";
 
 export function getGroupBundle(groups: GroupBundle[], groupId: string): GroupBundle | undefined {
   return groups.find((b) => b.group.id === groupId);
@@ -20,7 +19,11 @@ export interface MemberWithUser {
 }
 
 export function getMembersWithUsers(bundle: GroupBundle): MemberWithUser[] {
-  return bundle.members.map((member) => ({ member, user: getUserById(member.userId) }));
+  return bundle.members.map((member) => ({ member, user: member.user }));
+}
+
+export function getUserById(bundle: GroupBundle, userId: string): User | undefined {
+  return bundle.members.find((m) => m.userId === userId)?.user;
 }
 
 export function getMemberByUserId(bundle: GroupBundle, userId: string): Member | undefined {

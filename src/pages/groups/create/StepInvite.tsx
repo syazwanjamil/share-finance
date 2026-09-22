@@ -1,20 +1,20 @@
 import { Button } from "../../../components/ui/Button";
 import { StatusPill } from "../../../components/ui/StatusPill";
 import { MemberRow } from "../../../components/ui/MemberRow";
-import { useAppData } from "../../../state/AppDataContext";
-import type { GroupDraft } from "./wizardTypes";
+import { useCurrentUser } from "../../../state/AppDataContext";
+import type { GroupBundle } from "../../../lib/api";
 import styles from "./GroupCreatePage.module.css";
 
 interface StepInviteProps {
-  draft: GroupDraft;
-  inviteCode: string;
+  bundle: GroupBundle;
   onBack: () => void;
 }
 
-export function StepInvite({ draft, inviteCode, onBack }: StepInviteProps) {
-  const { state } = useAppData();
-  const filled = Math.min(3, draft.totalSlots);
-  const empty = Math.max(0, draft.totalSlots - filled);
+export function StepInvite({ bundle, onBack }: StepInviteProps) {
+  const currentUser = useCurrentUser();
+  const filled = bundle.members.filter((m) => m.status === "active").length;
+  const invited = bundle.members.filter((m) => m.status === "invited");
+  const empty = bundle.members.filter((m) => m.status === "empty").length;
 
   return (
     <>
@@ -22,7 +22,7 @@ export function StepInvite({ draft, inviteCode, onBack }: StepInviteProps) {
 
       <div className={styles.codeBox}>
         <span className={styles.codeLabel}>INVITE CODE</span>
-        <span className={styles.codeValue}>{inviteCode}</span>
+        <span className={styles.codeValue}>{bundle.group.inviteCode}</span>
         <div className={styles.codeActions}>
           <Button variant="secondary">Copy link</Button>
           <Button variant="success">Share to WhatsApp</Button>
@@ -32,26 +32,24 @@ export function StepInvite({ draft, inviteCode, onBack }: StepInviteProps) {
       <div className={styles.slotsHeader}>
         <span className={styles.slotsHeaderLabel}>SLOTS FILLED</span>
         <span>
-          {filled} of {draft.totalSlots}
+          {filled} of {bundle.group.totalSlots}
         </span>
       </div>
 
       <MemberRow
-        initials={state.currentUser.initials}
-        name={`${state.currentUser.name} (you)`}
+        initials={currentUser.initials}
+        name={`${currentUser.name} (you)`}
         meta="Organizer"
         trailing={<StatusPill variant="success">✓ verified</StatusPill>}
       />
-      <MemberRow
-        initials="R"
-        name="Rina H."
-        trailing={<StatusPill variant="success">joined</StatusPill>}
-      />
-      <MemberRow
-        initials="?"
-        name="+60 19-882 1130 — invited"
-        trailing={<StatusPill variant="neutral">remind</StatusPill>}
-      />
+      {invited.map((member) => (
+        <MemberRow
+          key={member.id}
+          initials="?"
+          name={`${member.invitedPhone} — invited`}
+          trailing={<StatusPill variant="neutral">remind</StatusPill>}
+        />
+      ))}
       {empty > 0 ? (
         <div style={{ fontSize: 12, color: "var(--text-tertiary)", padding: "7px 0" }}>
           {empty} empty slot{empty === 1 ? "" : "s"}
@@ -64,7 +62,7 @@ export function StepInvite({ draft, inviteCode, onBack }: StepInviteProps) {
         </Button>
       </div>
       <Button disabled block>
-        Start group (needs {draft.totalSlots} members)
+        Start group (needs {bundle.group.totalSlots} members)
       </Button>
       <p className={styles.helper}>Saved as a draft. Nobody is charged until you start.</p>
     </>

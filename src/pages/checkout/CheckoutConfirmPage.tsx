@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { usePaymentFlow } from "../../state/PaymentFlowContext";
-import { useAppData, useGroupBundle } from "../../state/AppDataContext";
+import { useAppData, useCurrentUser, useGroupBundle } from "../../state/AppDataContext";
 import { Button } from "../../components/ui/Button";
 import { formatRM } from "../../lib/currency";
 import styles from "./CheckoutLayout.module.css";
@@ -9,7 +9,8 @@ import styles from "./CheckoutLayout.module.css";
 export function CheckoutConfirmPage() {
   const navigate = useNavigate();
   const { flow } = usePaymentFlow();
-  const { state, dispatch } = useAppData();
+  const { actions } = useAppData();
+  const currentUser = useCurrentUser();
   const bundle = useGroupBundle(flow.groupId ?? undefined);
   const valid = !!bundle && flow.roundNumber != null;
 
@@ -21,15 +22,13 @@ export function CheckoutConfirmPage() {
     return null;
   }
 
-  function handleContinue() {
-    dispatch({
-      type: "MARK_PAYMENT_PAID",
-      groupId: flow.groupId!,
-      userId: state.currentUser.id,
-      roundNumber: flow.roundNumber!,
-      method: flow.method,
-    });
-    navigate("/pay/success");
+  async function handleContinue() {
+    try {
+      await actions.markPaymentPaid(flow.groupId!, flow.roundNumber!, flow.method);
+      navigate("/pay/success");
+    } catch {
+      navigate("/pay/failed");
+    }
   }
 
   return (
@@ -47,7 +46,7 @@ export function CheckoutConfirmPage() {
           </div>
           <div className={styles.detailRow}>
             <span>From</span>
-            <span>{state.currentUser.bankAccount}</span>
+            <span>{currentUser.bankAccount}</span>
           </div>
           <div className={styles.detailRow}>
             <span>For</span>

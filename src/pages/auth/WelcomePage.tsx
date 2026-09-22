@@ -2,20 +2,20 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/ui/Button";
 import { StatusPill } from "../../components/ui/StatusPill";
-import { useAppData } from "../../state/AppDataContext";
+import { useCurrentUser } from "../../state/AppDataContext";
 import layout from "./AuthLayout.module.css";
 import styles from "./WelcomePage.module.css";
 
 export function WelcomePage() {
   const navigate = useNavigate();
-  const { state } = useAppData();
+  const currentUser = useCurrentUser();
   const [selected, setSelected] = useState<"join" | "create">("join");
   const [bannerDismissed, setBannerDismissed] = useState(false);
 
   return (
     <div className={layout.page}>
       <div className={styles.wrap}>
-        <div className={styles.heading}>Welcome, {state.currentUser.name.split(" ")[0]}</div>
+        <div className={styles.heading}>Welcome{currentUser.name ? `, ${currentUser.name.split(" ")[0]}` : ""}</div>
         <p className={styles.sub}>Two ways to start. You can do both later.</p>
 
         <div className={styles.cards}>

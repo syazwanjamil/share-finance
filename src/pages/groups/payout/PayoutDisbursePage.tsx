@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppData, useGroupBundle } from "../../../state/AppDataContext";
-import { computeRoundCollection, getMembersWithUsers, getRoundByNumber } from "../../../mock/selectors";
+import { computeRoundCollection, getMembersWithUsers, getRoundByNumber } from "../../../lib/selectors";
 import { Button } from "../../../components/ui/Button";
 import { StatusPill } from "../../../components/ui/StatusPill";
 import { formatRM } from "../../../lib/currency";
@@ -14,7 +14,7 @@ export function PayoutDisbursePage() {
   const roundNumber = Number(round);
   const navigate = useNavigate();
   const bundle = useGroupBundle(groupId);
-  const { dispatch } = useAppData();
+  const { actions } = useAppData();
   const [autoRelease, setAutoRelease] = useState(true);
 
   if (!bundle) return <div>Group not found.</div>;
@@ -25,8 +25,8 @@ export function PayoutDisbursePage() {
   const total = collection.collected + collection.lateFeesCollected;
   const poolComplete = collection.paidCount === collection.totalCount;
 
-  function handleRelease() {
-    dispatch({ type: "RELEASE_PAYOUT", groupId: groupId!, roundNumber });
+  async function handleRelease() {
+    await actions.releasePayout(groupId!, roundNumber);
     navigate(`/groups/${groupId}/payout/${roundNumber}/receipt`, {
       state: { amount: total, recipientName: recipient?.user?.name, roundNumber },
     });

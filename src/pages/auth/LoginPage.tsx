@@ -35,7 +35,7 @@ export function LoginPage() {
         <div className={styles.marketing}>
           <div className={styles.marketingBrand}>
             <span className={styles.logo} />
-            <span className={styles.brandName}>ShareFinance</span>
+            <span className={styles.brandName}>Kongsi Rezeki</span>
           </div>
           <div className={styles.headline}>
             Run your kutu

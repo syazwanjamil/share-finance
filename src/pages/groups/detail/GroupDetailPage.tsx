@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAppData, useGroupBundle } from "../../../state/AppDataContext";
+import { useCurrentUser, useGroupBundle } from "../../../state/AppDataContext";
 import {
   computePoolSummary,
   computeRoundCollection,
   getCurrentRound,
   getMembersWithUsers,
   isOrganizer,
-} from "../../../mock/selectors";
+} from "../../../lib/selectors";
 import { StatusPill } from "../../../components/ui/StatusPill";
 import { StatTile } from "../../../components/ui/StatTile";
 import { Button } from "../../../components/ui/Button";
@@ -32,9 +32,9 @@ function initialsFor(name: string): string {
 export function GroupDetailPage() {
   const { groupId } = useParams();
   const navigate = useNavigate();
-  const { state } = useAppData();
+  const currentUser = useCurrentUser();
   const bundle = useGroupBundle(groupId);
-  const organizer = bundle ? isOrganizer(bundle, state.currentUser.id) : false;
+  const organizer = bundle ? isOrganizer(bundle, currentUser.id) : false;
   const [tab, setTab] = useState<string>(organizer ? "matrix" : "timeline");
 
   useEffect(() => {
@@ -124,7 +124,7 @@ export function GroupDetailPage() {
 
       <div className={styles.tabPanel}>
         {tab === "matrix" && <MembersRoundsMatrix bundle={bundle} />}
-        {tab === "timeline" && <MemberTimeline bundle={bundle} currentUserId={state.currentUser.id} />}
+        {tab === "timeline" && <MemberTimeline bundle={bundle} currentUserId={currentUser.id} />}
         {tab === "schedule" && <PayoutScheduleTab bundle={bundle} />}
         {tab === "ledger" && <EmptyTab label="Ledger" />}
         {tab === "settings" && <EmptyTab label="Settings" />}

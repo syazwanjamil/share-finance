@@ -3,11 +3,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "../../components/ui/Button";
 import { OtpInput } from "../../components/ui/OtpInput";
 import { ApiRequestError, requestOtp, verifyOtp } from "../../lib/api";
+import { useAppData } from "../../state/AppDataContext";
 import styles from "./AuthLayout.module.css";
 
 export function VerifyPage() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { actions } = useAppData();
   const phone =
     (location.state as { phone?: string } | null)?.phone ?? "+60123456789";
   const [code, setCode] = useState("");
@@ -24,9 +26,8 @@ export function VerifyPage() {
     setError(null);
     setSubmitting(true);
     try {
-      const result = await verifyOtp(phone, code);
-      localStorage.setItem("accessToken", result.accessToken);
-      localStorage.setItem("refreshToken", result.refreshToken);
+      await verifyOtp(phone, code);
+      await actions.refresh();
       navigate("/welcome");
     } catch (err) {
       setError(err instanceof ApiRequestError ? err.message : "Couldn't verify the code. Please try again.");

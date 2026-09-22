@@ -1,6 +1,6 @@
 import { Fragment, useState } from "react";
-import type { GroupBundle } from "../../../mock/groups";
-import { getMembersWithUsers, getPaymentForMemberRound } from "../../../mock/selectors";
+import type { GroupBundle } from "../../../lib/api";
+import { getMembersWithUsers, getPaymentForMemberRound } from "../../../lib/selectors";
 import { Avatar } from "../../../components/ui/Avatar";
 import { formatDate } from "../../../lib/date";
 import styles from "./MembersRoundsMatrix.module.css";

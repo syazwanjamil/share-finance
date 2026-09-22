@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { usePaymentFlow } from "../../state/PaymentFlowContext";
-import { useAppData, useGroupBundle } from "../../state/AppDataContext";
-import { computeRoundCollection, getPaymentForUserRound } from "../../mock/selectors";
+import { useCurrentUser, useGroupBundle } from "../../state/AppDataContext";
+import { computeRoundCollection, getPaymentForUserRound } from "../../lib/selectors";
 import { Button } from "../../components/ui/Button";
 import { formatRM } from "../../lib/currency";
 import { formatDateFull } from "../../lib/date";
@@ -11,7 +11,7 @@ import styles from "./CheckoutLayout.module.css";
 export function CheckoutSuccessPage() {
   const navigate = useNavigate();
   const { flow, reset } = usePaymentFlow();
-  const { state } = useAppData();
+  const currentUser = useCurrentUser();
   const bundle = useGroupBundle(flow.groupId ?? undefined);
   const valid = !!bundle && flow.roundNumber != null;
 
@@ -24,7 +24,7 @@ export function CheckoutSuccessPage() {
   }
 
   const collection = computeRoundCollection(bundle, flow.roundNumber);
-  const payment = getPaymentForUserRound(bundle, state.currentUser.id, flow.roundNumber);
+  const payment = getPaymentForUserRound(bundle, currentUser.id, flow.roundNumber);
   const ref = payment?.ref ?? "—";
 
   function handleBackHome() {

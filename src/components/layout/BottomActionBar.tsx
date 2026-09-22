@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { useAppData } from "../../state/AppDataContext";
-import { getPaymentsDue } from "../../mock/selectors";
+import { useAppData, useCurrentUser } from "../../state/AppDataContext";
+import { getPaymentsDue } from "../../lib/selectors";
 import { formatRM } from "../../lib/currency";
 import { relativeDays } from "../../lib/date";
 import { Button } from "../ui/Button";
@@ -8,8 +8,9 @@ import styles from "./BottomActionBar.module.css";
 
 export function BottomActionBar() {
   const { state } = useAppData();
+  const currentUser = useCurrentUser();
   const navigate = useNavigate();
-  const due = getPaymentsDue(state.groups, state.currentUser.id);
+  const due = getPaymentsDue(state.groups, currentUser.id);
 
   if (due.length === 0) return null;
   const next = due[0];

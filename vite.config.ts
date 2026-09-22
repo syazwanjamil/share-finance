@@ -7,6 +7,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/auth': 'http://localhost:4000',
+      '/me': 'http://localhost:4000',
+      '/groups': 'http://localhost:4000',
     },
   },
 })

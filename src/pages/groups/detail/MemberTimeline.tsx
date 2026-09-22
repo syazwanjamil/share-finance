@@ -1,10 +1,10 @@
-import type { GroupBundle } from "../../../mock/groups";
+import type { GroupBundle } from "../../../lib/api";
 import {
   computeRoundCollection,
   getCurrentRound,
   getMembersWithUsers,
   getPaymentForMemberRound,
-} from "../../../mock/selectors";
+} from "../../../lib/selectors";
 import { StatusPill } from "../../../components/ui/StatusPill";
 import { Button } from "../../../components/ui/Button";
 import { CollectionProgressBar } from "../../../components/ui/CollectionProgressBar";

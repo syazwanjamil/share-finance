@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/ui/Button";
 import { StatusPill } from "../../components/ui/StatusPill";
-import { useAppData } from "../../state/AppDataContext";
-import type { DashboardPaymentDue } from "../../mock/selectors";
+import { useAppData, useCurrentUser } from "../../state/AppDataContext";
+import type { DashboardPaymentDue } from "../../lib/selectors";
 import { formatRM } from "../../lib/currency";
 import { formatDate, relativeDays } from "../../lib/date";
 import styles from "./DashboardCards.module.css";
@@ -13,7 +13,8 @@ interface NextPaymentCardProps {
 
 export function NextPaymentCard({ due }: NextPaymentCardProps) {
   const navigate = useNavigate();
-  const { state, dispatch } = useAppData();
+  const { state, actions } = useAppData();
+  const currentUser = useCurrentUser();
   const autopay = state.autopay[due.bundle.group.id];
 
   return (
@@ -33,13 +34,13 @@ export function NextPaymentCard({ due }: NextPaymentCardProps) {
         </Button>
         <Button
           variant="ghost"
-          onClick={() => dispatch({ type: "TOGGLE_AUTOPAY", groupId: due.bundle.group.id })}
+          onClick={() => actions.toggleAutopay(due.bundle.group.id)}
         >
           Autopay {autopay ? "on" : "off"}
         </Button>
       </div>
       <span className={styles.footnote}>
-        {state.currentUser.bankAccount} · confirmed within seconds
+        {currentUser.bankAccount} · confirmed within seconds
       </span>
     </div>
   );

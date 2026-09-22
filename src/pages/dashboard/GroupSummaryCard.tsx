@@ -1,16 +1,16 @@
 import { useNavigate } from "react-router-dom";
-import type { GroupBundle } from "../../mock/groups";
+import type { GroupBundle } from "../../lib/api";
 import { StatusPill } from "../../components/ui/StatusPill";
 import { RoundProgressBar } from "../../components/ui/RoundProgressBar";
 import {
   computeRoundCollection,
   getMemberByUserId,
+  getUserById,
   hasUserPaidCurrentRound,
   isOrganizer,
-} from "../../mock/selectors";
+} from "../../lib/selectors";
 import { formatRM } from "../../lib/currency";
 import { formatMonthYear } from "../../lib/date";
-import { getUserById } from "../../mock/users";
 import styles from "./GroupSummaryCard.module.css";
 
 function initialsFor(name: string): string {
@@ -41,7 +41,7 @@ export function GroupSummaryCard({ bundle, currentUserId }: GroupSummaryCardProp
   );
   const isMyPayoutNext = myUpcomingRound?.status === "current";
 
-  const organizerUser = getUserById(group.organizerId);
+  const organizerUser = getUserById(bundle, group.organizerId);
 
   return (
     <button type="button" className={styles.card} onClick={() => navigate(`/groups/${group.id}`)}>
