@@ -58,7 +58,7 @@ export async function setAutoRelease(groupId: string, roundNumber: number, autoR
 export async function releasePayout(
   groupId: string,
   roundNumber: number,
-  options: { force: boolean },
+  options: { force: boolean; simulate?: boolean },
 ): Promise<Round> {
   const group = await findGroupById(groupId);
   if (!group) throw ApiError.notFound("GROUP_NOT_FOUND", "Group not found");
@@ -82,8 +82,12 @@ export async function releasePayout(
   const members = await findMembersForGroup(groupId);
   const recipient = members.find((m) => m.id === round.recipientMemberId);
 
+  if (options.simulate && config.NODE_ENV === "production") {
+    throw ApiError.forbidden("NOT_ALLOWED_IN_PRODUCTION", "Payouts cannot be simulated in production");
+  }
+
   let gatewayTransferId: string | undefined;
-  if (config.PAYMENT_GATEWAY_PROVIDER === "stripe") {
+  if (config.PAYMENT_GATEWAY_PROVIDER === "stripe" && !options.simulate) {
     if (!recipient?.user?.stripeConnectOnboarded || !recipient.user.stripeConnectAccountId) {
       throw ApiError.conflict(
         "RECIPIENT_PAYOUT_NOT_SET_UP",

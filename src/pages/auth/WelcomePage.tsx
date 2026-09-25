@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "../../components/ui/Button";
 import { StatusPill } from "../../components/ui/StatusPill";
 import { useAppData, useCurrentUser } from "../../state/AppDataContext";
@@ -9,11 +9,14 @@ import styles from "./WelcomePage.module.css";
 
 export function WelcomePage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { state, actions } = useAppData();
   const currentUser = useCurrentUser();
   const [selected, setSelected] = useState<"join" | "create">("join");
   const [bannerDismissed, setBannerDismissed] = useState(false);
-  const [inviteCode, setInviteCode] = useState("");
+  const [inviteCode, setInviteCode] = useState(
+    () => (location.state as { inviteCode?: string } | null)?.inviteCode ?? "",
+  );
   const [joining, setJoining] = useState(false);
   const [joinError, setJoinError] = useState<string | null>(null);
 

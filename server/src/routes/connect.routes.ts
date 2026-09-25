@@ -8,3 +8,4 @@ connectRouter.use(requireAuth);
 
 connectRouter.post("/onboarding-link", connectController.createOnboardingLink);
 connectRouter.get("/status", connectController.getStatus);
+connectRouter.post("/simulate-onboarding", connectController.simulateOnboarding);

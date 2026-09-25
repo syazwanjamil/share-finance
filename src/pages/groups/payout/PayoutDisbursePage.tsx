@@ -27,15 +27,15 @@ export function PayoutDisbursePage() {
   const poolComplete = collection.paidCount === collection.totalCount;
   const recipientNotOnboarded = !!recipient?.user && !recipient.user.stripeConnectOnboarded;
 
-  async function handleRelease() {
+  async function handleRelease(simulate = false) {
     setError(null);
     try {
-      await actions.releasePayout(groupId!, roundNumber);
+      await actions.releasePayout(groupId!, roundNumber, simulate, simulate);
       navigate(`/groups/${groupId}/payout/${roundNumber}/receipt`, {
         state: { amount: total, recipientName: recipient?.user?.name, roundNumber },
       });
-    } catch {
-      setError("Couldn't release this payout — the recipient's payout account may not be set up yet.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Couldn't release this payout.");
     }
   }
 
@@ -127,12 +127,18 @@ export function PayoutDisbursePage() {
           {error}
         </span>
       )}
-      <Button block onClick={handleRelease} disabled={!poolComplete}>
+      <Button block onClick={() => handleRelease()} disabled={!poolComplete}>
         Release {formatRM(total)} now
       </Button>
       <span className={styles.securityNote}>
         Needs your PIN. Transfers to a verified account only and cannot be redirected.
       </span>
+
+      {import.meta.env.DEV && (
+        <Button variant="ghost" block onClick={() => handleRelease(true)}>
+          Simulate payout (dev only)
+        </Button>
+      )}
     </>
   );
 }

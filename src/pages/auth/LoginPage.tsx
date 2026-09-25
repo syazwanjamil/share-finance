@@ -10,14 +10,19 @@ export function LoginPage() {
   const [phone, setPhone] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [showInviteField, setShowInviteField] = useState(false);
+  const [inviteCode, setInviteCode] = useState("");
 
-  async function handleContinue() {
+  async function proceed(inviteCodeToJoin?: string) {
+    if (!phone.trim()) return;
     const e164Phone = toE164(phone);
     setError(null);
     setSubmitting(true);
     try {
       await requestOtp(e164Phone);
-      navigate("/verify", { state: { phone: e164Phone } });
+      navigate("/verify", {
+        state: { phone: e164Phone, inviteCode: inviteCodeToJoin },
+      });
     } catch (err) {
       setError(
         err instanceof ApiRequestError
@@ -27,6 +32,19 @@ export function LoginPage() {
     } finally {
       setSubmitting(false);
     }
+  }
+
+  function handleContinue() {
+    return proceed();
+  }
+
+  function handleContinueWithInvite() {
+    if (!showInviteField) {
+      setShowInviteField(true);
+      return;
+    }
+    if (!inviteCode.trim()) return;
+    return proceed(inviteCode.trim());
   }
 
   return (
@@ -74,8 +92,31 @@ export function LoginPage() {
             {submitting ? "Sending…" : "Continue"}
           </Button>
           <div className={styles.divider}>or</div>
-          <Button variant="ghost" block type="button">
-            Continue with an invite code
+          {showInviteField && (
+            <div className={styles.field}>
+              <span className={styles.fieldLabel}>INVITE CODE</span>
+              <div className={styles.fieldValue}>
+                <input
+                  className={styles.input}
+                  value={inviteCode}
+                  onChange={(e) => setInviteCode(e.target.value)}
+                  placeholder="KUTU-4F2M"
+                />
+              </div>
+            </div>
+          )}
+          <Button
+            variant="ghost"
+            block
+            type="button"
+            onClick={handleContinueWithInvite}
+            disabled={submitting || (showInviteField && !inviteCode.trim())}
+          >
+            {submitting
+              ? "Sending…"
+              : showInviteField
+                ? "Continue with this invite code"
+                : "Continue with an invite code"}
           </Button>
           <p className={styles.legal}>
             By continuing you agree to the group terms. Your number is visible

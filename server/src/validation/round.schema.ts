@@ -7,6 +7,7 @@ export const roundParamsSchema = groupIdParamSchema.extend({
 
 export const releaseRoundSchema = z.object({
   force: z.boolean().default(false),
+  simulate: z.boolean().default(false),
 });
 
 export const autoReleaseSchema = z.object({

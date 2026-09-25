@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "../../../components/ui/Button";
 import { StatusPill } from "../../../components/ui/StatusPill";
 import { MemberRow } from "../../../components/ui/MemberRow";
@@ -10,11 +11,33 @@ interface StepInviteProps {
   onBack: () => void;
 }
 
+function buildInviteMessage(groupName: string, inviteCode: string) {
+  return `Join my group "${groupName}" on Share Finance! Use invite code ${inviteCode} to sign up.`;
+}
+
 export function StepInvite({ bundle, onBack }: StepInviteProps) {
   const currentUser = useCurrentUser();
+  const [copied, setCopied] = useState(false);
   const filled = bundle.members.filter((m) => m.status === "active").length;
   const invited = bundle.members.filter((m) => m.status === "invited");
   const empty = bundle.members.filter((m) => m.status === "empty").length;
+
+  const inviteMessage = buildInviteMessage(bundle.group.name, bundle.group.inviteCode);
+
+  async function handleCopyLink() {
+    try {
+      await navigator.clipboard.writeText(inviteMessage);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // clipboard access denied or unavailable; nothing to fall back to
+    }
+  }
+
+  function handleShareToWhatsApp() {
+    const url = `https://wa.me/?text=${encodeURIComponent(inviteMessage)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
 
   return (
     <>
@@ -24,8 +47,12 @@ export function StepInvite({ bundle, onBack }: StepInviteProps) {
         <span className={styles.codeLabel}>INVITE CODE</span>
         <span className={styles.codeValue}>{bundle.group.inviteCode}</span>
         <div className={styles.codeActions}>
-          <Button variant="secondary">Copy link</Button>
-          <Button variant="success">Share to WhatsApp</Button>
+          <Button variant="secondary" onClick={handleCopyLink}>
+            {copied ? "Copied!" : "Copy link"}
+          </Button>
+          <Button variant="success" onClick={handleShareToWhatsApp}>
+            Share to WhatsApp
+          </Button>
         </div>
       </div>
 

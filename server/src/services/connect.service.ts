@@ -60,3 +60,25 @@ export async function getOnboardingStatus(userId: string): Promise<{ onboarded: 
   if (!user) throw ApiError.notFound("USER_NOT_FOUND", "User not found");
   return { onboarded: user.stripeConnectOnboarded, accountId: user.stripeConnectAccountId };
 }
+
+// Dev/test helper: stands in for a completed Stripe Connect Express onboarding
+// without a real Stripe round-trip, so payouts can be exercised in local/dev envs.
+export async function simulateOnboarding(userId: string): Promise<{ onboarded: boolean; accountId: string | null }> {
+  if (config.NODE_ENV === "production") {
+    throw ApiError.forbidden("NOT_ALLOWED_IN_PRODUCTION", "Onboarding cannot be simulated in production");
+  }
+  const user = await findUserById(userId);
+  if (!user) throw ApiError.notFound("USER_NOT_FOUND", "User not found");
+
+  const accountId = user.stripeConnectAccountId ?? `acct_sim_${userId.slice(0, 8)}`;
+  if (!user.stripeConnectAccountId) {
+    await setUserStripeConnectAccountId(userId, accountId);
+  }
+  await updateUserConnectStatus(userId, {
+    stripeConnectDetailsSubmitted: true,
+    stripeConnectPayoutsEnabled: true,
+    stripeConnectOnboarded: true,
+  });
+
+  return { onboarded: true, accountId };
+}

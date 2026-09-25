@@ -29,9 +29,10 @@ export async function getCollection(req: Request, res: Response): Promise<void> 
 }
 
 export async function releaseRound(req: Request, res: Response): Promise<void> {
-  const { force } = req.body as { force: boolean };
+  const { force, simulate } = req.body as { force: boolean; simulate?: boolean };
   const round = await roundService.releasePayout(param(req, "groupId"), Number(param(req, "roundNumber")), {
     force,
+    simulate,
   });
   res.status(200).json(round);
 }

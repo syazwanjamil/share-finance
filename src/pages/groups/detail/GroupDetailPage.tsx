@@ -111,6 +111,14 @@ export function GroupDetailPage() {
             <Button variant="secondary" onClick={() => navigate(`/groups/${group.id}/payout-order`)}>
               Manage payout order
             </Button>
+            {currentRound && (
+              <Button
+                variant="secondary"
+                onClick={() => navigate(`/groups/${group.id}/payout/${currentRound.roundNumber}`)}
+              >
+                Release payout
+              </Button>
+            )}
             <Button onClick={handleRemindUnpaid} disabled={unpaidCount === 0 || reminding}>
               {reminding ? "Sending…" : `Remind unpaid (${unpaidCount})`}
             </Button>

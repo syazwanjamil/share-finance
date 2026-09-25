@@ -10,8 +10,11 @@ export function VerifyPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { actions } = useAppData();
-  const phone =
-    (location.state as { phone?: string } | null)?.phone ?? "+60123456789";
+  const locationState = location.state as
+    | { phone?: string; inviteCode?: string }
+    | null;
+  const phone = locationState?.phone ?? "+60123456789";
+  const inviteCode = locationState?.inviteCode;
   const [code, setCode] = useState("");
   const [seconds, setSeconds] = useState(24);
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +31,7 @@ export function VerifyPage() {
     try {
       await verifyOtp(phone, code);
       await actions.refresh();
-      navigate("/welcome");
+      navigate("/welcome", { state: inviteCode ? { inviteCode } : undefined });
     } catch (err) {
       setError(err instanceof ApiRequestError ? err.message : "Couldn't verify the code. Please try again.");
     } finally {

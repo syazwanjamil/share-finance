@@ -18,3 +18,10 @@ export async function getStatus(req: Request, res: Response): Promise<void> {
   const result = await connectService.getOnboardingStatus(id);
   res.status(200).json(result);
 }
+
+export async function simulateOnboarding(req: Request, res: Response): Promise<void> {
+  requireUser(req);
+  const userId = typeof req.body?.userId === "string" ? req.body.userId : requireUser(req).id;
+  const result = await connectService.simulateOnboarding(userId);
+  res.status(200).json(result);
+}

@@ -397,8 +397,15 @@ export async function inviteMember(groupId: string, phone: string): Promise<Memb
 
 // ---- Rounds / payouts ----
 
-export async function releaseRound(groupId: string, roundNumber: number, force = false): Promise<Round> {
-  return normalizeRound(await post<RawRound>(`/groups/${groupId}/rounds/${roundNumber}/release`, { force }));
+export async function releaseRound(
+  groupId: string,
+  roundNumber: number,
+  force = false,
+  simulate = false,
+): Promise<Round> {
+  return normalizeRound(
+    await post<RawRound>(`/groups/${groupId}/rounds/${roundNumber}/release`, { force, simulate }),
+  );
 }
 
 export async function holdRound(groupId: string, roundNumber: number, reason: string): Promise<void> {
@@ -429,6 +436,12 @@ export async function getConnectStatus(): Promise<{ onboarded: boolean; accountI
 
 export async function createConnectOnboardingLink(): Promise<{ url: string }> {
   return post("/connect/onboarding-link");
+}
+
+export async function simulateConnectOnboarding(
+  userId: string,
+): Promise<{ onboarded: boolean; accountId: string | null }> {
+  return post("/connect/simulate-onboarding", { userId });
 }
 
 // ---- Payout order ----

@@ -27,7 +27,8 @@ interface AppDataActions {
     changes: api.PayoutOrderChangeInput[],
     reason: string,
   ) => Promise<void>;
-  releasePayout: (groupId: string, roundNumber: number) => Promise<void>;
+  releasePayout: (groupId: string, roundNumber: number, force?: boolean, simulate?: boolean) => Promise<void>;
+  simulateOnboarding: (groupId: string, userId: string) => Promise<void>;
   remindUnpaid: (groupId: string) => Promise<{ remindedCount: number }>;
   toggleAutopay: (groupId: string) => Promise<void>;
   addGroup: (input: GroupDraftInput) => Promise<GroupBundle>;
@@ -95,8 +96,12 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
         await api.reorderPayoutOrder(groupId, changes, reason);
         await refreshGroup(groupId);
       },
-      async releasePayout(groupId, roundNumber) {
-        await api.releaseRound(groupId, roundNumber);
+      async releasePayout(groupId, roundNumber, force = false, simulate = false) {
+        await api.releaseRound(groupId, roundNumber, force, simulate);
+        await refreshGroup(groupId);
+      },
+      async simulateOnboarding(groupId, userId) {
+        await api.simulateConnectOnboarding(userId);
         await refreshGroup(groupId);
       },
       async remindUnpaid(groupId) {
