@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/ui/Button";
-import { StatusPill } from "../../components/ui/StatusPill";
 import { ApiRequestError, requestOtp, toE164 } from "../../lib/api";
 import styles from "./AuthLayout.module.css";
 

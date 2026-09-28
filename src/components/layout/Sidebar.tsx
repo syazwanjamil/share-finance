@@ -1,5 +1,5 @@
-import { Bell, BookText, Home, Users, Wallet } from "lucide-react";
-import { NavLink, useLocation } from "react-router-dom";
+import { Bell, BookText, Home, LogOut, Users, Wallet } from "lucide-react";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAppData, useCurrentUser } from "../../state/AppDataContext";
 import { hasUserPaidCurrentRound } from "../../lib/selectors";
 import { Avatar } from "../ui/Avatar";
@@ -7,10 +7,16 @@ import { formatDateFull } from "../../lib/date";
 import styles from "./Sidebar.module.css";
 
 export function Sidebar() {
-  const { state } = useAppData();
+  const { state, actions } = useAppData();
   const currentUser = useCurrentUser();
   const location = useLocation();
+  const navigate = useNavigate();
   const onGroupsSection = location.pathname.startsWith("/groups") || location.pathname === "/home";
+
+  async function handleLogout() {
+    await actions.logout();
+    navigate("/login", { replace: true });
+  }
 
   return (
     <aside className={styles.sidebar}>
@@ -76,7 +82,16 @@ export function Sidebar() {
         </div>
         <div className={styles.userRow}>
           <Avatar initials={currentUser.initials} size={22} />
-          {currentUser.name}
+          <span className={styles.userName}>{currentUser.name}</span>
+          <button
+            type="button"
+            className={styles.logoutButton}
+            onClick={handleLogout}
+            aria-label="Log out"
+            title="Log out"
+          >
+            <LogOut size={14} />
+          </button>
         </div>
       </div>
     </aside>

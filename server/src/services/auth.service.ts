@@ -26,6 +26,11 @@ function generateOtpCode(): string {
   return String(Math.floor(min + Math.random() * (max - min + 1)));
 }
 
+/** Dev-only: listed phones skip the WhatsApp send and accept OTP_BYPASS_CODE. Never active in production. */
+function isOtpBypassPhone(phone: string): boolean {
+  return config.OTP_BYPASS_ENABLED && !config.isProduction && config.OTP_BYPASS_PHONES.includes(phone);
+}
+
 export interface RequestOtpResult {
   phone: string;
   expiresInSeconds: number;
@@ -36,18 +41,23 @@ export interface RequestOtpResult {
 export async function requestOtp(phone: string): Promise<RequestOtpResult> {
   await invalidateActiveOtps(phone);
 
-  const code = generateOtpCode();
+  const bypass = isOtpBypassPhone(phone);
+  const code = bypass ? config.OTP_BYPASS_CODE : generateOtpCode();
   const codeHash = await hashSecret(code);
   const expiresAt = new Date(Date.now() + config.OTP_TTL_MINUTES * 60 * 1000);
 
   await createOtp({ phone, codeHash, expiresAt, maxAttempts: config.OTP_MAX_ATTEMPTS });
 
-  await notify({
-    phone,
-    template: "otp",
-    payload: { expiresInMinutes: config.OTP_TTL_MINUTES },
-    send: () => whatsAppService.sendOtp(phone, { code, expiresInMinutes: config.OTP_TTL_MINUTES }),
-  });
+  if (bypass) {
+    console.info(`[auth] OTP bypass for ${phone}, WhatsApp skipped`);
+  } else {
+    await notify({
+      phone,
+      template: "otp",
+      payload: { expiresInMinutes: config.OTP_TTL_MINUTES },
+      send: () => whatsAppService.sendOtp(phone, { code, expiresInMinutes: config.OTP_TTL_MINUTES }),
+    });
+  }
 
   const debugEcho = config.DEBUG_OTP_ECHO && !config.isProduction;
   return {

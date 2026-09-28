@@ -38,7 +38,18 @@ const envSchema = z.object({
   LOG_LEVEL: z.enum(["fatal", "error", "warn", "info", "debug", "trace", "silent"]).default("info"),
 
   DEBUG_OTP_ECHO: z.coerce.boolean().default(false),
+
+  OTP_BYPASS_ENABLED: z.enum(["true", "false"]).default("false").transform((value) => value === "true"),
+  OTP_BYPASS_PHONES: z
+    .string()
+    .default("")
+    .transform((value) => value.split(",").map((phone) => phone.trim()).filter(Boolean)),
+  OTP_BYPASS_CODE: z.string().regex(/^\d*$/, "OTP_BYPASS_CODE must be digits only").optional().default(""),
 }).superRefine((val, ctx) => {
+  if (val.OTP_BYPASS_ENABLED && val.OTP_BYPASS_CODE.length !== val.OTP_LENGTH) {
+    ctx.addIssue({ code: "custom", path: ["OTP_BYPASS_CODE"], message: `must be exactly ${val.OTP_LENGTH} digits when OTP_BYPASS_ENABLED=true` });
+  }
+
   if (val.PAYMENT_GATEWAY_PROVIDER === "stripe") {
     if (!val.STRIPE_SECRET_KEY) {
       ctx.addIssue({ code: "custom", path: ["STRIPE_SECRET_KEY"], message: "required when PAYMENT_GATEWAY_PROVIDER=stripe" });

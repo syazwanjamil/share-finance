@@ -38,6 +38,8 @@ Node.js + Express + TypeScript + Prisma/MySQL backend for ShareFinance.
 
 With `NOTIFICATION_PROVIDER=mock` (the default), OTP codes are logged to the server console instead of sent over WhatsApp — look for `[MockWhatsAppService] otp -> <phone>` in the terminal, or set `DEBUG_OTP_ECHO=true` in `.env` to have the code returned directly in the `/auth/otp/request` response (dev only, never enable in production).
 
+To skip the WhatsApp send for your own number (e.g. to avoid Teekrr charges), set `OTP_BYPASS_ENABLED=true`, `OTP_BYPASS_PHONES=+60...` (comma-separated) and a fixed `OTP_BYPASS_CODE` of `OTP_LENGTH` digits. Those numbers get no WhatsApp message and log in with the fixed code. The bypass is ignored when `NODE_ENV=production`.
+
 Seeded users' phones (E.164), e.g. Sari W. (organizer of Ibu-Ibu Blok C): `+60123456789`.
 
 ```bash
