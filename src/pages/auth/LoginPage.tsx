@@ -53,7 +53,7 @@ export function LoginPage() {
         <div className={styles.marketing}>
           <div className={styles.marketingBrand}>
             <span className={styles.logo} />
-            <span className={styles.brandName}>Kongsi Rezeki</span>
+            <span className={styles.brandName}>Share Finance</span>
           </div>
           <div className={styles.headline}>
             Run your kutu
@@ -64,10 +64,6 @@ export function LoginPage() {
             Contributions collected automatically, payout order agreed in the
             open, every ringgit in one ledger.
           </p>
-          <div className={styles.badges}>
-            <StatusPill variant="success">🔒 BNM-licensed gateway</StatusPill>
-            <StatusPill variant="neutral">Funds held in trust</StatusPill>
-          </div>
         </div>
 
         <div className={styles.formPanel}>
