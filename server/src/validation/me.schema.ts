@@ -1,6 +1,6 @@
 import { z } from "zod";
 
 export const updateMeSchema = z.object({
-  name: z.string().min(1).max(120).optional(),
+  name: z.string().trim().min(1).max(120).optional(),
   bankAccountLabel: z.string().max(120).optional(),
 });

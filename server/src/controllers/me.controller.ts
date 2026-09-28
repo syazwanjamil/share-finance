@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
 import { ApiError } from "../lib/ApiError.js";
-import { findUserById, updateUser } from "../repositories/user.repository.js";
+import { findUserById } from "../repositories/user.repository.js";
 import { getGroupsForUser } from "../services/group.service.js";
-import { getDashboard } from "../services/me.service.js";
+import { getDashboard, updateProfile } from "../services/me.service.js";
 
 function requireUser(req: Request) {
   if (!req.user) throw ApiError.unauthorized("UNAUTHENTICATED", "Missing authenticated user");
@@ -18,7 +18,7 @@ export async function getMe(req: Request, res: Response): Promise<void> {
 
 export async function patchMe(req: Request, res: Response): Promise<void> {
   const { id } = requireUser(req);
-  const user = await updateUser(id, req.body);
+  const user = await updateProfile(id, req.body);
   res.status(200).json(user);
 }
 

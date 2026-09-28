@@ -1,4 +1,5 @@
 import { findGroupsForUser } from "../repositories/group.repository.js";
+import { updateUser } from "../repositories/user.repository.js";
 import { computeRoundCollection } from "./round.service.js";
 import type { GroupBundle } from "../repositories/group.repository.js";
 
@@ -15,6 +16,31 @@ export interface DashboardPayoutNext {
   scheduledDate: Date;
   amount: number;
   collection: Awaited<ReturnType<typeof computeRoundCollection>>;
+}
+
+export interface UpdateProfileInput {
+  name?: string;
+  bankAccountLabel?: string;
+}
+
+// Mirrors initialsFromName on the frontend (src/lib/api.ts).
+function initialsFromName(name: string): string {
+  return (
+    name
+      .split(" ")
+      .filter((w) => /[A-Za-z]/.test(w))
+      .slice(0, 2)
+      .map((w) => w[0])
+      .join("")
+      .toUpperCase() || "?"
+  );
+}
+
+export function updateProfile(userId: string, input: UpdateProfileInput) {
+  return updateUser(userId, {
+    ...input,
+    ...(input.name !== undefined && { initials: initialsFromName(input.name) }),
+  });
 }
 
 function hasUserPaidCurrentRound(bundle: GroupBundle, userId: string): boolean {

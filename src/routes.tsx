@@ -1,10 +1,11 @@
-import { Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
 import { AppShell } from "./components/layout/AppShell";
 import { PaymentFlowProvider } from "./state/PaymentFlowContext";
 import { useAppData } from "./state/AppDataContext";
 import { LoginPage } from "./pages/auth/LoginPage";
 import { VerifyPage } from "./pages/auth/VerifyPage";
 import { WelcomePage } from "./pages/auth/WelcomePage";
+import { ProfileNamePage } from "./pages/auth/ProfileNamePage";
 import { GroupCreatePage } from "./pages/groups/create/GroupCreatePage";
 import { DashboardPage } from "./pages/dashboard/DashboardPage";
 import { GroupDetailPage } from "./pages/groups/detail/GroupDetailPage";
@@ -28,8 +29,19 @@ function PaymentFlowLayout() {
 
 function RequireAuth() {
   const { state } = useAppData();
+  const location = useLocation();
   if (state.loading) return <div style={{ padding: 40 }}>Loading…</div>;
   if (!state.currentUser) return <Navigate to="/login" replace />;
+  // New users (joining via invite or creating a group) have no name until they set one here.
+  if (!state.currentUser.name && location.pathname !== "/profile/name") {
+    return (
+      <Navigate
+        to="/profile/name"
+        replace
+        state={{ next: location.pathname + location.search, nextState: location.state }}
+      />
+    );
+  }
   return <Outlet />;
 }
 
@@ -41,6 +53,7 @@ export function AppRoutes() {
       <Route path="/verify" element={<VerifyPage />} />
 
       <Route element={<RequireAuth />}>
+        <Route path="/profile/name" element={<ProfileNamePage />} />
         <Route path="/welcome" element={<WelcomePage />} />
         <Route path="/groups/new" element={<GroupCreatePage />} />
 

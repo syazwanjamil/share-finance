@@ -33,6 +33,7 @@ interface AppDataActions {
   toggleAutopay: (groupId: string) => Promise<void>;
   addGroup: (input: GroupDraftInput) => Promise<GroupBundle>;
   joinGroup: (inviteCode: string) => Promise<GroupBundle>;
+  updateProfile: (input: { name: string }) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -126,6 +127,10 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
           groups: s.groups.some((b) => b.group.id === bundle.group.id) ? s.groups : [...s.groups, bundle],
         }));
         return bundle;
+      },
+      async updateProfile(input) {
+        const currentUser = await api.updateMe(input);
+        setState((s) => ({ ...s, currentUser }));
       },
       async logout() {
         await api.logout();
