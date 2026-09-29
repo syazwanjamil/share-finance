@@ -2,10 +2,12 @@ import type { Frequency, Group, GroupDraftInput, Member, Payment, PayoutOrderMet
 
 export class ApiRequestError extends Error {
   code: string;
+  fieldErrors?: Record<string, string[]>;
 
-  constructor(code: string, message: string) {
+  constructor(code: string, message: string, fieldErrors?: Record<string, string[]>) {
     super(message);
     this.code = code;
+    this.fieldErrors = fieldErrors;
   }
 }
 
@@ -71,9 +73,15 @@ async function refreshAccessToken(): Promise<boolean> {
 }
 
 async function throwApiError(response: Response): Promise<never> {
-  const data = (await parseJson(response).catch(() => null)) as { error?: { code: string; message: string } } | null;
+  const data = (await parseJson(response).catch(() => null)) as {
+    error?: { code: string; message: string; details?: { fieldErrors?: Record<string, string[]> } };
+  } | null;
   const error = data?.error;
-  throw new ApiRequestError(error?.code ?? "UNKNOWN_ERROR", error?.message ?? "Something went wrong. Please try again.");
+  throw new ApiRequestError(
+    error?.code ?? "UNKNOWN_ERROR",
+    error?.message ?? "Something went wrong. Please try again.",
+    error?.details?.fieldErrors,
+  );
 }
 
 async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
@@ -122,8 +130,22 @@ function get<T>(path: string): Promise<T> {
 
 // ---- OTP (unauthenticated) ----
 
+// Local part of a Malaysian mobile number: digits only, without a leading trunk "0".
+function localMobileDigits(localNumber: string): string {
+  return localNumber.replace(/\D/g, "").replace(/^0/, "");
+}
+
 export function toE164(localNumber: string): string {
-  return `+60${localNumber.replace(/\D/g, "")}`;
+  return `+60${localMobileDigits(localNumber)}`;
+}
+
+/** Returns an error message, or null when the number is a plausible Malaysian mobile. */
+export function validateMalaysianMobile(localNumber: string): string | null {
+  if (!localNumber.trim()) return "Enter your phone number";
+  if (!/^1\d{7,9}$/.test(localMobileDigits(localNumber))) {
+    return "Enter a valid Malaysian mobile number, e.g. 12-345 6789";
+  }
+  return null;
 }
 
 interface RequestOtpResponse {

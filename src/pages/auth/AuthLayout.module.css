@@ -129,6 +129,17 @@
   gap: 4px;
 }
 
+.fieldInvalid {
+  border-color: var(--danger);
+}
+
+.fieldError {
+  margin: -8px 0 0;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--danger);
+}
+
 .fieldLabel {
   font: 700 9px var(--mono);
   letter-spacing: 0.1em;

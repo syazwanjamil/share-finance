@@ -25,7 +25,7 @@ export function errorHandler(err: unknown, req: Request, res: Response, _next: N
   }
 
   if (err instanceof ZodError) {
-    respond(res, 400, "VALIDATION_ERROR", "Request validation failed", err.flatten());
+    respond(res, 400, "VALIDATION_ERROR", err.issues[0]?.message ?? "Request validation failed", err.flatten());
     return;
   }
 

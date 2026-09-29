@@ -23,6 +23,9 @@
   --warning-bg: #fdf6ea;
   --warning-border: #ecd9b8;
 
+  --danger: #b3261e;
+  --danger-border: #e8c4c0;
+
   --social-bg: rgba(244, 243, 236, 0.5);
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
@@ -71,6 +74,9 @@
     --warning: #e0a94f;
     --warning-bg: rgba(224, 169, 79, 0.14);
     --warning-border: rgba(224, 169, 79, 0.4);
+
+    --danger: #f08b80;
+    --danger-border: rgba(240, 139, 128, 0.45);
 
     --social-bg: rgba(47, 48, 58, 0.5);
     --shadow:
