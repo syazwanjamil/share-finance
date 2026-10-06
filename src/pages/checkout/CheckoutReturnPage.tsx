@@ -1,9 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { usePaymentFlow } from "../../state/PaymentFlowContext";
 import { useAppData, useGroupBundle } from "../../state/AppDataContext";
 import * as api from "../../lib/api";
 import { ApiRequestError } from "../../lib/api";
+import { LoadingScreen } from "../../components/layout/LoadingScreen";
+import { PageHeader } from "../../components/layout/Page";
+import { Button, ButtonLink } from "../../components/ui/Button";
 import styles from "./CheckoutLayout.module.css";
 
 const POLL_ATTEMPTS = 4;
@@ -30,7 +33,34 @@ export function CheckoutReturnPage() {
   const { actions } = useAppData();
   const bundle = useGroupBundle(groupId);
   const ranRef = useRef(false);
-  const [error, setError] = useState<string | null>(null);
+  const [waiting, setWaiting] = useState(false);
+  const [checking, setChecking] = useState(true);
+
+  const poll = useCallback(async () => {
+    if (!groupId || !sessionId) return;
+    setChecking(true);
+    setWaiting(false);
+    for (let attempt = 0; attempt < POLL_ATTEMPTS; attempt++) {
+      try {
+        const payment = await api.confirmPayment(groupId, roundNumber, sessionId);
+        if (payment.status === "paid" || payment.status === "paid-late") {
+          await actions.refresh();
+          setStatus("success");
+          navigate("/pay/success", { replace: true });
+          return;
+        }
+      } catch (err) {
+        if (err instanceof ApiRequestError && err.code !== "PAYMENT_PENDING") {
+          setStatus("failed");
+          navigate("/pay/failed", { replace: true });
+          return;
+        }
+      }
+      await sleep(POLL_DELAY_MS);
+    }
+    setChecking(false);
+    setWaiting(true);
+  }, [groupId, roundNumber, sessionId, actions, setStatus, navigate]);
 
   useEffect(() => {
     if (ranRef.current || !groupId || !bundle) return;
@@ -44,37 +74,24 @@ export function CheckoutReturnPage() {
       navigate("/pay/failed", { replace: true });
       return;
     }
+    poll();
+  }, [groupId, bundle, roundNumber, sessionId, canceled, startPayment, setMethod, setStatus, navigate, poll]);
 
-    (async () => {
-      for (let attempt = 0; attempt < POLL_ATTEMPTS; attempt++) {
-        try {
-          const payment = await api.confirmPayment(groupId, roundNumber, sessionId);
-          if (payment.status === "paid" || payment.status === "paid-late") {
-            await actions.refresh();
-            setStatus("success");
-            navigate("/pay/success", { replace: true });
-            return;
-          }
-        } catch (err) {
-          if (err instanceof ApiRequestError && err.code !== "PAYMENT_PENDING") {
-            setStatus("failed");
-            navigate("/pay/failed", { replace: true });
-            return;
-          }
-        }
-        await sleep(POLL_DELAY_MS);
-      }
-      setError("We're still waiting for Stripe to confirm this payment. Check back in a moment.");
-    })();
-  }, [groupId, bundle, roundNumber, sessionId, canceled, startPayment, setMethod, setStatus, actions, navigate]);
+  if (!bundle) return <LoadingScreen label="Confirming your payment with Stripe…" />;
 
-  if (!bundle) return null;
+  if (checking || !waiting) return <LoadingScreen label="Confirming your payment with Stripe…" />;
 
   return (
     <div className={styles.page}>
-      <div className={styles.card}>
-        <span className={styles.title}>{error ?? "Confirming your payment…"}</span>
-        {!error && <div className={styles.tip}>Don't close this window.</div>}
+      <PageHeader
+        title="Still waiting for Stripe"
+        lead="Stripe hasn't confirmed this payment yet. That usually takes a few seconds. Don't pay again: check once more, and if it went through it will appear in the ledger."
+      />
+      <div className={styles.actionsRow}>
+        <Button onClick={poll}>Check again</Button>
+        <ButtonLink to={`/groups/${bundle.group.id}`} variant="secondary">
+          Back to {bundle.group.name}
+        </ButtonLink>
       </div>
     </div>
   );

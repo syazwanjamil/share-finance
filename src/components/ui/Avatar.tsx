@@ -3,16 +3,18 @@ import styles from "./Avatar.module.css";
 interface AvatarProps {
   initials: string;
   size?: number;
-  tone?: "neutral" | "accent";
+  /** Set when the member is the viewer. */
+  self?: boolean;
 }
 
-export function Avatar({ initials, size = 30, tone = "neutral" }: AvatarProps) {
+export function Avatar({ initials, size = 32, self }: AvatarProps) {
   return (
     <span
-      className={`${styles.avatar} ${tone === "accent" ? styles.accent : ""}`}
-      style={{ width: size, height: size, fontSize: Math.max(9, size * 0.36) }}
+      className={`${styles.avatar} ${self ? styles.self : ""}`}
+      style={{ width: size, height: size, fontSize: Math.max(11, Math.round(size * 0.4)) }}
+      aria-hidden="true"
     >
-      {initials}
+      {initials || "?"}
     </span>
   );
 }

@@ -18,6 +18,9 @@ import { CheckoutSuccessPage } from "./pages/checkout/CheckoutSuccessPage";
 import { CheckoutFailedPage } from "./pages/checkout/CheckoutFailedPage";
 import { PayoutSetupPage } from "./pages/settings/PayoutSetupPage";
 import { PayoutSetupReturnPage } from "./pages/settings/PayoutSetupReturnPage";
+import { LedgerPage } from "./pages/ledger/LedgerPage";
+import { AccountPage } from "./pages/account/AccountPage";
+import { LoadingScreen } from "./components/layout/LoadingScreen";
 
 function PaymentFlowLayout() {
   return (
@@ -30,7 +33,7 @@ function PaymentFlowLayout() {
 function RequireAuth() {
   const { state } = useAppData();
   const location = useLocation();
-  if (state.loading) return <div style={{ padding: 40 }}>Loading…</div>;
+  if (state.loading) return <LoadingScreen />;
   if (!state.currentUser) return <Navigate to="/login" replace />;
   // New users (joining via invite or creating a group) have no name until they set one here.
   if (!state.currentUser.name && location.pathname !== "/profile/name") {
@@ -63,6 +66,9 @@ export function AppRoutes() {
           <Route path="/groups/:groupId/payout-order" element={<PayoutOrderPage />} />
           <Route path="/groups/:groupId/payout/:round" element={<PayoutDisbursePage />} />
           <Route path="/groups/:groupId/payout/:round/receipt" element={<PayoutReceiptPage />} />
+
+          <Route path="/ledger" element={<LedgerPage />} />
+          <Route path="/account" element={<AccountPage />} />
 
           <Route path="/settings/payout" element={<PayoutSetupPage />} />
           <Route path="/settings/payout/return" element={<PayoutSetupReturnPage />} />

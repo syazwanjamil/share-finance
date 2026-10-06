@@ -1,7 +1,10 @@
 import { useState } from "react";
+import type { FormEvent } from "react";
+import { ArrowRight } from "lucide-react";
 import { Modal } from "../../../components/ui/Modal";
 import { Button } from "../../../components/ui/Button";
-import { StatusPill } from "../../../components/ui/StatusPill";
+import { FormError, TextAreaField } from "../../../components/ui/Field";
+import { ApiRequestError } from "../../../lib/api";
 import { formatDate } from "../../../lib/date";
 import styles from "./LockScheduleModal.module.css";
 
@@ -16,108 +19,85 @@ interface LockScheduleModalProps {
   diff: OrderDiffEntry[];
   totalMembers: number;
   onClose: () => void;
-  onConfirm: (reason: string) => void;
+  onConfirm: (reason: string) => Promise<void>;
 }
 
-const CHANNELS = ["WhatsApp", "in-app"] as const;
+export function LockScheduleModal({ diff, totalMembers, onClose, onConfirm }: LockScheduleModalProps) {
+  const [reason, setReason] = useState("");
+  const [touched, setTouched] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-export function LockScheduleModal({
-  diff,
-  totalMembers,
-  onClose,
-  onConfirm,
-}: LockScheduleModalProps) {
-  const [reason, setReason] = useState(
-    diff.length > 0
-      ? `${diff[0].newName} asked for an earlier turn. ${diff[0].oldName} agreed to swap.`
-      : "",
-  );
-  const [channel, setChannel] = useState<(typeof CHANNELS)[number]>("WhatsApp");
-  const [requireConfirm, setRequireConfirm] = useState(true);
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    setTouched(true);
+    if (!reason.trim() || saving) return;
+    setSaving(true);
+    setError(null);
+    try {
+      await onConfirm(reason.trim());
+    } catch (err) {
+      setError(err instanceof ApiRequestError ? err.message : "Couldn't save the new order. Please try again.");
+      setSaving(false);
+    }
+  }
 
   return (
-    <Modal onClose={onClose} labelledBy="lock-schedule-title">
-      <span id="lock-schedule-title" className={styles.title}>
-        Lock this schedule?
-      </span>
-      <p className={styles.body}>
-        All {totalMembers} members get a WhatsApp message with the new order and
-        your reason.
-      </p>
+    <Modal onClose={onClose} labelledBy="lock-title" describedBy="lock-desc">
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <div className={styles.head}>
+          <h2 id="lock-title">Confirm the new payout order</h2>
+          <p id="lock-desc" className={styles.body}>
+            All {totalMembers} members get a WhatsApp message with the new order and your reason.
+          </p>
+        </div>
 
-      <div className={styles.changesBox}>
-        <span className={styles.changeLabel}>CHANGES</span>
-        {diff.map((d) => (
-          <div key={d.roundNumber} className={styles.changeRow}>
-            <span>
-              Round {d.roundNumber} · {formatDate(d.scheduledDate)}
-            </span>
-            <span>
-              <span className={styles.oldName}>{d.oldName}</span> →{" "}
-              <strong>{d.newName}</strong>
-            </span>
-          </div>
-        ))}
-      </div>
+        <ol className={styles.changes} aria-label="Changes">
+          {diff.map((d) => (
+            <li key={d.roundNumber} className={styles.change}>
+              <span className={styles.changeRound}>
+                <span className="serial">R{d.roundNumber.toString().padStart(2, "0")}</span>
+                <span className={styles.changeDate}>{formatDate(d.scheduledDate)}</span>
+              </span>
+              <span className={styles.changeNames}>
+                <span className={styles.oldName}>
+                  <span className="visually-hidden">was </span>
+                  {d.oldName}
+                </span>
+                <ArrowRight size={16} aria-hidden="true" />
+                <strong>
+                  <span className="visually-hidden">now </span>
+                  {d.newName}
+                </strong>
+              </span>
+            </li>
+          ))}
+        </ol>
 
-      <div className={styles.reasonBox}>
-        <span className={styles.reasonLabel}>
-          REASON (SHARED WITH THE GROUP)
-        </span>
-        <textarea
-          className={styles.textarea}
+        <TextAreaField
+          label="Reason, shared with the whole group"
+          hint="Say who asked and why, and that the other member agreed."
           value={reason}
           onChange={(e) => setReason(e.target.value)}
+          onBlur={() => setTouched(true)}
+          placeholder="e.g. Aminah needs her turn earlier for her son's school fees. Farah agreed to swap."
+          maxLength={500}
+          data-autofocus
+          error={touched && !reason.trim() ? "Add a reason. Members see it next to the change." : null}
         />
-      </div>
 
-      <div className={styles.notifyRow}>
-        <span className={styles.notifyLabel}>Notify by</span>
-        <div className={styles.channels}>
-          {CHANNELS.map((c) => (
-            <button
-              key={c}
-              type="button"
-              onClick={() => setChannel(c)}
-              style={{
-                background: "none",
-                border: "none",
-                padding: 0,
-                cursor: "pointer",
-              }}
-            >
-              <StatusPill variant={channel === c ? "success" : "neutral"}>
-                {c}
-              </StatusPill>
-            </button>
-          ))}
+        {error ? <FormError>{error}</FormError> : null}
+
+        <div className={styles.footer}>
+          <Button type="submit" block disabled={saving}>
+            {saving ? "Saving…" : `Save and tell ${totalMembers} members`}
+          </Button>
+          <Button variant="secondary" block onClick={onClose}>
+            Keep editing
+          </Button>
+          <p className={styles.footerNote}>The change is recorded in the ledger with your name and the time.</p>
         </div>
-      </div>
-
-      <label className={styles.confirmNote}>
-        <input
-          type="checkbox"
-          checked={requireConfirm}
-          onChange={(e) => setRequireConfirm(e.target.checked)}
-        />
-        Require the other member to confirm the swap before it takes effect
-      </label>
-
-      <div className={styles.footer}>
-        <Button
-          block
-          disabled={!reason.trim()}
-          onClick={() => onConfirm(reason)}
-        >
-          Lock &amp; notify {totalMembers} members
-        </Button>
-        <Button variant="secondary" block onClick={onClose}>
-          Cancel
-        </Button>
-        <p className={styles.footerNote}>
-          Every reorder stays in the ledger with your name and timestamp.
-        </p>
-      </div>
+      </form>
     </Modal>
   );
 }

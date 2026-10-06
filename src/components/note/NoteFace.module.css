@@ -1,0 +1,261 @@
+.note {
+  position: relative;
+  min-width: 0;
+  background: var(--s-tint);
+  border: 1px solid color-mix(in srgb, var(--s) 38%, transparent);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--ink);
+  box-shadow: var(--shadow-lift);
+}
+
+.underprint {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: var(--s-line);
+  stroke-width: 0.32;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.frame {
+  position: relative;
+  padding: 14px 20px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.groupName {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.2;
+  font-weight: 760;
+  font-variation-settings: "wdth" 125;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--s);
+}
+
+.serial {
+  color: var(--s);
+  font-size: 0.75rem;
+}
+
+.body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.value {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.potLabel {
+  font-size: 0.9375rem;
+  color: var(--ink-2);
+}
+
+.figure {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  color: var(--s);
+  line-height: 0.92;
+  font-size: clamp(3.25rem, 2.2rem + 5vw, 5.5rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-variation-settings: "opsz" 96;
+}
+
+.currency {
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 760;
+  font-variation-settings: "wdth" 118;
+  letter-spacing: 0.06em;
+  margin-top: 0.45em;
+}
+
+/* The see-through window: a double-ruled oval on lighter paper. */
+.window {
+  margin-top: 10px;
+  align-self: flex-start;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 10px 30px 11px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--paper) 72%, transparent);
+  box-shadow:
+    inset 0 1px 3px color-mix(in srgb, var(--ink) 14%, transparent),
+    inset 0 0 0 0.75px var(--s-line);
+  max-width: 100%;
+}
+
+.count {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+  gap: 2px;
+}
+
+.countShort {
+  display: none;
+  font-family: var(--sans);
+  font-size: 0.55em;
+  font-weight: 650;
+  color: var(--ink-2);
+}
+
+/* Small rosettes: the hollow can't hold a label, so the count becomes "7/10". */
+@container (max-width: 110px) {
+  .countShort {
+    display: inline;
+  }
+  .countLabel {
+    display: none;
+  }
+}
+
+.sep {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 0.62em;
+  margin: 0 0.02em 0 0.01em;
+}
+
+.countFigure {
+  font-size: 20cqw;
+  font-weight: 600;
+  color: var(--ink);
+  font-variation-settings: "opsz" 48;
+}
+
+.countLabel {
+  font-size: max(0.625rem, 7cqw);
+  white-space: nowrap;
+  color: var(--ink-2);
+  font-weight: 560;
+}
+
+/* Overprinted stamp for held, paid-out and specimen notes. */
+.stamp {
+  position: absolute;
+  top: 13%;
+  right: clamp(150px, 34%, 300px);
+  rotate: -9deg;
+  z-index: 2;
+  padding: 4px 16px 5px;
+  font-size: 1.25rem;
+  font-weight: 800;
+  font-variation-settings: "wdth" 125;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border: 2.5px solid currentColor;
+  border-radius: 4px;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
+.stamp-held {
+  color: var(--failed);
+}
+
+.stamp-issued {
+  color: var(--paid);
+}
+
+.stamp-specimen {
+  color: var(--s);
+  opacity: 0.85;
+}
+
+@media (prefers-color-scheme: dark) {
+  .stamp {
+    mix-blend-mode: normal;
+  }
+}
+
+/* Compact notes: home list and wizard preview. */
+.compact .frame {
+  padding: 10px 16px 10px;
+  gap: 10px;
+}
+
+.compact .figure {
+  font-size: clamp(2.25rem, 1.8rem + 2vw, 3rem);
+}
+
+.compact .window {
+  margin-top: 6px;
+  padding: 7px 22px 8px;
+}
+
+
+
+.compact .stamp {
+  font-size: 1rem;
+}
+
+@media (max-width: 520px) {
+  .frame {
+    padding: 12px 16px 10px;
+  }
+  .body {
+    align-items: flex-end;
+    gap: 12px;
+  }
+  .body > :last-child {
+    width: 112px !important;
+    height: 112px !important;
+  }
+  .compact .body > :last-child {
+    width: 84px !important;
+    height: 84px !important;
+  }
+  .window {
+    padding: 8px 22px 9px;
+  }
+  .stamp {
+    right: 34%;
+    top: 12%;
+    font-size: 1rem;
+  }
+}
+
+.windowCaption {
+  font-size: 0.8125rem;
+  color: var(--ink-2);
+}
+
+.windowName {
+  font-size: 1.0625rem;
+  font-weight: 680;
+  font-variation-settings: "wdth" 104;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.compact .windowName {
+  font-size: 0.9375rem;
+}

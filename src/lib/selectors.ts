@@ -1,5 +1,6 @@
 import type { GroupBundle } from "../lib/api";
 import type { Member, Payment, Round, User } from "../types";
+import { addRounds } from "./date";
 
 export function getGroupBundle(groups: GroupBundle[], groupId: string): GroupBundle | undefined {
   return groups.find((b) => b.group.id === groupId);
@@ -139,10 +140,13 @@ export function computePoolSummary(bundle: GroupBundle) {
   const amount = bundle.group.contributionAmount;
   const slots = bundle.group.totalSlots;
   const rounds = bundle.group.totalRounds;
-  const startDate = new Date(bundle.group.startedAt);
-  const endDate = new Date(startDate);
-  const monthsToAdd = bundle.group.frequency === "monthly" ? rounds - 1 : Math.ceil(((rounds - 1) * 7) / 30);
-  endDate.setMonth(endDate.getMonth() + monthsToAdd);
+  const lastRound = bundle.rounds.reduce<Round | undefined>(
+    (latest, r) => (!latest || r.roundNumber > latest.roundNumber ? r : latest),
+    undefined,
+  );
+  const endDate = lastRound
+    ? new Date(lastRound.scheduledDate)
+    : addRounds(bundle.group.startedAt, rounds - 1, bundle.group.frequency);
   return {
     pool: amount * slots,
     memberCount: slots,
@@ -150,4 +154,42 @@ export function computePoolSummary(bundle: GroupBundle) {
     rounds,
     endsAt: endDate.toISOString(),
   };
+}
+
+export function getRecipient(bundle: GroupBundle, round: Round | undefined): MemberWithUser | undefined {
+  if (!round) return undefined;
+  return getMembersWithUsers(bundle).find((m) => m.member.id === round.recipientMemberId);
+}
+
+export function memberName(entry: MemberWithUser | undefined, currentUserId?: string): string {
+  if (!entry) return "Unassigned";
+  if (currentUserId && entry.member.userId === currentUserId) return "You";
+  return entry.user?.name || entry.member.invitedPhone || "Unnamed member";
+}
+
+export interface RoundLineup {
+  paid: MemberWithUser[];
+  late: MemberWithUser[];
+  unpaid: MemberWithUser[];
+  failed: MemberWithUser[];
+}
+
+/** Every active member sorted by where they stand on this round's contribution. */
+export function getRoundLineup(bundle: GroupBundle, roundNumber: number): RoundLineup {
+  const lineup: RoundLineup = { paid: [], late: [], unpaid: [], failed: [] };
+  for (const entry of getMembersWithUsers(bundle)) {
+    if (entry.member.status !== "active") continue;
+    const status = getPaymentForMemberRound(bundle, entry.member.id, roundNumber)?.status ?? "unpaid";
+    if (status === "paid") lineup.paid.push(entry);
+    else if (status === "paid-late") lineup.late.push(entry);
+    else if (status === "failed") lineup.failed.push(entry);
+    else lineup.unpaid.push(entry);
+  }
+  return lineup;
+}
+
+export function getMyRound(bundle: GroupBundle, userId: string): Round | undefined {
+  const member = getMemberByUserId(bundle, userId);
+  if (!member) return undefined;
+  return bundle.rounds.find((r) => r.recipientMemberId === member.id);
 }

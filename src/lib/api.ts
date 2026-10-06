@@ -434,6 +434,10 @@ export async function holdRound(groupId: string, roundNumber: number, reason: st
   await post(`/groups/${groupId}/rounds/${roundNumber}/hold`, { reason });
 }
 
+export async function releaseHold(groupId: string, roundNumber: number): Promise<void> {
+  await post(`/groups/${groupId}/rounds/${roundNumber}/hold/release`);
+}
+
 // ---- Payments ----
 
 export async function initiatePayment(
@@ -448,6 +452,10 @@ export async function confirmPayment(groupId: string, roundNumber: number, gatew
   return normalizePayment(
     await post<RawPayment>(`/groups/${groupId}/rounds/${roundNumber}/payments/confirm`, { gatewayRef }),
   );
+}
+
+export async function requestExtension(groupId: string, roundNumber: number, reason: string): Promise<void> {
+  await post(`/groups/${groupId}/rounds/${roundNumber}/payments/extension-request`, { reason });
 }
 
 // ---- Stripe Connect payout onboarding ----
@@ -479,6 +487,45 @@ export async function reorderPayoutOrder(
   reason: string,
 ): Promise<void> {
   await post(`/groups/${groupId}/payout-order/reorder`, { changes, reason });
+}
+
+export interface PayoutOrderChange {
+  id: string;
+  batchId: string;
+  roundId: string;
+  roundNumber: number | null;
+  previousRecipientMemberId: string;
+  newRecipientMemberId: string;
+  reason: string;
+  changedByName: string | null;
+  createdAt: string;
+}
+
+interface RawPayoutOrderChange {
+  id: string;
+  batchId: string;
+  roundId: string;
+  previousRecipientMemberId: string;
+  newRecipientMemberId: string;
+  reason: string;
+  createdAt: string;
+  round?: { roundNumber: number } | null;
+  changedBy?: { name: string | null } | null;
+}
+
+export async function getPayoutOrderHistory(groupId: string): Promise<PayoutOrderChange[]> {
+  const rows = await get<RawPayoutOrderChange[]>(`/groups/${groupId}/payout-order/history`);
+  return rows.map((row) => ({
+    id: row.id,
+    batchId: row.batchId,
+    roundId: row.roundId,
+    roundNumber: row.round?.roundNumber ?? null,
+    previousRecipientMemberId: row.previousRecipientMemberId,
+    newRecipientMemberId: row.newRecipientMemberId,
+    reason: row.reason,
+    changedByName: row.changedBy?.name ?? null,
+    createdAt: row.createdAt,
+  }));
 }
 
 // ---- Autopay ----

@@ -2,6 +2,8 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "../../components/ui/Button";
+import { BrandMark } from "../../components/ui/BrandMark";
+import { FormError, TextField } from "../../components/ui/Field";
 import { ApiRequestError } from "../../lib/api";
 import { useAppData, useCurrentUser } from "../../state/AppDataContext";
 import styles from "./AuthLayout.module.css";
@@ -38,24 +40,24 @@ export function ProfileNamePage() {
 
   return (
     <div className={styles.page}>
+      <div className={styles.top}>
+        <BrandMark />
+      </div>
       <form className={styles.center} onSubmit={handleSubmit}>
-        <div className={styles.title}>What should we call you?</div>
-        <p className={styles.hint}>Group members will see this name.</p>
-        <div className={styles.field}>
-          <span className={styles.fieldLabel}>FULL NAME</span>
-          <div className={styles.fieldValue}>
-            <input
-              className={styles.input}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Siti Aminah"
-              autoComplete="name"
-              maxLength={120}
-              autoFocus
-            />
-          </div>
+        <div className={styles.centerHead}>
+          <h1>What should we call you?</h1>
+          <p className={styles.hint}>Everyone in your groups sees this name on the ledger and the payout order.</p>
         </div>
-        {error && <p className={styles.hint}>{error}</p>}
+        <TextField
+          label="Your name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Siti Aminah"
+          autoComplete="name"
+          maxLength={120}
+          autoFocus
+        />
+        {error ? <FormError>{error}</FormError> : null}
         <Button block type="submit" disabled={!name.trim() || submitting}>
           {submitting ? "Saving…" : "Continue"}
         </Button>

@@ -1,0 +1,237 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.table thead th {
+  text-align: left;
+  font-size: 0.8125rem;
+  font-weight: 620;
+  color: var(--ink-3);
+  padding: 0 12px 10px 0;
+  border-bottom: 1.5px solid var(--ink);
+}
+
+.month th {
+  text-align: left;
+  padding: 22px 0 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  font-variation-settings: "wdth" 110;
+  color: var(--ink);
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+.row td {
+  padding: 12px 12px 12px 0;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+
+.date {
+  white-space: nowrap;
+  width: 1%;
+}
+
+.dateInner {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.time {
+  font-size: 0.8125rem;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.entryInner {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.entryInner > :first-child {
+  margin-top: 2px;
+}
+
+.icon {
+  display: inline-flex;
+  color: var(--ink-2);
+}
+
+.entryText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.title {
+  font-weight: 580;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 10px;
+  font-size: 0.875rem;
+  color: var(--ink-2);
+}
+
+.group {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.group::before {
+  content: "";
+  width: 8px;
+  height: 11px;
+  border-radius: 1.5px;
+  background: var(--s-tint);
+  box-shadow: inset 0 0 0 1.25px var(--s);
+}
+
+.ref {
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.num {
+  text-align: right !important;
+  padding-right: 0 !important;
+}
+
+.amount {
+  white-space: nowrap;
+  font-weight: 620;
+  font-variant-numeric: tabular-nums;
+}
+
+.payout .amount {
+  color: var(--ink);
+}
+
+.contribution .amount {
+  color: var(--paid);
+}
+
+.none {
+  color: var(--ink-3);
+  font-weight: 400;
+  font-size: 0.875rem;
+}
+
+.order-change .title {
+  font-weight: 560;
+}
+
+@media (max-width: 680px) {
+  .table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "entry amount"
+      "entry date"
+      "ref ref";
+    gap: 2px 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .row td {
+    padding: 0;
+    border: none;
+  }
+  .entry {
+    grid-area: entry;
+  }
+  .amount {
+    grid-area: amount;
+  }
+  .date {
+    grid-area: date;
+    width: auto;
+    font-size: 0.8125rem;
+    color: var(--ink-3);
+  }
+  .dateInner {
+    flex-direction: row;
+    gap: 6px;
+    justify-content: flex-end;
+  }
+  .ref {
+    grid-area: ref;
+    padding-left: 28px !important;
+    font-size: 0.8125rem;
+  }
+  .ref .none {
+    display: none;
+  }
+  .row .amount .none {
+    display: none;
+  }
+}
+
+/* Compact: the mobile stack at every width. */
+.compact thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+.compact .row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "entry amount"
+      "entry date"
+      "ref ref";
+    gap: 2px 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+.compact .row td {
+    padding: 0;
+    border: none;
+  }
+.compact .entry {
+    grid-area: entry;
+  }
+.compact .amount {
+    grid-area: amount;
+  }
+.compact .date {
+    grid-area: date;
+    width: auto;
+    font-size: 0.8125rem;
+    color: var(--ink-3);
+  }
+.compact .dateInner {
+    flex-direction: row;
+    gap: 6px;
+    justify-content: flex-end;
+  }
+.compact .ref {
+    grid-area: ref;
+    padding-left: 28px !important;
+    font-size: 0.8125rem;
+  }
+.compact .ref .none {
+    display: none;
+  }
+.compact .row .amount .none {
+    display: none;
+  }

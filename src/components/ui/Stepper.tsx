@@ -1,3 +1,4 @@
+import { Minus, Plus } from "lucide-react";
 import styles from "./Stepper.module.css";
 
 interface StepperProps {
@@ -5,30 +6,33 @@ interface StepperProps {
   onChange: (value: number) => void;
   min?: number;
   max?: number;
+  unit: string;
 }
 
-export function Stepper({ value, onChange, min = 2, max = 30 }: StepperProps) {
+export function Stepper({ value, onChange, min = 2, max = 30, unit }: StepperProps) {
   return (
     <div className={styles.row}>
-      <span className={styles.value}>{value}</span>
-      <div className={styles.controls}>
-        <button
-          type="button"
-          disabled={value <= min}
-          onClick={() => onChange(Math.max(min, value - 1))}
-          aria-label="Decrease"
-        >
-          −
-        </button>
-        <button
-          type="button"
-          disabled={value >= max}
-          onClick={() => onChange(Math.min(max, value + 1))}
-          aria-label="Increase"
-        >
-          ＋
-        </button>
-      </div>
+      <button
+        type="button"
+        className={styles.step}
+        disabled={value <= min}
+        onClick={() => onChange(Math.max(min, value - 1))}
+        aria-label={`Fewer ${unit}`}
+      >
+        <Minus size={18} aria-hidden="true" />
+      </button>
+      <output className={styles.value} aria-live="polite">
+        <span className="figures">{value}</span> <span className={styles.unit}>{unit}</span>
+      </output>
+      <button
+        type="button"
+        className={styles.step}
+        disabled={value >= max}
+        onClick={() => onChange(Math.min(max, value + 1))}
+        aria-label={`More ${unit}`}
+      >
+        <Plus size={18} aria-hidden="true" />
+      </button>
     </div>
   );
 }

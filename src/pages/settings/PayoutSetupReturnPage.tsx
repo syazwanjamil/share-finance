@@ -1,54 +1,65 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAppData } from "../../state/AppDataContext";
-import { Button } from "../../components/ui/Button";
-import { StatusPill } from "../../components/ui/StatusPill";
+import { LoadingScreen } from "../../components/layout/LoadingScreen";
+import { PageHeader } from "../../components/layout/Page";
+import { ButtonLink } from "../../components/ui/Button";
+import { FormError } from "../../components/ui/Field";
+import { StatusMark } from "../../components/ui/StatusMark";
 import * as api from "../../lib/api";
 import styles from "../checkout/CheckoutLayout.module.css";
 
 export function PayoutSetupReturnPage() {
-  const navigate = useNavigate();
   const { actions } = useAppData();
   const [onboarded, setOnboarded] = useState<boolean | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
-      const status = await api.getConnectStatus();
-      await actions.refresh();
-      setOnboarded(status.onboarded);
+      try {
+        const status = await api.getConnectStatus();
+        await actions.refresh();
+        setOnboarded(status.onboarded);
+      } catch {
+        setError("Couldn't check your payout account with Stripe.");
+        setOnboarded(false);
+      }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  if (onboarded === null) return <LoadingScreen label="Checking your payout account with Stripe…" />;
+
   return (
     <div className={styles.page}>
-      <div className={styles.card}>
-        {onboarded === null && <span className={styles.title}>Checking your payout account…</span>}
-
-        {onboarded === true && (
-          <>
-            <span className={styles.title}>✓ Payout account ready</span>
-            <p style={{ fontSize: 12.5, color: "var(--text)" }}>
-              You're all set to receive a payout when it's your turn.
-            </p>
-            <Button block onClick={() => navigate("/home")}>
+      {onboarded ? (
+        <>
+          <PageHeader title="Payout account ready" lead="You're set to receive the pot when it's your turn." />
+          <p className={styles.resultHead}>
+            <StatusMark kind="done" size={22} /> <strong>Set up with Stripe, in your name</strong>
+          </p>
+          <div className={styles.actionsRow}>
+            <ButtonLink to="/home" variant="primary">
               Back to home
-            </Button>
-          </>
-        )}
-
-        {onboarded === false && (
-          <>
-            <StatusPill variant="warning">Still incomplete</StatusPill>
-            <p style={{ fontSize: 12.5, color: "var(--text)" }}>
-              Stripe says your onboarding isn't finished yet. You can pick up where you left off.
-            </p>
-            <Button block onClick={() => navigate("/settings/payout")}>
+            </ButtonLink>
+          </div>
+        </>
+      ) : (
+        <>
+          <PageHeader
+            title="Payout setup isn't finished"
+            lead="Stripe says a few details are still missing. You can pick up where you left off."
+          />
+          {error ? <FormError>{error}</FormError> : null}
+          <div className={styles.actionsRow}>
+            <ButtonLink to="/settings/payout" variant="primary">
               Continue setup
-            </Button>
-          </>
-        )}
-      </div>
+            </ButtonLink>
+            <ButtonLink to="/home" variant="secondary">
+              Later
+            </ButtonLink>
+          </div>
+        </>
+      )}
     </div>
   );
 }

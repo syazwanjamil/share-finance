@@ -7,9 +7,11 @@ const LENGTH = 6;
 interface OtpInputProps {
   value: string;
   onChange: (value: string) => void;
+  invalid?: boolean;
+  describedBy?: string;
 }
 
-export function OtpInput({ value, onChange }: OtpInputProps) {
+export function OtpInput({ value, onChange, invalid, describedBy }: OtpInputProps) {
   const refs = useRef<(HTMLInputElement | null)[]>([]);
   const digits = Array.from({ length: LENGTH }, (_, i) => value[i] ?? "");
 
@@ -42,14 +44,15 @@ export function OtpInput({ value, onChange }: OtpInputProps) {
   }
 
   return (
-    <div className={styles.row}>
+    <div className={styles.row} role="group" aria-label="6-digit code" aria-describedby={describedBy}>
       {digits.map((digit, i) => (
         <input
           key={i}
           ref={(el) => {
             refs.current[i] = el;
           }}
-          className={`${styles.box} ${digit ? styles.filled : ""}`}
+          className={`serial ${styles.box} ${digit ? styles.filled : ""} ${invalid ? styles.invalid : ""}`}
+          autoFocus={i === 0}
           inputMode="numeric"
           autoComplete="one-time-code"
           maxLength={1}
@@ -57,7 +60,8 @@ export function OtpInput({ value, onChange }: OtpInputProps) {
           onChange={(e) => setDigit(i, e.target.value.replace(/\D/g, "").slice(-1))}
           onKeyDown={(e) => handleKeyDown(i, e)}
           onPaste={(e) => handlePaste(i, e)}
-          aria-label={`Digit ${i + 1}`}
+          aria-label={`Digit ${i + 1} of ${LENGTH}`}
+          aria-invalid={invalid || undefined}
         />
       ))}
     </div>

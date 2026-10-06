@@ -1,11 +1,16 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useGroupBundle } from "../../../state/AppDataContext";
-import { getRoundByNumber } from "../../../lib/selectors";
-import { Button } from "../../../components/ui/Button";
+import { Printer } from "lucide-react";
+import { useCurrentUser, useGroupBundle } from "../../../state/AppDataContext";
+import { computeRoundCollection, getRecipient, getRoundByNumber, memberName } from "../../../lib/selectors";
 import { formatRM } from "../../../lib/currency";
-import { formatDateFull } from "../../../lib/date";
-import styles from "../../checkout/CheckoutLayout.module.css";
+import { formatDateFull, formatTime } from "../../../lib/date";
+import { NoteFace, NoteWindow } from "../../../components/note/NoteFace";
+import { roundSerial } from "../../../components/note/GroupNote";
+import { PageHeader } from "../../../components/layout/Page";
+import { Button, ButtonLink } from "../../../components/ui/Button";
+import { DetailList } from "../../../components/ui/DetailList";
+import layout from "../../checkout/CheckoutLayout.module.css";
 
 interface ReceiptState {
   amount: number;
@@ -17,65 +22,68 @@ export function PayoutReceiptPage() {
   const { groupId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+  const currentUser = useCurrentUser();
   const bundle = useGroupBundle(groupId);
   const receiptState = location.state as ReceiptState | null;
   const valid = !!bundle && !!receiptState;
 
   useEffect(() => {
-    if (!valid) navigate(`/groups/${groupId}`);
+    if (!valid) navigate(`/groups/${groupId}`, { replace: true });
   }, [valid, navigate, groupId]);
 
-  if (!bundle || !receiptState) {
-    return null;
-  }
+  if (!bundle || !receiptState) return null;
 
+  const { group } = bundle;
   const round = getRoundByNumber(bundle, receiptState.roundNumber);
+  const collection = computeRoundCollection(bundle, receiptState.roundNumber);
+  const nextRound = getRoundByNumber(bundle, receiptState.roundNumber + 1);
+  const nextRecipient = getRecipient(bundle, nextRound);
+  const sentAt = round?.paidOutAt ?? new Date().toISOString();
 
   return (
-    <div className={styles.page}>
-      <div className={styles.card}>
-        <div className={styles.center}>
-          <span className={styles.successIcon}>✓</span>
-          <div>
-            <div className={styles.title}>Payout sent</div>
-            <span style={{ fontSize: 11.5, color: "var(--text)" }}>
-              {formatDateFull(new Date().toISOString())} · round {receiptState.roundNumber} of{" "}
-              {bundle.group.totalRounds}
-            </span>
-          </div>
-          <span className={styles.bigAmount}>{formatRM(receiptState.amount)}</span>
-        </div>
+    <div className={layout.page}>
+      <PageHeader title="Payout sent" lead={`Round ${receiptState.roundNumber} of ${group.totalRounds} is closed.`} />
 
-        <div className={styles.detailBox}>
-          <div className={styles.detailRow}>
-            <span>To</span>
-            <span>{receiptState.recipientName}</span>
-          </div>
-          <div className={styles.detailRow}>
-            <span>Reference</span>
-            <span>{round?.paidOutRef}</span>
-          </div>
-          <div className={styles.detailRow}>
-            <span>Released by</span>
-            <span>Automatic (scheduled)</span>
-          </div>
-          <div className={styles.detailRow}>
-            <span>Arrives</span>
-            <span>Within 15 minutes</span>
-          </div>
-        </div>
+      <NoteFace
+        groupId={group.id}
+        groupName={group.name}
+        serial={roundSerial(bundle, receiptState.roundNumber)}
+        roundLabel={`Round ${receiptState.roundNumber} of ${group.totalRounds}`}
+        potLabel="paid out"
+        pot={receiptState.amount}
+        paidCount={collection.paidCount}
+        totalCount={collection.totalCount}
+        window={<NoteWindow caption="Sent to" name={receiptState.recipientName ?? "Recipient"} />}
+        stamp="issued"
+      />
 
-        <div className={styles.tip}>
-          Receipt posted to the {bundle.group.name} WhatsApp group and added to the ledger.{" "}
-          {receiptState.roundNumber < bundle.group.totalRounds
-            ? `Round ${receiptState.roundNumber + 1} opens tomorrow.`
-            : "This was the final round."}
-        </div>
+      <DetailList
+        items={[
+          { term: "Sent to", value: receiptState.recipientName },
+          { term: "Amount", value: formatRM(receiptState.amount) },
+          {
+            term: "Reference",
+            value: round?.paidOutRef ? <span className="serial">{round.paidOutRef}</span> : "Being assigned",
+          },
+          { term: "Released by", value: "You" },
+          { term: "Date", value: `${formatDateFull(sentAt)}, ${formatTime(sentAt)}` },
+        ]}
+      />
 
-        <div className={styles.footerActions}>
-          <Button variant="secondary">Download receipt</Button>
-          <Button onClick={() => navigate(`/groups/${groupId}`)}>Back to group</Button>
-        </div>
+      <p className={layout.lead}>
+        It's recorded in the group ledger, where every member can see it.{" "}
+        {nextRound
+          ? `Next: round ${nextRound.roundNumber} pays out ${formatDateFull(nextRound.scheduledDate)} to ${memberName(nextRecipient, currentUser.id)}.`
+          : "This was the final round of the cycle."}
+      </p>
+
+      <div className={layout.actionsRow} data-print-hide>
+        <ButtonLink to={`/groups/${group.id}`} variant="primary">
+          Back to {group.name}
+        </ButtonLink>
+        <Button variant="secondary" onClick={() => window.print()}>
+          <Printer size={16} aria-hidden="true" /> Print receipt
+        </Button>
       </div>
     </div>
   );

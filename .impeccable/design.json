@@ -1,0 +1,1495 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-30T04:23:28.313407+00:00",
+  "title": "Design System: Share Finance",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "Cool Paper",
+        "canonical": "#eef1ec",
+        "oklch": "oklch(95.4% 0.007 132.4)",
+        "tonalRamp": [
+          "oklch(15% 0.007 132.4)",
+          "oklch(26% 0.007 132.4)",
+          "oklch(37% 0.007 132.4)",
+          "oklch(48% 0.007 132.4)",
+          "oklch(59% 0.007 132.4)",
+          "oklch(70% 0.007 132.4)",
+          "oklch(82% 0.007 132.4)",
+          "oklch(95% 0.007 132.4)"
+        ]
+      },
+      "paper-raised": {
+        "role": "neutral",
+        "displayName": "Raised Sheet",
+        "canonical": "#f8faf6",
+        "oklch": "oklch(98.2% 0.006 128.5)",
+        "tonalRamp": [
+          "oklch(15% 0.006 128.5)",
+          "oklch(26% 0.006 128.5)",
+          "oklch(37% 0.006 128.5)",
+          "oklch(48% 0.006 128.5)",
+          "oklch(59% 0.006 128.5)",
+          "oklch(70% 0.006 128.5)",
+          "oklch(82% 0.006 128.5)",
+          "oklch(95% 0.006 128.5)"
+        ]
+      },
+      "paper-sunk": {
+        "role": "neutral",
+        "displayName": "Sunk Paper",
+        "canonical": "#e4e8e2",
+        "oklch": "oklch(92.6% 0.009 134.9)",
+        "tonalRamp": [
+          "oklch(15% 0.009 134.9)",
+          "oklch(26% 0.009 134.9)",
+          "oklch(37% 0.009 134.9)",
+          "oklch(48% 0.009 134.9)",
+          "oklch(59% 0.009 134.9)",
+          "oklch(70% 0.009 134.9)",
+          "oklch(82% 0.009 134.9)",
+          "oklch(95% 0.009 134.9)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#15191e",
+        "oklch": "oklch(21.1% 0.012 254.1)",
+        "tonalRamp": [
+          "oklch(15% 0.012 254.1)",
+          "oklch(26% 0.012 254.1)",
+          "oklch(37% 0.012 254.1)",
+          "oklch(48% 0.012 254.1)",
+          "oklch(59% 0.012 254.1)",
+          "oklch(70% 0.012 254.1)",
+          "oklch(82% 0.012 254.1)",
+          "oklch(95% 0.012 254.1)"
+        ]
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Ink 2",
+        "canonical": "#434b53",
+        "oklch": "oklch(40.9% 0.017 248.2)",
+        "tonalRamp": [
+          "oklch(15% 0.017 248.2)",
+          "oklch(26% 0.017 248.2)",
+          "oklch(37% 0.017 248.2)",
+          "oklch(48% 0.017 248.2)",
+          "oklch(59% 0.017 248.2)",
+          "oklch(70% 0.017 248.2)",
+          "oklch(82% 0.017 248.2)",
+          "oklch(95% 0.017 248.2)"
+        ]
+      },
+      "ink-3": {
+        "role": "neutral",
+        "displayName": "Ink 3",
+        "canonical": "#5c656d",
+        "oklch": "oklch(50.2% 0.017 244.9)",
+        "tonalRamp": [
+          "oklch(15% 0.017 244.9)",
+          "oklch(26% 0.017 244.9)",
+          "oklch(37% 0.017 244.9)",
+          "oklch(48% 0.017 244.9)",
+          "oklch(59% 0.017 244.9)",
+          "oklch(70% 0.017 244.9)",
+          "oklch(82% 0.017 244.9)",
+          "oklch(95% 0.017 244.9)"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Rule",
+        "canonical": "#cdd3cb",
+        "oklch": "oklch(86.0% 0.013 137.8)",
+        "tonalRamp": [
+          "oklch(15% 0.013 137.8)",
+          "oklch(26% 0.013 137.8)",
+          "oklch(37% 0.013 137.8)",
+          "oklch(48% 0.013 137.8)",
+          "oklch(59% 0.013 137.8)",
+          "oklch(70% 0.013 137.8)",
+          "oklch(82% 0.013 137.8)",
+          "oklch(95% 0.013 137.8)"
+        ]
+      },
+      "rule-strong": {
+        "role": "neutral",
+        "displayName": "Rule Strong",
+        "canonical": "#a3aca2",
+        "oklch": "oklch(73.4% 0.017 142.5)",
+        "tonalRamp": [
+          "oklch(15% 0.017 142.5)",
+          "oklch(26% 0.017 142.5)",
+          "oklch(37% 0.017 142.5)",
+          "oklch(48% 0.017 142.5)",
+          "oklch(59% 0.017 142.5)",
+          "oklch(70% 0.017 142.5)",
+          "oklch(82% 0.017 142.5)",
+          "oklch(95% 0.017 142.5)"
+        ]
+      },
+      "paid": {
+        "role": "tertiary",
+        "displayName": "Paid Green",
+        "canonical": "#276239",
+        "oklch": "oklch(44.6% 0.091 151.0)",
+        "tonalRamp": [
+          "oklch(15% 0.030 151.0)",
+          "oklch(26% 0.091 151.0)",
+          "oklch(37% 0.091 151.0)",
+          "oklch(48% 0.091 151.0)",
+          "oklch(59% 0.091 151.0)",
+          "oklch(70% 0.091 151.0)",
+          "oklch(82% 0.091 151.0)",
+          "oklch(95% 0.030 151.0)"
+        ]
+      },
+      "late": {
+        "role": "tertiary",
+        "displayName": "Late Amber",
+        "canonical": "#8a5300",
+        "oklch": "oklch(49.4% 0.109 66.9)",
+        "tonalRamp": [
+          "oklch(15% 0.030 66.9)",
+          "oklch(26% 0.109 66.9)",
+          "oklch(37% 0.109 66.9)",
+          "oklch(48% 0.109 66.9)",
+          "oklch(59% 0.109 66.9)",
+          "oklch(70% 0.109 66.9)",
+          "oklch(82% 0.109 66.9)",
+          "oklch(95% 0.030 66.9)"
+        ]
+      },
+      "failed": {
+        "role": "tertiary",
+        "displayName": "Failed Red",
+        "canonical": "#a61b1b",
+        "oklch": "oklch(46.9% 0.174 27.2)",
+        "tonalRamp": [
+          "oklch(15% 0.030 27.2)",
+          "oklch(26% 0.174 27.2)",
+          "oklch(37% 0.174 27.2)",
+          "oklch(48% 0.174 27.2)",
+          "oklch(59% 0.174 27.2)",
+          "oklch(70% 0.174 27.2)",
+          "oklch(82% 0.174 27.2)",
+          "oklch(95% 0.030 27.2)"
+        ]
+      },
+      "failed-tint": {
+        "role": "tertiary",
+        "displayName": "Failed Tint",
+        "canonical": "#f6e4e1",
+        "oklch": "oklch(93.2% 0.020 28.9)",
+        "tonalRamp": [
+          "oklch(15% 0.020 28.9)",
+          "oklch(26% 0.020 28.9)",
+          "oklch(37% 0.020 28.9)",
+          "oklch(48% 0.020 28.9)",
+          "oklch(59% 0.020 28.9)",
+          "oklch(70% 0.020 28.9)",
+          "oklch(82% 0.020 28.9)",
+          "oklch(95% 0.020 28.9)"
+        ]
+      },
+      "action": {
+        "role": "primary",
+        "displayName": "Press Ink",
+        "canonical": "#15191e",
+        "oklch": "oklch(21.1% 0.012 254.1)",
+        "tonalRamp": [
+          "oklch(15% 0.012 254.1)",
+          "oklch(26% 0.012 254.1)",
+          "oklch(37% 0.012 254.1)",
+          "oklch(48% 0.012 254.1)",
+          "oklch(59% 0.012 254.1)",
+          "oklch(70% 0.012 254.1)",
+          "oklch(82% 0.012 254.1)",
+          "oklch(95% 0.012 254.1)"
+        ]
+      },
+      "action-ink": {
+        "role": "primary",
+        "displayName": "Press Ink Text",
+        "canonical": "#f8faf6",
+        "oklch": "oklch(98.2% 0.006 128.5)",
+        "tonalRamp": [
+          "oklch(15% 0.006 128.5)",
+          "oklch(26% 0.006 128.5)",
+          "oklch(37% 0.006 128.5)",
+          "oklch(48% 0.006 128.5)",
+          "oklch(59% 0.006 128.5)",
+          "oklch(70% 0.006 128.5)",
+          "oklch(82% 0.006 128.5)",
+          "oklch(95% 0.006 128.5)"
+        ]
+      },
+      "action-hover": {
+        "role": "primary",
+        "displayName": "Press Ink Hover",
+        "canonical": "#2c333a",
+        "oklch": "oklch(31.7% 0.016 248.3)",
+        "tonalRamp": [
+          "oklch(15% 0.016 248.3)",
+          "oklch(26% 0.016 248.3)",
+          "oklch(37% 0.016 248.3)",
+          "oklch(48% 0.016 248.3)",
+          "oklch(59% 0.016 248.3)",
+          "oklch(70% 0.016 248.3)",
+          "oklch(82% 0.016 248.3)",
+          "oklch(95% 0.016 248.3)"
+        ]
+      },
+      "focus": {
+        "role": "neutral",
+        "displayName": "Focus Blue",
+        "canonical": "#2b4c8c",
+        "oklch": "oklch(42.7% 0.113 262.2)",
+        "tonalRamp": [
+          "oklch(15% 0.030 262.2)",
+          "oklch(26% 0.113 262.2)",
+          "oklch(37% 0.113 262.2)",
+          "oklch(48% 0.113 262.2)",
+          "oklch(59% 0.113 262.2)",
+          "oklch(70% 0.113 262.2)",
+          "oklch(82% 0.113 262.2)",
+          "oklch(95% 0.030 262.2)"
+        ]
+      },
+      "series-0-ink": {
+        "role": "secondary",
+        "displayName": "Series 0 Treasury Indigo ink",
+        "canonical": "#2b4c8c",
+        "oklch": "oklch(42.7% 0.113 262.2)",
+        "tonalRamp": [
+          "oklch(15% 0.030 262.2)",
+          "oklch(26% 0.113 262.2)",
+          "oklch(37% 0.113 262.2)",
+          "oklch(48% 0.113 262.2)",
+          "oklch(59% 0.113 262.2)",
+          "oklch(70% 0.113 262.2)",
+          "oklch(82% 0.113 262.2)",
+          "oklch(95% 0.030 262.2)"
+        ]
+      },
+      "series-0-tint": {
+        "role": "secondary",
+        "displayName": "Series 0 Treasury Indigo tint",
+        "canonical": "#e3e9f3",
+        "oklch": "oklch(93.2% 0.015 260.7)",
+        "tonalRamp": [
+          "oklch(15% 0.015 260.7)",
+          "oklch(26% 0.015 260.7)",
+          "oklch(37% 0.015 260.7)",
+          "oklch(48% 0.015 260.7)",
+          "oklch(59% 0.015 260.7)",
+          "oklch(70% 0.015 260.7)",
+          "oklch(82% 0.015 260.7)",
+          "oklch(95% 0.015 260.7)"
+        ]
+      },
+      "series-0-line": {
+        "role": "secondary",
+        "displayName": "Series 0 Treasury Indigo line",
+        "canonical": "#7f98c7",
+        "oklch": "oklch(67.8% 0.076 262.8)",
+        "tonalRamp": [
+          "oklch(15% 0.030 262.8)",
+          "oklch(26% 0.076 262.8)",
+          "oklch(37% 0.076 262.8)",
+          "oklch(48% 0.076 262.8)",
+          "oklch(59% 0.076 262.8)",
+          "oklch(70% 0.076 262.8)",
+          "oklch(82% 0.076 262.8)",
+          "oklch(95% 0.030 262.8)"
+        ]
+      },
+      "series-1-ink": {
+        "role": "secondary",
+        "displayName": "Series 1 Crimson Note ink",
+        "canonical": "#9e2a36",
+        "oklch": "oklch(47.0% 0.151 19.7)",
+        "tonalRamp": [
+          "oklch(15% 0.030 19.7)",
+          "oklch(26% 0.151 19.7)",
+          "oklch(37% 0.151 19.7)",
+          "oklch(48% 0.151 19.7)",
+          "oklch(59% 0.151 19.7)",
+          "oklch(70% 0.151 19.7)",
+          "oklch(82% 0.151 19.7)",
+          "oklch(95% 0.030 19.7)"
+        ]
+      },
+      "series-1-tint": {
+        "role": "secondary",
+        "displayName": "Series 1 Crimson Note tint",
+        "canonical": "#f4e3e4",
+        "oklch": "oklch(93.0% 0.019 13.4)",
+        "tonalRamp": [
+          "oklch(15% 0.019 13.4)",
+          "oklch(26% 0.019 13.4)",
+          "oklch(37% 0.019 13.4)",
+          "oklch(48% 0.019 13.4)",
+          "oklch(59% 0.019 13.4)",
+          "oklch(70% 0.019 13.4)",
+          "oklch(82% 0.019 13.4)",
+          "oklch(95% 0.019 13.4)"
+        ]
+      },
+      "series-1-line": {
+        "role": "secondary",
+        "displayName": "Series 1 Crimson Note line",
+        "canonical": "#cf8a93",
+        "oklch": "oklch(70.5% 0.085 10.9)",
+        "tonalRamp": [
+          "oklch(15% 0.030 10.9)",
+          "oklch(26% 0.085 10.9)",
+          "oklch(37% 0.085 10.9)",
+          "oklch(48% 0.085 10.9)",
+          "oklch(59% 0.085 10.9)",
+          "oklch(70% 0.085 10.9)",
+          "oklch(82% 0.085 10.9)",
+          "oklch(95% 0.030 10.9)"
+        ]
+      },
+      "series-2-ink": {
+        "role": "secondary",
+        "displayName": "Series 2 Deep Teal ink",
+        "canonical": "#14636a",
+        "oklch": "oklch(45.8% 0.072 204.1)",
+        "tonalRamp": [
+          "oklch(15% 0.030 204.1)",
+          "oklch(26% 0.072 204.1)",
+          "oklch(37% 0.072 204.1)",
+          "oklch(48% 0.072 204.1)",
+          "oklch(59% 0.072 204.1)",
+          "oklch(70% 0.072 204.1)",
+          "oklch(82% 0.072 204.1)",
+          "oklch(95% 0.030 204.1)"
+        ]
+      },
+      "series-2-tint": {
+        "role": "secondary",
+        "displayName": "Series 2 Deep Teal tint",
+        "canonical": "#dfecec",
+        "oklch": "oklch(93.3% 0.014 196.9)",
+        "tonalRamp": [
+          "oklch(15% 0.014 196.9)",
+          "oklch(26% 0.014 196.9)",
+          "oklch(37% 0.014 196.9)",
+          "oklch(48% 0.014 196.9)",
+          "oklch(59% 0.014 196.9)",
+          "oklch(70% 0.014 196.9)",
+          "oklch(82% 0.014 196.9)",
+          "oklch(95% 0.014 196.9)"
+        ]
+      },
+      "series-2-line": {
+        "role": "secondary",
+        "displayName": "Series 2 Deep Teal line",
+        "canonical": "#74adae",
+        "oklch": "oklch(70.9% 0.059 197.3)",
+        "tonalRamp": [
+          "oklch(15% 0.030 197.3)",
+          "oklch(26% 0.059 197.3)",
+          "oklch(37% 0.059 197.3)",
+          "oklch(48% 0.059 197.3)",
+          "oklch(59% 0.059 197.3)",
+          "oklch(70% 0.059 197.3)",
+          "oklch(82% 0.059 197.3)",
+          "oklch(95% 0.030 197.3)"
+        ]
+      },
+      "series-3-ink": {
+        "role": "secondary",
+        "displayName": "Series 3 Violet Issue ink",
+        "canonical": "#5b3485",
+        "oklch": "oklch(41.4% 0.132 303.3)",
+        "tonalRamp": [
+          "oklch(15% 0.030 303.3)",
+          "oklch(26% 0.132 303.3)",
+          "oklch(37% 0.132 303.3)",
+          "oklch(48% 0.132 303.3)",
+          "oklch(59% 0.132 303.3)",
+          "oklch(70% 0.132 303.3)",
+          "oklch(82% 0.132 303.3)",
+          "oklch(95% 0.030 303.3)"
+        ]
+      },
+      "series-3-tint": {
+        "role": "secondary",
+        "displayName": "Series 3 Violet Issue tint",
+        "canonical": "#ebe4f2",
+        "oklch": "oklch(92.8% 0.020 308.2)",
+        "tonalRamp": [
+          "oklch(15% 0.020 308.2)",
+          "oklch(26% 0.020 308.2)",
+          "oklch(37% 0.020 308.2)",
+          "oklch(48% 0.020 308.2)",
+          "oklch(59% 0.020 308.2)",
+          "oklch(70% 0.020 308.2)",
+          "oklch(82% 0.020 308.2)",
+          "oklch(95% 0.020 308.2)"
+        ]
+      },
+      "series-3-line": {
+        "role": "secondary",
+        "displayName": "Series 3 Violet Issue line",
+        "canonical": "#a68dc6",
+        "oklch": "oklch(68.7% 0.086 304.3)",
+        "tonalRamp": [
+          "oklch(15% 0.030 304.3)",
+          "oklch(26% 0.086 304.3)",
+          "oklch(37% 0.086 304.3)",
+          "oklch(48% 0.086 304.3)",
+          "oklch(59% 0.086 304.3)",
+          "oklch(70% 0.086 304.3)",
+          "oklch(82% 0.086 304.3)",
+          "oklch(95% 0.030 304.3)"
+        ]
+      },
+      "series-4-ink": {
+        "role": "secondary",
+        "displayName": "Series 4 Magenta Print ink",
+        "canonical": "#9c2175",
+        "oklch": "oklch(47.9% 0.178 344.2)",
+        "tonalRamp": [
+          "oklch(15% 0.030 344.2)",
+          "oklch(26% 0.178 344.2)",
+          "oklch(37% 0.178 344.2)",
+          "oklch(48% 0.178 344.2)",
+          "oklch(59% 0.178 344.2)",
+          "oklch(70% 0.178 344.2)",
+          "oklch(82% 0.178 344.2)",
+          "oklch(95% 0.030 344.2)"
+        ]
+      },
+      "series-4-tint": {
+        "role": "secondary",
+        "displayName": "Series 4 Magenta Print tint",
+        "canonical": "#f4e2ee",
+        "oklch": "oklch(93.1% 0.025 337.8)",
+        "tonalRamp": [
+          "oklch(15% 0.025 337.8)",
+          "oklch(26% 0.025 337.8)",
+          "oklch(37% 0.025 337.8)",
+          "oklch(48% 0.025 337.8)",
+          "oklch(59% 0.025 337.8)",
+          "oklch(70% 0.025 337.8)",
+          "oklch(82% 0.025 337.8)",
+          "oklch(95% 0.025 337.8)"
+        ]
+      },
+      "series-4-line": {
+        "role": "secondary",
+        "displayName": "Series 4 Magenta Print line",
+        "canonical": "#d493c0",
+        "oklch": "oklch(74.1% 0.098 338.5)",
+        "tonalRamp": [
+          "oklch(15% 0.030 338.5)",
+          "oklch(26% 0.098 338.5)",
+          "oklch(37% 0.098 338.5)",
+          "oklch(48% 0.098 338.5)",
+          "oklch(59% 0.098 338.5)",
+          "oklch(70% 0.098 338.5)",
+          "oklch(82% 0.098 338.5)",
+          "oklch(95% 0.030 338.5)"
+        ]
+      },
+      "series-5-ink": {
+        "role": "secondary",
+        "displayName": "Series 5 Charcoal Issue ink",
+        "canonical": "#23272c",
+        "oklch": "oklch(27.1% 0.011 254.0)",
+        "tonalRamp": [
+          "oklch(15% 0.011 254.0)",
+          "oklch(26% 0.011 254.0)",
+          "oklch(37% 0.011 254.0)",
+          "oklch(48% 0.011 254.0)",
+          "oklch(59% 0.011 254.0)",
+          "oklch(70% 0.011 254.0)",
+          "oklch(82% 0.011 254.0)",
+          "oklch(95% 0.011 254.0)"
+        ]
+      },
+      "series-5-tint": {
+        "role": "secondary",
+        "displayName": "Series 5 Charcoal Issue tint",
+        "canonical": "#e5e6e3",
+        "oklch": "oklch(92.3% 0.004 121.6)",
+        "tonalRamp": [
+          "oklch(15% 0.004 121.6)",
+          "oklch(26% 0.004 121.6)",
+          "oklch(37% 0.004 121.6)",
+          "oklch(48% 0.004 121.6)",
+          "oklch(59% 0.004 121.6)",
+          "oklch(70% 0.004 121.6)",
+          "oklch(82% 0.004 121.6)",
+          "oklch(95% 0.004 121.6)"
+        ]
+      },
+      "series-5-line": {
+        "role": "secondary",
+        "displayName": "Series 5 Charcoal Issue line",
+        "canonical": "#9da29f",
+        "oklch": "oklch(70.7% 0.007 160.0)",
+        "tonalRamp": [
+          "oklch(15% 0.007 160.0)",
+          "oklch(26% 0.007 160.0)",
+          "oklch(37% 0.007 160.0)",
+          "oklch(48% 0.007 160.0)",
+          "oklch(59% 0.007 160.0)",
+          "oklch(70% 0.007 160.0)",
+          "oklch(82% 0.007 160.0)",
+          "oklch(95% 0.007 160.0)"
+        ]
+      },
+      "specimen-ink": {
+        "role": "neutral",
+        "displayName": "Specimen ink",
+        "canonical": "#434b53",
+        "oklch": "oklch(40.9% 0.017 248.2)",
+        "tonalRamp": [
+          "oklch(15% 0.017 248.2)",
+          "oklch(26% 0.017 248.2)",
+          "oklch(37% 0.017 248.2)",
+          "oklch(48% 0.017 248.2)",
+          "oklch(59% 0.017 248.2)",
+          "oklch(70% 0.017 248.2)",
+          "oklch(82% 0.017 248.2)",
+          "oklch(95% 0.017 248.2)"
+        ]
+      },
+      "specimen-tint": {
+        "role": "neutral",
+        "displayName": "Specimen tint",
+        "canonical": "#e6e9e3",
+        "oklch": "oklch(93.0% 0.009 128.6)",
+        "tonalRamp": [
+          "oklch(15% 0.009 128.6)",
+          "oklch(26% 0.009 128.6)",
+          "oklch(37% 0.009 128.6)",
+          "oklch(48% 0.009 128.6)",
+          "oklch(59% 0.009 128.6)",
+          "oklch(70% 0.009 128.6)",
+          "oklch(82% 0.009 128.6)",
+          "oklch(95% 0.009 128.6)"
+        ]
+      },
+      "specimen-line": {
+        "role": "neutral",
+        "displayName": "Specimen line",
+        "canonical": "#a3aca2",
+        "oklch": "oklch(73.4% 0.017 142.5)",
+        "tonalRamp": [
+          "oklch(15% 0.017 142.5)",
+          "oklch(26% 0.017 142.5)",
+          "oklch(37% 0.017 142.5)",
+          "oklch(48% 0.017 142.5)",
+          "oklch(59% 0.017 142.5)",
+          "oklch(70% 0.017 142.5)",
+          "oklch(82% 0.017 142.5)",
+          "oklch(95% 0.017 142.5)"
+        ]
+      },
+      "night-paper": {
+        "role": "neutral",
+        "displayName": "Night Cool Paper",
+        "canonical": "#101315",
+        "oklch": "oklch(18.4% 0.006 236.9)",
+        "tonalRamp": [
+          "oklch(15% 0.006 236.9)",
+          "oklch(26% 0.006 236.9)",
+          "oklch(37% 0.006 236.9)",
+          "oklch(48% 0.006 236.9)",
+          "oklch(59% 0.006 236.9)",
+          "oklch(70% 0.006 236.9)",
+          "oklch(82% 0.006 236.9)",
+          "oklch(95% 0.006 236.9)"
+        ]
+      },
+      "night-paper-raised": {
+        "role": "neutral",
+        "displayName": "Night Raised Sheet",
+        "canonical": "#171b1e",
+        "oklch": "oklch(21.9% 0.008 240.3)",
+        "tonalRamp": [
+          "oklch(15% 0.008 240.3)",
+          "oklch(26% 0.008 240.3)",
+          "oklch(37% 0.008 240.3)",
+          "oklch(48% 0.008 240.3)",
+          "oklch(59% 0.008 240.3)",
+          "oklch(70% 0.008 240.3)",
+          "oklch(82% 0.008 240.3)",
+          "oklch(95% 0.008 240.3)"
+        ]
+      },
+      "night-paper-sunk": {
+        "role": "neutral",
+        "displayName": "Night Sunk Paper",
+        "canonical": "#0b0d0f",
+        "oklch": "oklch(15.8% 0.005 248.2)",
+        "tonalRamp": [
+          "oklch(15% 0.005 248.2)",
+          "oklch(26% 0.005 248.2)",
+          "oklch(37% 0.005 248.2)",
+          "oklch(48% 0.005 248.2)",
+          "oklch(59% 0.005 248.2)",
+          "oklch(70% 0.005 248.2)",
+          "oklch(82% 0.005 248.2)",
+          "oklch(95% 0.005 248.2)"
+        ]
+      },
+      "night-ink": {
+        "role": "neutral",
+        "displayName": "Night Ink",
+        "canonical": "#e7ebe4",
+        "oklch": "oklch(93.5% 0.010 131.4)",
+        "tonalRamp": [
+          "oklch(15% 0.010 131.4)",
+          "oklch(26% 0.010 131.4)",
+          "oklch(37% 0.010 131.4)",
+          "oklch(48% 0.010 131.4)",
+          "oklch(59% 0.010 131.4)",
+          "oklch(70% 0.010 131.4)",
+          "oklch(82% 0.010 131.4)",
+          "oklch(95% 0.010 131.4)"
+        ]
+      },
+      "night-ink-2": {
+        "role": "neutral",
+        "displayName": "Night Ink 2",
+        "canonical": "#b7beb5",
+        "oklch": "oklch(79.3% 0.015 138.7)",
+        "tonalRamp": [
+          "oklch(15% 0.015 138.7)",
+          "oklch(26% 0.015 138.7)",
+          "oklch(37% 0.015 138.7)",
+          "oklch(48% 0.015 138.7)",
+          "oklch(59% 0.015 138.7)",
+          "oklch(70% 0.015 138.7)",
+          "oklch(82% 0.015 138.7)",
+          "oklch(95% 0.015 138.7)"
+        ]
+      },
+      "night-ink-3": {
+        "role": "neutral",
+        "displayName": "Night Ink 3",
+        "canonical": "#959d94",
+        "oklch": "oklch(68.7% 0.016 142.2)",
+        "tonalRamp": [
+          "oklch(15% 0.016 142.2)",
+          "oklch(26% 0.016 142.2)",
+          "oklch(37% 0.016 142.2)",
+          "oklch(48% 0.016 142.2)",
+          "oklch(59% 0.016 142.2)",
+          "oklch(70% 0.016 142.2)",
+          "oklch(82% 0.016 142.2)",
+          "oklch(95% 0.016 142.2)"
+        ]
+      },
+      "night-rule": {
+        "role": "neutral",
+        "displayName": "Night Rule",
+        "canonical": "#2a3033",
+        "oklch": "oklch(30.5% 0.010 229.2)",
+        "tonalRamp": [
+          "oklch(15% 0.010 229.2)",
+          "oklch(26% 0.010 229.2)",
+          "oklch(37% 0.010 229.2)",
+          "oklch(48% 0.010 229.2)",
+          "oklch(59% 0.010 229.2)",
+          "oklch(70% 0.010 229.2)",
+          "oklch(82% 0.010 229.2)",
+          "oklch(95% 0.010 229.2)"
+        ]
+      },
+      "night-rule-strong": {
+        "role": "neutral",
+        "displayName": "Night Rule Strong",
+        "canonical": "#434c50",
+        "oklch": "oklch(41.0% 0.013 226.3)",
+        "tonalRamp": [
+          "oklch(15% 0.013 226.3)",
+          "oklch(26% 0.013 226.3)",
+          "oklch(37% 0.013 226.3)",
+          "oklch(48% 0.013 226.3)",
+          "oklch(59% 0.013 226.3)",
+          "oklch(70% 0.013 226.3)",
+          "oklch(82% 0.013 226.3)",
+          "oklch(95% 0.013 226.3)"
+        ]
+      },
+      "night-paid": {
+        "role": "tertiary",
+        "displayName": "Night Paid Green",
+        "canonical": "#80c592",
+        "oklch": "oklch(76.4% 0.101 151.7)",
+        "tonalRamp": [
+          "oklch(15% 0.030 151.7)",
+          "oklch(26% 0.101 151.7)",
+          "oklch(37% 0.101 151.7)",
+          "oklch(48% 0.101 151.7)",
+          "oklch(59% 0.101 151.7)",
+          "oklch(70% 0.101 151.7)",
+          "oklch(82% 0.101 151.7)",
+          "oklch(95% 0.030 151.7)"
+        ]
+      },
+      "night-late": {
+        "role": "tertiary",
+        "displayName": "Night Late Amber",
+        "canonical": "#e3ae5c",
+        "oklch": "oklch(78.3% 0.117 76.5)",
+        "tonalRamp": [
+          "oklch(15% 0.030 76.5)",
+          "oklch(26% 0.117 76.5)",
+          "oklch(37% 0.117 76.5)",
+          "oklch(48% 0.117 76.5)",
+          "oklch(59% 0.117 76.5)",
+          "oklch(70% 0.117 76.5)",
+          "oklch(82% 0.117 76.5)",
+          "oklch(95% 0.030 76.5)"
+        ]
+      },
+      "night-failed": {
+        "role": "tertiary",
+        "displayName": "Night Failed Red",
+        "canonical": "#f28b80",
+        "oklch": "oklch(74.4% 0.127 27.0)",
+        "tonalRamp": [
+          "oklch(15% 0.030 27.0)",
+          "oklch(26% 0.127 27.0)",
+          "oklch(37% 0.127 27.0)",
+          "oklch(48% 0.127 27.0)",
+          "oklch(59% 0.127 27.0)",
+          "oklch(70% 0.127 27.0)",
+          "oklch(82% 0.127 27.0)",
+          "oklch(95% 0.030 27.0)"
+        ]
+      },
+      "night-failed-tint": {
+        "role": "tertiary",
+        "displayName": "Night Failed Tint",
+        "canonical": "#2c1716",
+        "oklch": "oklch(23.3% 0.034 23.0)",
+        "tonalRamp": [
+          "oklch(15% 0.030 23.0)",
+          "oklch(26% 0.034 23.0)",
+          "oklch(37% 0.034 23.0)",
+          "oklch(48% 0.034 23.0)",
+          "oklch(59% 0.034 23.0)",
+          "oklch(70% 0.034 23.0)",
+          "oklch(82% 0.034 23.0)",
+          "oklch(95% 0.030 23.0)"
+        ]
+      },
+      "night-action": {
+        "role": "primary",
+        "displayName": "Night Press Ink",
+        "canonical": "#e7ebe4",
+        "oklch": "oklch(93.5% 0.010 131.4)",
+        "tonalRamp": [
+          "oklch(15% 0.010 131.4)",
+          "oklch(26% 0.010 131.4)",
+          "oklch(37% 0.010 131.4)",
+          "oklch(48% 0.010 131.4)",
+          "oklch(59% 0.010 131.4)",
+          "oklch(70% 0.010 131.4)",
+          "oklch(82% 0.010 131.4)",
+          "oklch(95% 0.010 131.4)"
+        ]
+      },
+      "night-action-ink": {
+        "role": "primary",
+        "displayName": "Night Press Ink Text",
+        "canonical": "#101315",
+        "oklch": "oklch(18.4% 0.006 236.9)",
+        "tonalRamp": [
+          "oklch(15% 0.006 236.9)",
+          "oklch(26% 0.006 236.9)",
+          "oklch(37% 0.006 236.9)",
+          "oklch(48% 0.006 236.9)",
+          "oklch(59% 0.006 236.9)",
+          "oklch(70% 0.006 236.9)",
+          "oklch(82% 0.006 236.9)",
+          "oklch(95% 0.006 236.9)"
+        ]
+      },
+      "night-action-hover": {
+        "role": "primary",
+        "displayName": "Night Press Ink Hover",
+        "canonical": "#ffffff",
+        "oklch": "oklch(100.0% 0.000 89.9)",
+        "tonalRamp": [
+          "oklch(15% 0.000 89.9)",
+          "oklch(26% 0.000 89.9)",
+          "oklch(37% 0.000 89.9)",
+          "oklch(48% 0.000 89.9)",
+          "oklch(59% 0.000 89.9)",
+          "oklch(70% 0.000 89.9)",
+          "oklch(82% 0.000 89.9)",
+          "oklch(95% 0.000 89.9)"
+        ]
+      },
+      "night-focus": {
+        "role": "neutral",
+        "displayName": "Night Focus Blue",
+        "canonical": "#9db6ea",
+        "oklch": "oklch(77.6% 0.080 264.6)",
+        "tonalRamp": [
+          "oklch(15% 0.030 264.6)",
+          "oklch(26% 0.080 264.6)",
+          "oklch(37% 0.080 264.6)",
+          "oklch(48% 0.080 264.6)",
+          "oklch(59% 0.080 264.6)",
+          "oklch(70% 0.080 264.6)",
+          "oklch(82% 0.080 264.6)",
+          "oklch(95% 0.030 264.6)"
+        ]
+      },
+      "night-series-0-ink": {
+        "role": "secondary",
+        "displayName": "Night Series 0 Treasury Indigo ink",
+        "canonical": "#9db6ea",
+        "oklch": "oklch(77.6% 0.080 264.6)",
+        "tonalRamp": [
+          "oklch(15% 0.030 264.6)",
+          "oklch(26% 0.080 264.6)",
+          "oklch(37% 0.080 264.6)",
+          "oklch(48% 0.080 264.6)",
+          "oklch(59% 0.080 264.6)",
+          "oklch(70% 0.080 264.6)",
+          "oklch(82% 0.080 264.6)",
+          "oklch(95% 0.030 264.6)"
+        ]
+      },
+      "night-series-0-tint": {
+        "role": "secondary",
+        "displayName": "Night Series 0 Treasury Indigo tint",
+        "canonical": "#161f31",
+        "oklch": "oklch(24.0% 0.037 263.5)",
+        "tonalRamp": [
+          "oklch(15% 0.030 263.5)",
+          "oklch(26% 0.037 263.5)",
+          "oklch(37% 0.037 263.5)",
+          "oklch(48% 0.037 263.5)",
+          "oklch(59% 0.037 263.5)",
+          "oklch(70% 0.037 263.5)",
+          "oklch(82% 0.037 263.5)",
+          "oklch(95% 0.030 263.5)"
+        ]
+      },
+      "night-series-0-line": {
+        "role": "secondary",
+        "displayName": "Night Series 0 Treasury Indigo line",
+        "canonical": "#3b5689",
+        "oklch": "oklch(45.6% 0.090 262.2)",
+        "tonalRamp": [
+          "oklch(15% 0.030 262.2)",
+          "oklch(26% 0.090 262.2)",
+          "oklch(37% 0.090 262.2)",
+          "oklch(48% 0.090 262.2)",
+          "oklch(59% 0.090 262.2)",
+          "oklch(70% 0.090 262.2)",
+          "oklch(82% 0.090 262.2)",
+          "oklch(95% 0.030 262.2)"
+        ]
+      },
+      "night-series-1-ink": {
+        "role": "secondary",
+        "displayName": "Night Series 1 Crimson Note ink",
+        "canonical": "#eb9aa3",
+        "oklch": "oklch(76.9% 0.098 12.3)",
+        "tonalRamp": [
+          "oklch(15% 0.030 12.3)",
+          "oklch(26% 0.098 12.3)",
+          "oklch(37% 0.098 12.3)",
+          "oklch(48% 0.098 12.3)",
+          "oklch(59% 0.098 12.3)",
+          "oklch(70% 0.098 12.3)",
+          "oklch(82% 0.098 12.3)",
+          "oklch(95% 0.030 12.3)"
+        ]
+      },
+      "night-series-1-tint": {
+        "role": "secondary",
+        "displayName": "Night Series 1 Crimson Note tint",
+        "canonical": "#2a1619",
+        "oklch": "oklch(22.9% 0.033 10.3)",
+        "tonalRamp": [
+          "oklch(15% 0.030 10.3)",
+          "oklch(26% 0.033 10.3)",
+          "oklch(37% 0.033 10.3)",
+          "oklch(48% 0.033 10.3)",
+          "oklch(59% 0.033 10.3)",
+          "oklch(70% 0.033 10.3)",
+          "oklch(82% 0.033 10.3)",
+          "oklch(95% 0.030 10.3)"
+        ]
+      },
+      "night-series-1-line": {
+        "role": "secondary",
+        "displayName": "Night Series 1 Crimson Note line",
+        "canonical": "#7f3a43",
+        "oklch": "oklch(44.2% 0.096 13.7)",
+        "tonalRamp": [
+          "oklch(15% 0.030 13.7)",
+          "oklch(26% 0.096 13.7)",
+          "oklch(37% 0.096 13.7)",
+          "oklch(48% 0.096 13.7)",
+          "oklch(59% 0.096 13.7)",
+          "oklch(70% 0.096 13.7)",
+          "oklch(82% 0.096 13.7)",
+          "oklch(95% 0.030 13.7)"
+        ]
+      },
+      "night-series-2-ink": {
+        "role": "secondary",
+        "displayName": "Night Series 2 Deep Teal ink",
+        "canonical": "#7fcfcf",
+        "oklch": "oklch(80.3% 0.079 195.7)",
+        "tonalRamp": [
+          "oklch(15% 0.030 195.7)",
+          "oklch(26% 0.079 195.7)",
+          "oklch(37% 0.079 195.7)",
+          "oklch(48% 0.079 195.7)",
+          "oklch(59% 0.079 195.7)",
+          "oklch(70% 0.079 195.7)",
+          "oklch(82% 0.079 195.7)",
+          "oklch(95% 0.030 195.7)"
+        ]
+      },
+      "night-series-2-tint": {
+        "role": "secondary",
+        "displayName": "Night Series 2 Deep Teal tint",
+        "canonical": "#0f2426",
+        "oklch": "oklch(24.4% 0.027 203.6)",
+        "tonalRamp": [
+          "oklch(15% 0.027 203.6)",
+          "oklch(26% 0.027 203.6)",
+          "oklch(37% 0.027 203.6)",
+          "oklch(48% 0.027 203.6)",
+          "oklch(59% 0.027 203.6)",
+          "oklch(70% 0.027 203.6)",
+          "oklch(82% 0.027 203.6)",
+          "oklch(95% 0.027 203.6)"
+        ]
+      },
+      "night-series-2-line": {
+        "role": "secondary",
+        "displayName": "Night Series 2 Deep Teal line",
+        "canonical": "#2c6d70",
+        "oklch": "oklch(49.5% 0.066 199.4)",
+        "tonalRamp": [
+          "oklch(15% 0.030 199.4)",
+          "oklch(26% 0.066 199.4)",
+          "oklch(37% 0.066 199.4)",
+          "oklch(48% 0.066 199.4)",
+          "oklch(59% 0.066 199.4)",
+          "oklch(70% 0.066 199.4)",
+          "oklch(82% 0.066 199.4)",
+          "oklch(95% 0.030 199.4)"
+        ]
+      },
+      "night-series-3-ink": {
+        "role": "secondary",
+        "displayName": "Night Series 3 Violet Issue ink",
+        "canonical": "#c6aaea",
+        "oklch": "oklch(78.5% 0.094 304.3)",
+        "tonalRamp": [
+          "oklch(15% 0.030 304.3)",
+          "oklch(26% 0.094 304.3)",
+          "oklch(37% 0.094 304.3)",
+          "oklch(48% 0.094 304.3)",
+          "oklch(59% 0.094 304.3)",
+          "oklch(70% 0.094 304.3)",
+          "oklch(82% 0.094 304.3)",
+          "oklch(95% 0.030 304.3)"
+        ]
+      },
+      "night-series-3-tint": {
+        "role": "secondary",
+        "displayName": "Night Series 3 Violet Issue tint",
+        "canonical": "#1f1829",
+        "oklch": "oklch(22.6% 0.034 302.7)",
+        "tonalRamp": [
+          "oklch(15% 0.030 302.7)",
+          "oklch(26% 0.034 302.7)",
+          "oklch(37% 0.034 302.7)",
+          "oklch(48% 0.034 302.7)",
+          "oklch(59% 0.034 302.7)",
+          "oklch(70% 0.034 302.7)",
+          "oklch(82% 0.034 302.7)",
+          "oklch(95% 0.030 302.7)"
+        ]
+      },
+      "night-series-3-line": {
+        "role": "secondary",
+        "displayName": "Night Series 3 Violet Issue line",
+        "canonical": "#5f4787",
+        "oklch": "oklch(45.3% 0.104 299.5)",
+        "tonalRamp": [
+          "oklch(15% 0.030 299.5)",
+          "oklch(26% 0.104 299.5)",
+          "oklch(37% 0.104 299.5)",
+          "oklch(48% 0.104 299.5)",
+          "oklch(59% 0.104 299.5)",
+          "oklch(70% 0.104 299.5)",
+          "oklch(82% 0.104 299.5)",
+          "oklch(95% 0.030 299.5)"
+        ]
+      },
+      "night-series-4-ink": {
+        "role": "secondary",
+        "displayName": "Night Series 4 Magenta Print ink",
+        "canonical": "#f0a0d6",
+        "oklch": "oklch(80.1% 0.116 339.6)",
+        "tonalRamp": [
+          "oklch(15% 0.030 339.6)",
+          "oklch(26% 0.116 339.6)",
+          "oklch(37% 0.116 339.6)",
+          "oklch(48% 0.116 339.6)",
+          "oklch(59% 0.116 339.6)",
+          "oklch(70% 0.116 339.6)",
+          "oklch(82% 0.116 339.6)",
+          "oklch(95% 0.030 339.6)"
+        ]
+      },
+      "night-series-4-tint": {
+        "role": "secondary",
+        "displayName": "Night Series 4 Magenta Print tint",
+        "canonical": "#2a1523",
+        "oklch": "oklch(23.1% 0.041 340.6)",
+        "tonalRamp": [
+          "oklch(15% 0.030 340.6)",
+          "oklch(26% 0.041 340.6)",
+          "oklch(37% 0.041 340.6)",
+          "oklch(48% 0.041 340.6)",
+          "oklch(59% 0.041 340.6)",
+          "oklch(70% 0.041 340.6)",
+          "oklch(82% 0.041 340.6)",
+          "oklch(95% 0.030 340.6)"
+        ]
+      },
+      "night-series-4-line": {
+        "role": "secondary",
+        "displayName": "Night Series 4 Magenta Print line",
+        "canonical": "#7d3a66",
+        "oklch": "oklch(45.1% 0.109 342.3)",
+        "tonalRamp": [
+          "oklch(15% 0.030 342.3)",
+          "oklch(26% 0.109 342.3)",
+          "oklch(37% 0.109 342.3)",
+          "oklch(48% 0.109 342.3)",
+          "oklch(59% 0.109 342.3)",
+          "oklch(70% 0.109 342.3)",
+          "oklch(82% 0.109 342.3)",
+          "oklch(95% 0.030 342.3)"
+        ]
+      },
+      "night-series-5-ink": {
+        "role": "secondary",
+        "displayName": "Night Series 5 Charcoal Issue ink",
+        "canonical": "#dfe2dc",
+        "oklch": "oklch(90.9% 0.009 128.6)",
+        "tonalRamp": [
+          "oklch(15% 0.009 128.6)",
+          "oklch(26% 0.009 128.6)",
+          "oklch(37% 0.009 128.6)",
+          "oklch(48% 0.009 128.6)",
+          "oklch(59% 0.009 128.6)",
+          "oklch(70% 0.009 128.6)",
+          "oklch(82% 0.009 128.6)",
+          "oklch(95% 0.009 128.6)"
+        ]
+      },
+      "night-series-5-tint": {
+        "role": "secondary",
+        "displayName": "Night Series 5 Charcoal Issue tint",
+        "canonical": "#1d1f21",
+        "oklch": "oklch(23.8% 0.005 248.0)",
+        "tonalRamp": [
+          "oklch(15% 0.005 248.0)",
+          "oklch(26% 0.005 248.0)",
+          "oklch(37% 0.005 248.0)",
+          "oklch(48% 0.005 248.0)",
+          "oklch(59% 0.005 248.0)",
+          "oklch(70% 0.005 248.0)",
+          "oklch(82% 0.005 248.0)",
+          "oklch(95% 0.005 248.0)"
+        ]
+      },
+      "night-series-5-line": {
+        "role": "secondary",
+        "displayName": "Night Series 5 Charcoal Issue line",
+        "canonical": "#50565a",
+        "oklch": "oklch(44.9% 0.010 236.8)",
+        "tonalRamp": [
+          "oklch(15% 0.010 236.8)",
+          "oklch(26% 0.010 236.8)",
+          "oklch(37% 0.010 236.8)",
+          "oklch(48% 0.010 236.8)",
+          "oklch(59% 0.010 236.8)",
+          "oklch(70% 0.010 236.8)",
+          "oklch(82% 0.010 236.8)",
+          "oklch(95% 0.010 236.8)"
+        ]
+      },
+      "night-specimen-ink": {
+        "role": "neutral",
+        "displayName": "Night Specimen ink",
+        "canonical": "#b7beb5",
+        "oklch": "oklch(79.3% 0.015 138.7)",
+        "tonalRamp": [
+          "oklch(15% 0.015 138.7)",
+          "oklch(26% 0.015 138.7)",
+          "oklch(37% 0.015 138.7)",
+          "oklch(48% 0.015 138.7)",
+          "oklch(59% 0.015 138.7)",
+          "oklch(70% 0.015 138.7)",
+          "oklch(82% 0.015 138.7)",
+          "oklch(95% 0.015 138.7)"
+        ]
+      },
+      "night-specimen-tint": {
+        "role": "neutral",
+        "displayName": "Night Specimen tint",
+        "canonical": "#1a1e21",
+        "oklch": "oklch(23.2% 0.008 240.2)",
+        "tonalRamp": [
+          "oklch(15% 0.008 240.2)",
+          "oklch(26% 0.008 240.2)",
+          "oklch(37% 0.008 240.2)",
+          "oklch(48% 0.008 240.2)",
+          "oklch(59% 0.008 240.2)",
+          "oklch(70% 0.008 240.2)",
+          "oklch(82% 0.008 240.2)",
+          "oklch(95% 0.008 240.2)"
+        ]
+      },
+      "night-specimen-line": {
+        "role": "neutral",
+        "displayName": "Night Specimen line",
+        "canonical": "#434c50",
+        "oklch": "oklch(41.0% 0.013 226.3)",
+        "tonalRamp": [
+          "oklch(15% 0.013 226.3)",
+          "oklch(26% 0.013 226.3)",
+          "oklch(37% 0.013 226.3)",
+          "oklch(48% 0.013 226.3)",
+          "oklch(59% 0.013 226.3)",
+          "oklch(70% 0.013 226.3)",
+          "oklch(82% 0.013 226.3)",
+          "oklch(95% 0.013 226.3)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Pot Figure",
+        "purpose": "The pot on the note face; always the largest element."
+      },
+      "display-compact": {
+        "displayName": "Pot Figure Compact",
+        "purpose": "Pot on compact notes (home list, wizard preview)."
+      },
+      "headline": {
+        "displayName": "Page Title",
+        "purpose": "h1 page titles."
+      },
+      "title": {
+        "displayName": "Section Title",
+        "purpose": "h2 section heads."
+      },
+      "title-sm": {
+        "displayName": "Subsection",
+        "purpose": "h3."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Reading text; leads cap at 62ch."
+      },
+      "body-sm": {
+        "displayName": "Body Small",
+        "purpose": "Secondary lines, notices, ledger rows."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Status-mark labels and metadata."
+      },
+      "button": {
+        "displayName": "Button",
+        "purpose": "Buttons and tabs."
+      },
+      "note-issuer": {
+        "displayName": "Note Issuer",
+        "purpose": "Group name printed on its own note face, in series ink. Note-only."
+      },
+      "stamp": {
+        "displayName": "Overprint Stamp",
+        "purpose": "HELD / ISSUED / SPECIMEN stamps on notes."
+      },
+      "serial": {
+        "displayName": "Serial",
+        "purpose": "Real references only: invite codes, round numbers, ledger refs."
+      },
+      "microprint": {
+        "displayName": "Microprint",
+        "purpose": "The microprinted rule on the note face."
+      }
+    },
+    "shadows": [
+      {
+        "name": "lift",
+        "value": "0 1px 2px rgba(21,25,30,0.06), 0 8px 24px -12px rgba(21,25,30,0.18)",
+        "purpose": "Note faces at rest."
+      },
+      {
+        "name": "sheet",
+        "value": "0 2px 6px rgba(21,25,30,0.08), 0 24px 64px -24px rgba(21,25,30,0.35)",
+        "purpose": "Modal sheet; note link hover with a 2px rise."
+      },
+      {
+        "name": "night-lift",
+        "value": "0 1px 2px rgba(0,0,0,0.4), 0 8px 24px -12px rgba(0,0,0,0.6)",
+        "purpose": "Night print note faces."
+      },
+      {
+        "name": "night-sheet",
+        "value": "0 2px 6px rgba(0,0,0,0.5), 0 24px 64px -24px rgba(0,0,0,0.8)",
+        "purpose": "Night print sheets."
+      },
+      {
+        "name": "window",
+        "value": "inset 0 1px 3px color-mix(in srgb, var(--ink) 14%, transparent), inset 0 0 0 0.75px var(--s-line)",
+        "purpose": "The see-through oval window on the note."
+      },
+      {
+        "name": "focus-halo",
+        "value": "0 0 0 3px color-mix(in srgb, var(--focus) 22%, transparent)",
+        "purpose": "Field focus-within halo."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "The only easing in the system."
+      },
+      {
+        "name": "control",
+        "value": "160ms",
+        "purpose": "Button colour, border and 1px press."
+      },
+      {
+        "name": "field",
+        "value": "140ms",
+        "purpose": "Field border and halo."
+      },
+      {
+        "name": "petal-ink-in",
+        "value": "1100ms, stagger 70ms, delay 120ms",
+        "purpose": "Rosette petals ink once per paid member."
+      },
+      {
+        "name": "microprint-print-in",
+        "value": "1400ms clip-path, delay 200ms",
+        "purpose": "Microprint rule prints across once."
+      },
+      {
+        "name": "sheet-rise",
+        "value": "260ms rise 12px; overlay fade 180ms",
+        "purpose": "Modal entry."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "all durations 0.01ms",
+        "purpose": "prefers-reduced-motion removes printing and transitions."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "narrow",
+        "value": "520px",
+        "purpose": "Modal becomes bottom sheet; buttons wrap; rosette 112px."
+      },
+      {
+        "name": "ledger-stack",
+        "value": "680px",
+        "purpose": "Ledger table reflows to stacked rows."
+      },
+      {
+        "name": "gutter-wide",
+        "value": "720px",
+        "purpose": "Gutter 16px to 32px."
+      },
+      {
+        "name": "rail",
+        "value": "900px",
+        "purpose": "Bottom tab bar gives way to the 232px rail."
+      },
+      {
+        "name": "notes-grid",
+        "value": "1100px",
+        "purpose": "Home note list goes multi-column."
+      }
+    ],
+    "themes": {
+      "nightPrint": "prefers-color-scheme: dark unless data-theme=light, or data-theme=dark; swaps paper/ink/status/action/focus/shadows and lifts every series (night-* tokens)."
+    }
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The reserved solid-ink action. One per screen.",
+      "html": "<button class=\"ds-btn-primary\">Pay your RM 500.00</button>",
+      "css": ".ds-btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 18px;border-radius:var(--radius,6px);border:1px solid transparent;background:var(--action,#15191e);color:var(--action-ink,#f8faf6);font-family:var(--sans,'Archivo Variable',sans-serif);font-size:.9375rem;font-weight:640;font-variation-settings:'wdth' 106;line-height:1.2;cursor:pointer;transition:background-color 160ms cubic-bezier(.16,1,.3,1),translate 160ms cubic-bezier(.16,1,.3,1)}.ds-btn-primary:hover{background:var(--action-hover,#2c333a)}.ds-btn-primary:active{translate:0 1px}.ds-btn-primary:focus-visible{outline:2px solid var(--focus,#2b4c8c);outline-offset:2px}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Outlined action on raised paper; every non-primary action.",
+      "html": "<button class=\"ds-btn-secondary\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M7.9 20A9 9 0 1 0 4 16.1L2 22Z\"/></svg>Remind 2 members on WhatsApp</button>",
+      "css": ".ds-btn-secondary{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:10px 18px;border-radius:var(--radius,6px);border:1px solid var(--rule-strong,#a3aca2);background:var(--paper-raised,#f8faf6);color:var(--ink,#15191e);font-family:var(--sans,'Archivo Variable',sans-serif);font-size:.9375rem;font-weight:640;font-variation-settings:'wdth' 106;cursor:pointer;transition:border-color 160ms cubic-bezier(.16,1,.3,1)}.ds-btn-secondary:hover{border-color:var(--ink,#15191e)}.ds-btn-secondary:active{translate:0 1px}.ds-btn-secondary:focus-visible{outline:2px solid var(--focus,#2b4c8c);outline-offset:2px}"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Underlined text action, e.g. Full ledger.",
+      "html": "<button class=\"ds-btn-ghost\">Full ledger</button>",
+      "css": ".ds-btn-ghost{min-height:44px;padding:10px;border:0;background:transparent;color:var(--ink,#15191e);font-family:var(--sans,'Archivo Variable',sans-serif);font-size:.9375rem;font-weight:640;text-decoration:underline;text-decoration-color:var(--rule-strong,#a3aca2);text-decoration-thickness:1px;text-underline-offset:.25em;cursor:pointer}.ds-btn-ghost:hover{text-decoration-color:currentColor}.ds-btn-ghost:focus-visible{outline:2px solid var(--focus,#2b4c8c);outline-offset:2px;border-radius:3px}"
+    },
+    {
+      "name": "Danger Button",
+      "kind": "button",
+      "refersTo": "button-danger",
+      "description": "Red-outlined destructive action such as holding a payout.",
+      "html": "<button class=\"ds-btn-danger\">Hold payout</button>",
+      "css": ".ds-btn-danger{min-height:44px;padding:10px 18px;border-radius:var(--radius,6px);border:1px solid color-mix(in srgb,var(--failed,#a61b1b) 45%,transparent);background:transparent;color:var(--failed,#a61b1b);font-family:var(--sans,'Archivo Variable',sans-serif);font-size:.9375rem;font-weight:640;cursor:pointer}.ds-btn-danger:hover{background:var(--failed-tint,#f6e4e1)}.ds-btn-danger:focus-visible{outline:2px solid var(--focus,#2b4c8c);outline-offset:2px}"
+    },
+    {
+      "name": "Field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "Labelled control with inline prefix; ink border and focus halo on focus.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-field-label\">Mobile number</span><span class=\"ds-field-control\"><span class=\"ds-field-prefix\">+60</span><input class=\"ds-field-input\" placeholder=\"12 345 6789\"></span></label>",
+      "css": ".ds-field{display:flex;flex-direction:column;gap:6px;font-family:var(--sans,'Archivo Variable',sans-serif)}.ds-field-label{font-size:.9375rem;font-weight:620;color:var(--ink,#15191e)}.ds-field-control{display:flex;align-items:center;min-height:48px;background:var(--paper-raised,#f8faf6);border:1px solid var(--rule-strong,#a3aca2);border-radius:var(--radius,6px);transition:border-color 140ms,box-shadow 140ms}.ds-field-control:hover{border-color:var(--ink-3,#5c656d)}.ds-field-control:focus-within{border-color:var(--ink,#15191e);box-shadow:0 0 0 3px color-mix(in srgb,var(--focus,#2b4c8c) 22%,transparent)}.ds-field-prefix{padding-left:14px;font-weight:620;color:var(--ink-2,#434b53)}.ds-field-input{flex:1;border:0;background:transparent;padding:12px 14px;font:inherit;font-size:1rem;color:var(--ink,#15191e);outline:none;caret-color:var(--focus,#2b4c8c)}.ds-field-input::placeholder{color:var(--ink-3,#5c656d)}"
+    },
+    {
+      "name": "Status Mark",
+      "kind": "chip",
+      "refersTo": "status-mark",
+      "description": "Mark plus label; the system's replacement for pills.",
+      "html": "<span class=\"ds-marks\"><span class=\"ds-mark ds-paid\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\"><circle cx=\"8\" cy=\"8\" r=\"7\" fill=\"currentColor\"/><path d=\"M5 8.2l2 2 4-4.4\" fill=\"none\" stroke=\"#f8faf6\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>Paid</span><span class=\"ds-mark ds-late\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\"><circle cx=\"8\" cy=\"8\" r=\"6.25\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"/><path d=\"M8 1.75a6.25 6.25 0 0 0 0 12.5z\" fill=\"currentColor\"/></svg>Paid late</span><span class=\"ds-mark ds-unpaid\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\"><circle cx=\"8\" cy=\"8\" r=\"6.25\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"/></svg>Unpaid</span><span class=\"ds-mark ds-failed\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\"><circle cx=\"8\" cy=\"8\" r=\"6.25\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"/><path d=\"M4 12L12 4\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>Payment failed</span><span class=\"ds-mark ds-upcoming\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\"><circle cx=\"8\" cy=\"8\" r=\"1.75\" fill=\"currentColor\"/></svg>Not due yet</span></span>",
+      "css": ".ds-marks{display:flex;flex-wrap:wrap;gap:16px;font-family:var(--sans,'Archivo Variable',sans-serif)}.ds-mark{display:inline-flex;align-items:center;gap:6px;font-size:.875rem;font-weight:560;line-height:1.2}.ds-paid{color:var(--paid,#276239)}.ds-late{color:var(--late,#8a5300)}.ds-unpaid{color:var(--ink-2,#434b53)}.ds-failed{color:var(--failed,#a61b1b)}.ds-upcoming{color:var(--rule-strong,#a3aca2)}"
+    },
+    {
+      "name": "Tabs",
+      "kind": "nav",
+      "refersTo": "tab",
+      "description": "Ink underline tabs on a hairline rule; never pills.",
+      "html": "<div class=\"ds-tabs\" role=\"tablist\"><button class=\"ds-tab ds-tab-active\" role=\"tab\">Payments by round</button><button class=\"ds-tab\" role=\"tab\">Payout order</button><button class=\"ds-tab\" role=\"tab\">Ledger</button></div>",
+      "css": ".ds-tabs{display:flex;gap:4px;border-bottom:1px solid var(--rule,#cdd3cb);font-family:var(--sans,'Archivo Variable',sans-serif)}.ds-tab{position:relative;min-height:44px;padding:10px 14px 12px;border:0;background:none;font:inherit;font-size:.9375rem;font-weight:600;font-variation-settings:'wdth' 104;color:var(--ink-2,#434b53);cursor:pointer;border-radius:6px 6px 0 0}.ds-tab:hover,.ds-tab-active{color:var(--ink,#15191e)}.ds-tab-active::after{content:'';position:absolute;left:10px;right:10px;bottom:-1px;height:2px;background:var(--ink,#15191e)}.ds-tab:focus-visible{outline:2px solid var(--focus,#2b4c8c);outline-offset:2px}"
+    },
+    {
+      "name": "Rail Navigation",
+      "kind": "nav",
+      "refersTo": "rail-item",
+      "description": "Desktop rail with note-shaped series swatches for groups and an amber owes ring.",
+      "html": "<nav class=\"ds-rail\"><a class=\"ds-rail-item\" href=\"#\">Home</a><a class=\"ds-rail-item\" href=\"#\">Ledger</a><span class=\"ds-rail-label\">Your groups</span><a class=\"ds-rail-item ds-rail-active\" href=\"#\"><span class=\"ds-swatch\" style=\"--s:#2b4c8c;--s-tint:#e3e9f3\"></span><span class=\"ds-rail-name\">Ibu-Ibu Blok C</span><span class=\"ds-owes\"></span></a><a class=\"ds-rail-item\" href=\"#\"><span class=\"ds-swatch\" style=\"--s:#14636a;--s-tint:#dfecec\"></span><span class=\"ds-rail-name\">Warung Circle</span></a></nav>",
+      "css": ".ds-rail{display:flex;flex-direction:column;gap:2px;width:232px;padding:20px 14px;font-family:var(--sans,'Archivo Variable',sans-serif)}.ds-rail-item{display:flex;align-items:center;gap:12px;min-height:42px;padding:8px 10px;border-radius:6px;color:var(--ink-2,#434b53);font-weight:580;font-size:.9375rem;text-decoration:none}.ds-rail-item:hover{color:var(--ink,#15191e);background:var(--paper-sunk,#e4e8e2)}.ds-rail-active{color:var(--ink,#15191e);background:var(--paper-raised,#f8faf6);box-shadow:inset 0 0 0 1px var(--rule,#cdd3cb)}.ds-rail-item:focus-visible{outline:2px solid var(--focus,#2b4c8c);outline-offset:2px}.ds-rail-label{margin-top:22px;padding:0 10px 4px;font-size:.8125rem;font-weight:620;color:var(--ink-3,#5c656d)}.ds-swatch{width:12px;height:16px;border-radius:2px;background:var(--s-tint);box-shadow:inset 0 0 0 1.5px var(--s);flex-shrink:0}.ds-rail-name{flex:1}.ds-owes{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--late,#8a5300)}"
+    },
+    {
+      "name": "Note Face",
+      "kind": "custom",
+      "refersTo": "note-face",
+      "description": "Signature: the round printed as a series note with pot figure, window, serial and petal rosette.",
+      "html": "<section class=\"ds-note\" style=\"--s:#2b4c8c;--s-tint:#e3e9f3;--s-line:#7f98c7\"><div class=\"ds-note-head\"><h3 class=\"ds-note-issuer\">Ibu-Ibu Blok C</h3><span class=\"ds-note-serial\">KUTU-4F2M · R04/10</span></div><div class=\"ds-note-body\"><div><div class=\"ds-note-label\">Round 4 of 10 · pot</div><div class=\"ds-note-figure\"><span class=\"ds-note-rm\">RM</span>5,000</div><div class=\"ds-note-window\"><span class=\"ds-note-cap\">Pays out 25 Sept to</span><strong>Dewi A.</strong></div></div><svg class=\"ds-rosette\" viewBox=\"-50 -50 100 100\" width=\"120\" height=\"120\"><circle r=\"46\" class=\"ds-ring\"/><g class=\"ds-ink\"><ellipse cx=\"0\" cy=\"-30\" rx=\"7\" ry=\"14\"/><ellipse cx=\"0\" cy=\"-30\" rx=\"7\" ry=\"14\" transform=\"rotate(36)\"/><ellipse cx=\"0\" cy=\"-30\" rx=\"7\" ry=\"14\" transform=\"rotate(72)\"/><ellipse cx=\"0\" cy=\"-30\" rx=\"7\" ry=\"14\" transform=\"rotate(108)\"/><ellipse cx=\"0\" cy=\"-30\" rx=\"7\" ry=\"14\" transform=\"rotate(144)\"/><ellipse cx=\"0\" cy=\"-30\" rx=\"7\" ry=\"14\" transform=\"rotate(180)\"/><ellipse cx=\"0\" cy=\"-30\" rx=\"7\" ry=\"14\" transform=\"rotate(216)\"/></g><g class=\"ds-ghost\"><ellipse cx=\"0\" cy=\"-30\" rx=\"7\" ry=\"14\" transform=\"rotate(252)\"/><ellipse cx=\"0\" cy=\"-30\" rx=\"7\" ry=\"14\" transform=\"rotate(288)\"/><ellipse cx=\"0\" cy=\"-30\" rx=\"7\" ry=\"14\" transform=\"rotate(324)\"/></g><text y=\"4\" text-anchor=\"middle\" class=\"ds-count\">7</text><text y=\"14\" text-anchor=\"middle\" class=\"ds-count-l\">of 10 paid</text></svg></div><div class=\"ds-micro\">IBU-IBU BLOK C · ROUND 4 OF 10 · RM 5,000 · SHARE FINANCE · IBU-IBU BLOK C · ROUND 4 OF 10 · RM 5,000 · SHARE FINANCE</div></section>",
+      "css": ".ds-note{position:relative;max-width:640px;background:var(--s-tint);border:1px solid color-mix(in srgb,var(--s) 38%,transparent);border-radius:10px;overflow:hidden;padding:14px 20px 12px;display:flex;flex-direction:column;gap:14px;color:var(--ink,#15191e);font-family:var(--sans,'Archivo Variable',sans-serif);box-shadow:0 1px 2px rgba(21,25,30,.06),0 8px 24px -12px rgba(21,25,30,.18);transition:translate 220ms cubic-bezier(.16,1,.3,1),box-shadow 220ms cubic-bezier(.16,1,.3,1)}.ds-note:hover{translate:0 -2px;box-shadow:0 2px 6px rgba(21,25,30,.08),0 24px 64px -24px rgba(21,25,30,.35)}.ds-note-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}.ds-note-issuer{margin:0;font-size:.875rem;font-weight:760;font-variation-settings:'wdth' 125;letter-spacing:.1em;text-transform:uppercase;color:var(--s)}.ds-note-serial{font-family:var(--serial,'Martian Mono Variable',monospace);font-variation-settings:'wdth' 87;font-size:.75rem;letter-spacing:.02em;color:var(--s)}.ds-note-body{display:flex;justify-content:space-between;align-items:center;gap:20px}.ds-note-label{font-size:.9375rem;color:var(--ink-2,#434b53)}.ds-note-figure{display:flex;align-items:flex-start;gap:6px;color:var(--s);font-family:var(--figure,'Bodoni Moda Variable',Didot,serif);font-size:clamp(3.25rem,2.2rem + 5vw,5.5rem);font-weight:600;line-height:.92;letter-spacing:-.02em}.ds-note-rm{font-family:var(--sans,'Archivo Variable',sans-serif);font-size:1rem;font-weight:760;letter-spacing:.06em;margin-top:.45em}.ds-note-window{margin-top:10px;display:inline-flex;flex-direction:column;padding:10px 30px 11px;border-radius:50%;background:color-mix(in srgb,var(--paper,#eef1ec) 72%,transparent);box-shadow:inset 0 1px 3px color-mix(in srgb,#15191e 14%,transparent),inset 0 0 0 .75px var(--s-line)}.ds-note-cap{font-size:.8125rem;color:var(--ink-2,#434b53)}.ds-note-window strong{font-size:1.0625rem;font-weight:680}.ds-ring{fill:none;stroke:var(--s-line);stroke-width:.6}.ds-ink{fill:none;stroke:var(--s);stroke-width:1.15}.ds-ghost{fill:none;stroke:#5c656d;stroke-opacity:.32;stroke-width:.7;stroke-dasharray:1.6 2.2}.ds-count{font-family:var(--figure,'Bodoni Moda Variable',serif);font-size:18px;font-weight:600;fill:var(--ink,#15191e)}.ds-count-l{font-size:6px;fill:var(--ink-2,#434b53)}.ds-micro{font-family:var(--serial,'Martian Mono Variable',monospace);font-size:5px;letter-spacing:.08em;white-space:nowrap;overflow:hidden;color:var(--s);opacity:.75;border-top:.5px solid var(--s-line);border-bottom:.5px solid var(--s-line);padding:1.5px 0}"
+    },
+    {
+      "name": "Notice",
+      "kind": "card",
+      "refersTo": "notice",
+      "description": "Ruled notice on raised paper; warning tints border amber, failed fills failed-tint.",
+      "html": "<div class=\"ds-notice ds-notice-warning\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"ds-notice-icon\"><path d=\"M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z\"/><path d=\"M12 9v4\"/><path d=\"M12 17h.01\"/></svg><div><div class=\"ds-notice-title\">Set up your payout account before your turn in round 6</div><div class=\"ds-notice-body\">We can only send it to an account in your name.</div></div></div>",
+      "css": ".ds-notice{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;padding:14px 16px;border:1px solid var(--rule,#cdd3cb);border-radius:6px;background:var(--paper-raised,#f8faf6);font-family:var(--sans,'Archivo Variable',sans-serif);color:var(--ink,#15191e)}.ds-notice-icon{margin-top:2px;color:var(--ink-2,#434b53)}.ds-notice-warning{border-color:color-mix(in srgb,var(--late,#8a5300) 40%,var(--rule,#cdd3cb))}.ds-notice-warning .ds-notice-icon{color:var(--late,#8a5300)}.ds-notice-title{font-weight:620;font-size:.9375rem}.ds-notice-body{font-size:.9375rem;color:var(--ink-2,#434b53)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Note Series",
+    "overview": "Every kutu group is printed as its own banknote series. The security features people check on a real note by habit (guilloche linework, a rosette, microprinted rules, a see-through window, a serial) are how this product shows that everyone sees the same thing. The note face is the one saturated object on a screen. Around it, the app is set like a bank's paperwork: cool paper, ink-black text, hairline rules and tabular figures.\n\nDensity is calm and ledger-like. Lists, tables and the payments grid are ruled in ink and neutral, never tinted. Hierarchy comes from a fixed size ramp in which the pot figure is always the largest thing on the page. Motion is limited to printing. The note prints in once, one rosette petal inks for each paid member, and the microprint rule prints across. After that, the surface stays still.\n\nNight print is the dark theme. It keeps the same world with the paper and ink inverted, and it lifts each series so the note still reads as ink on paper.",
+    "keyCharacteristics": [
+      "Cool paper ground (paper tokens), ink text, hairline rules.",
+      "One series colour per group, used only on its note face and on small note-shaped swatches.",
+      "Status is always a mark plus a label, never colour alone.",
+      "Three typefaces with strict jobs: Archivo for UI, Bodoni Moda for pot figures, Martian Mono for real serials.",
+      "One solid-ink primary action per screen.",
+      "No KPI tiles and no pills."
+    ],
+    "rules": [
+      {
+        "name": "The Note-Only Rule",
+        "body": "Series colour lives only on note faces and small note-shaped swatches (the rail's 12x16px swatch and the ledger's 8x11px group swatch). Tables, lists, chips, tabs and current-round highlights stay in ink or neutral.",
+        "section": "colors"
+      },
+      {
+        "name": "The Reserved Ink Rule",
+        "body": "Solid ink fill marks the single primary action on a screen. Every other action is a secondary (outlined), ghost (underlined) or danger (red outline) button.",
+        "section": "colors"
+      },
+      {
+        "name": "The Colour-Is-Never-Alone Rule",
+        "body": "A status colour never appears without its mark and a text label.",
+        "section": "colors"
+      },
+      {
+        "name": "The Real-Serial Rule",
+        "body": "Martian Mono sets only real references: an invite code, a round number, a ledger ref. It never sets labels, headings or decorative text.",
+        "section": "typography"
+      },
+      {
+        "name": "The Pot-Is-Largest Rule",
+        "body": "Bodoni sets only money figures on notes and the rosette count. Nothing on a screen is set larger than the pot.",
+        "section": "typography"
+      },
+      {
+        "name": "The Letterspaced-Caps-Belong-To-The-Note Rule",
+        "body": "Uppercase tracked text appears only as printed matter on the note (issuer line, stamp, microprint) and in serial inputs. It is never used as a label or heading above page content.",
+        "section": "typography"
+      },
+      {
+        "name": "The Paper-Objects-Only Rule",
+        "body": "Only notes and sheets cast shadows. Rows, notices, fields and tabs are separated by rules and tone.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** keep series colour on the note face and on note-shaped swatches only (12x16px in the rail, 8x11px in the ledger).",
+      "**Do** pair every status with its mark and a text label: filled seal = paid, half-filled = paid late, open ring = unpaid, struck ring = failed, small dot = not due yet.",
+      "**Do** set exactly one primary action per screen in solid ink (action). Every other action is secondary, ghost or danger.",
+      "**Do** set the pot in Bodoni Moda as the largest figure on the page, and set invite codes, round numbers and ledger references in Martian Mono.",
+      "**Do** derive a group's series from its id through `seriesClass()`. Use specimen only together with a SPECIMEN stamp.",
+      "**Do** design every surface for night print as well, using the night-* tokens and the lifted series.",
+      "**Do** separate content with hairline rules (rule, rule-strong) and paper tone, not with boxes and shadows."
+    ],
+    "donts": [
+      "**Don't** tint tables, lists, chips, tabs or current-round highlights with series colour. Use ink or neutral.",
+      "**Don't** use KPI stat tiles or dashboard metric cards.",
+      "**Don't** use pills or badge chips for status. Use the status mark.",
+      "**Don't** communicate status with colour alone.",
+      "**Don't** add a seventh series or a saturated sixth hue. Series 5 stays neutral charcoal, because the remaining hues collide with paid, late or another series.",
+      "**Don't** set a second solid-ink button on the same screen.",
+      "**Don't** use tracked uppercase labels or eyebrows above page content. Tracked caps belong to printed matter on the note."
+    ]
+  }
+}

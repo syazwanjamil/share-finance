@@ -1,7 +1,10 @@
 import { useState } from "react";
+import type { FormEvent } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import { Button } from "../../components/ui/Button";
-import { StatusPill } from "../../components/ui/StatusPill";
+import { ArrowRight, Plus } from "lucide-react";
+import { Button, ButtonLink } from "../../components/ui/Button";
+import { BrandMark } from "../../components/ui/BrandMark";
+import { TextField } from "../../components/ui/Field";
 import { useAppData, useCurrentUser } from "../../state/AppDataContext";
 import { ApiRequestError } from "../../lib/api";
 import layout from "./AuthLayout.module.css";
@@ -12,8 +15,6 @@ export function WelcomePage() {
   const location = useLocation();
   const { state, actions } = useAppData();
   const currentUser = useCurrentUser();
-  const [selected, setSelected] = useState<"join" | "create">("join");
-  const [bannerDismissed, setBannerDismissed] = useState(false);
   const [inviteCode, setInviteCode] = useState(
     () => (location.state as { inviteCode?: string } | null)?.inviteCode ?? "",
   );
@@ -24,12 +25,17 @@ export function WelcomePage() {
     return <Navigate to="/home" replace />;
   }
 
-  async function handleFindGroup() {
-    if (joining || !inviteCode.trim()) return;
+  async function handleFindGroup(e: FormEvent) {
+    e.preventDefault();
+    if (joining) return;
+    if (!inviteCode.trim()) {
+      setJoinError("Enter the invite code from your organizer.");
+      return;
+    }
     setJoining(true);
     setJoinError(null);
     try {
-      const bundle = await actions.joinGroup(inviteCode.trim());
+      const bundle = await actions.joinGroup(inviteCode.trim().toUpperCase());
       navigate(`/groups/${bundle.group.id}`);
     } catch (err) {
       setJoinError(err instanceof ApiRequestError ? err.message : "Couldn't find that group. Please try again.");
@@ -38,74 +44,63 @@ export function WelcomePage() {
     }
   }
 
+  const firstName = currentUser.name.split(" ")[0];
+
   return (
     <div className={layout.page}>
+      <div className={layout.top}>
+        <BrandMark />
+      </div>
       <div className={styles.wrap}>
-        <div className={styles.heading}>Welcome{currentUser.name ? `, ${currentUser.name.split(" ")[0]}` : ""}</div>
-        <p className={styles.sub}>Two ways to start. You can do both later.</p>
-
-        <div className={styles.cards}>
-          <button
-            type="button"
-            className={`${styles.optionCard} ${selected === "join" ? styles.optionCardSelected : ""}`}
-            onClick={() => setSelected("join")}
-          >
-            <span className={`${styles.iconBubble} ${styles.iconBubbleAccent}`}>→</span>
-            <span className={styles.optionTitle}>Join a group</span>
-            <span className={styles.optionBody}>Someone sent you a code or a WhatsApp link.</span>
-            <div className={styles.codeField}>
-              <span className={styles.codeLabel}>INVITE CODE</span>
-              <input
-                className={styles.codeInput}
-                value={inviteCode}
-                onChange={(e) => setInviteCode(e.target.value)}
-                onClick={(e) => e.stopPropagation()}
-                placeholder="KUTU-4F2M"
-              />
-            </div>
-            {joinError && <p className={styles.joinError}>{joinError}</p>}
-            <Button block onClick={handleFindGroup} disabled={joining || !inviteCode.trim()}>
-              {joining ? "Finding…" : "Find group"}
-            </Button>
-          </button>
-
-          <button
-            type="button"
-            className={`${styles.optionCard} ${selected === "create" ? styles.optionCardSelected : ""}`}
-            onClick={() => setSelected("create")}
-          >
-            <span className={`${styles.iconBubble} ${styles.iconBubbleNeutral}`}>＋</span>
-            <span className={styles.optionTitle}>Create a group</span>
-            <span className={styles.optionBody}>
-              You set the amount, frequency and payout order, then invite members.
-            </span>
-            <div className={styles.bullets}>
-              <span>· You become the organizer</span>
-              <span>· Identity check before first payout</span>
-            </div>
-            <Button variant="secondary" block onClick={() => navigate("/groups/new")}>
-              Start setup
-            </Button>
-          </button>
+        <div className={styles.head}>
+          <h1>Welcome{firstName ? `, ${firstName}` : ""}</h1>
+          <p className={styles.sub}>Join the group you were invited to, or start one of your own. You can do both later.</p>
         </div>
 
-        {!bannerDismissed && (
-          <div className={styles.banner}>
-            <div className={styles.bannerText}>
-              <span className={styles.bannerTitle}>Verify your identity (MyKad)</span>
-              <span className={styles.bannerSub}>
-                Required before you receive a payout. Takes 2 minutes.
-              </span>
+        <div className={styles.options}>
+          <form className={styles.option} onSubmit={handleFindGroup}>
+            <div className={styles.optionHead}>
+              <ArrowRight size={20} aria-hidden="true" className={styles.optionIcon} />
+              <h2>Join a group</h2>
             </div>
-            <button
-              type="button"
-              onClick={() => setBannerDismissed(true)}
-              style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}
-            >
-              <StatusPill variant="neutral">Do it later</StatusPill>
-            </button>
+            <p className={styles.optionBody}>Someone sent you a code or a WhatsApp link.</p>
+            <TextField
+              label="Invite code"
+              value={inviteCode}
+              onChange={(e) => {
+                setInviteCode(e.target.value);
+                setJoinError(null);
+              }}
+              placeholder="KUTU-4F2M"
+              autoCapitalize="characters"
+              autoComplete="off"
+              spellCheck={false}
+              serial
+              error={joinError}
+            />
+            <Button type="submit" block disabled={joining}>
+              {joining ? "Finding group…" : "Find group"}
+            </Button>
+          </form>
+
+          <div className={styles.option}>
+            <div className={styles.optionHead}>
+              <Plus size={20} aria-hidden="true" className={styles.optionIcon} />
+              <h2>Start a group</h2>
+            </div>
+            <p className={styles.optionBody}>
+              You set the amount, how often, and how the payout order is decided. Then you invite members. You become the
+              organizer.
+            </p>
+            <ul className={styles.facts}>
+              <li>Nobody is charged until you start the group.</li>
+              <li>Members pass a MyKad check before they receive a payout.</li>
+            </ul>
+            <ButtonLink to="/groups/new" variant="secondary" block className={styles.bottom}>
+              Set up a group
+            </ButtonLink>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

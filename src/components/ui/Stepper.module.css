@@ -1,34 +1,46 @@
 .row {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  min-height: 48px;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius);
+  background: var(--paper-raised);
+  overflow: hidden;
+}
+
+.step {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  align-self: stretch;
+  border: none;
+  background: transparent;
+  color: var(--ink);
+}
+
+.step:hover:not(:disabled) {
+  background: var(--paper-sunk);
+}
+
+.step:disabled {
+  color: var(--rule-strong);
 }
 
 .value {
-  font-size: 14px;
-  color: var(--text-h);
-}
-
-.controls {
+  flex: 1;
+  text-align: center;
+  border-inline: 1px solid var(--rule);
+  align-self: stretch;
   display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 6px;
+  font-size: 1.375rem;
+  font-weight: 600;
 }
 
-.controls button {
-  width: 20px;
-  height: 20px;
-  border: 1px solid var(--border);
-  border-radius: 5px;
-  display: grid;
-  place-items: center;
-  font-size: 11px;
-  background: var(--bg);
-  color: var(--text-h);
-  cursor: pointer;
-  padding: 0;
-}
-
-.controls button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
+.unit {
+  font-size: 0.9375rem;
+  font-weight: 540;
+  color: var(--ink-2);
 }

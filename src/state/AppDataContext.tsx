@@ -31,6 +31,10 @@ interface AppDataActions {
   simulateOnboarding: (groupId: string, userId: string) => Promise<void>;
   remindUnpaid: (groupId: string) => Promise<{ remindedCount: number }>;
   toggleAutopay: (groupId: string) => Promise<void>;
+  setAutopay: (groupId: string, enabled: boolean) => Promise<void>;
+  holdPayout: (groupId: string, roundNumber: number, reason: string) => Promise<void>;
+  liftHold: (groupId: string, roundNumber: number) => Promise<void>;
+  requestExtension: (groupId: string, roundNumber: number, reason: string) => Promise<void>;
   addGroup: (input: GroupDraftInput) => Promise<GroupBundle>;
   joinGroup: (inviteCode: string) => Promise<GroupBundle>;
   updateProfile: (input: { name: string }) => Promise<void>;
@@ -114,6 +118,21 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
           api.setAutopay(groupId, next).catch(() => refresh());
           return { ...s, autopay: { ...s.autopay, [groupId]: next } };
         });
+      },
+      async setAutopay(groupId, enabled) {
+        const next = await api.setAutopay(groupId, enabled);
+        setState((s) => ({ ...s, autopay: { ...s.autopay, [groupId]: next } }));
+      },
+      async holdPayout(groupId, roundNumber, reason) {
+        await api.holdRound(groupId, roundNumber, reason);
+        await refreshGroup(groupId);
+      },
+      async liftHold(groupId, roundNumber) {
+        await api.releaseHold(groupId, roundNumber);
+        await refreshGroup(groupId);
+      },
+      async requestExtension(groupId, roundNumber, reason) {
+        await api.requestExtension(groupId, roundNumber, reason);
       },
       async addGroup(input) {
         const bundle = await api.createGroup(input);

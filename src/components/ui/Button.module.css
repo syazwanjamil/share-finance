@@ -3,46 +3,99 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  border-radius: var(--radius-control);
-  padding: 11px 18px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  border: 1.5px solid transparent;
-  transition: opacity 0.15s ease;
+  min-height: 44px;
+  padding: 10px 18px;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  font-size: 0.9375rem;
+  font-weight: 640;
+  font-variation-settings: "wdth" 106;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color 160ms var(--ease-out),
+    border-color 160ms var(--ease-out),
+    color 160ms var(--ease-out),
+    translate 160ms var(--ease-out);
+}
+
+.button svg {
+  flex-shrink: 0;
+}
+
+.button:active:not(:disabled) {
+  translate: 0 1px;
 }
 
 .button:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
+  opacity: 1;
 }
 
-.button:not(:disabled):hover {
-  opacity: 0.9;
-}
-
+/* The reserved colour: solid ink. */
 .primary {
-  background: var(--accent);
-  color: #fff;
+  background: var(--action);
+  color: var(--action-ink);
+}
+
+.primary:hover:not(:disabled) {
+  background: var(--action-hover);
+}
+
+.primary:disabled {
+  background: var(--paper-sunk);
+  color: var(--ink-3);
+  border-color: var(--rule);
 }
 
 .secondary {
-  background: transparent;
-  border-color: var(--text-h);
-  color: var(--text-h);
+  background: var(--paper-raised);
+  color: var(--ink);
+  border-color: var(--rule-strong);
+}
+
+.secondary:hover:not(:disabled) {
+  border-color: var(--ink);
+}
+
+.secondary:disabled,
+.ghost:disabled {
+  color: var(--ink-3);
+  border-color: var(--rule);
 }
 
 .ghost {
   background: transparent;
-  border-color: var(--border);
-  color: var(--text);
+  color: var(--ink);
+  padding-inline: 10px;
+  text-decoration: underline;
+  text-decoration-color: var(--rule-strong);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
 }
 
-.success {
-  background: var(--success);
-  color: #fff;
+.ghost:hover:not(:disabled) {
+  text-decoration-color: currentColor;
+}
+
+.danger {
+  background: transparent;
+  color: var(--failed);
+  border-color: color-mix(in srgb, var(--failed) 45%, transparent);
+}
+
+.danger:hover:not(:disabled) {
+  background: var(--failed-tint);
 }
 
 .block {
+  display: flex;
   width: 100%;
+}
+
+@media (max-width: 520px) {
+  .button {
+    white-space: normal;
+  }
 }

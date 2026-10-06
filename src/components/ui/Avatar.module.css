@@ -1,15 +1,19 @@
 .avatar {
-  display: grid;
+  display: inline-grid;
   place-items: center;
-  border-radius: 50%;
-  background: var(--avatar-bg);
-  color: var(--text);
-  font-weight: 700;
   flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--paper-sunk);
+  border: 1px solid var(--rule);
+  color: var(--ink-2);
+  font-weight: 700;
+  font-variation-settings: "wdth" 110;
+  letter-spacing: 0.02em;
   line-height: 1;
 }
 
-.accent {
-  background: var(--accent);
-  color: #fff;
+.self {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper-raised);
 }

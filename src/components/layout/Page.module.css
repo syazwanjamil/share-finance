@@ -1,0 +1,89 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.back {
+  margin-left: -10px;
+}
+
+.row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px 24px;
+  flex-wrap: wrap;
+}
+
+.titles {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.lead {
+  color: var(--ink-2);
+  font-size: 1rem;
+  max-width: 62ch;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.sectionHead {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px 16px;
+  flex-wrap: wrap;
+}
+
+.sectionLead {
+  color: var(--ink-2);
+  font-size: 0.9375rem;
+}
+
+.aside {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 24px;
+  border: 1px dashed var(--rule-strong);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--paper-raised) 60%, transparent);
+}
+
+.emptyTitle {
+  font-weight: 650;
+  font-size: 1.0625rem;
+}
+
+.emptyBody {
+  color: var(--ink-2);
+  max-width: 60ch;
+}
+
+.emptyAction {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}

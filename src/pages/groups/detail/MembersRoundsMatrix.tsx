@@ -1,113 +1,112 @@
-import { Fragment, useState } from "react";
 import type { GroupBundle } from "../../../lib/api";
-import { getMembersWithUsers, getPaymentForMemberRound } from "../../../lib/selectors";
+import { getMembersWithUsers, getPaymentForMemberRound, memberName } from "../../../lib/selectors";
 import { Avatar } from "../../../components/ui/Avatar";
+import { StatusMark } from "../../../components/ui/StatusMark";
+import type { MarkKind } from "../../../components/ui/StatusMark";
 import { formatDate } from "../../../lib/date";
+import { seriesClass } from "../../../lib/series";
 import styles from "./MembersRoundsMatrix.module.css";
 
 interface MembersRoundsMatrixProps {
   bundle: GroupBundle;
+  currentUserId: string;
 }
 
-const VISIBLE_ROWS = 5;
-
-export function MembersRoundsMatrix({ bundle }: MembersRoundsMatrixProps) {
-  const [showAll, setShowAll] = useState(false);
+/** Every member against every round. Rows follow the payout order, so each member's own
+ *  payout round steps down the table. */
+export function MembersRoundsMatrix({ bundle, currentUserId }: MembersRoundsMatrixProps) {
   const { group, rounds } = bundle;
-  const windowRounds = rounds.slice(0, Math.min(6, rounds.length));
-  const membersWithUsers = getMembersWithUsers(bundle).filter((m) => m.member.status === "active");
-  const visibleMembers = showAll ? membersWithUsers : membersWithUsers.slice(0, VISIBLE_ROWS);
-  const hiddenCount = membersWithUsers.length - visibleMembers.length;
+  const receivesAt = (memberId: string) => rounds.find((r) => r.recipientMemberId === memberId);
+  const members = getMembersWithUsers(bundle)
+    .filter((m) => m.member.status === "active")
+    .sort((a, b) => (receivesAt(a.member.id)?.roundNumber ?? 99) - (receivesAt(b.member.id)?.roundNumber ?? 99));
 
   return (
-    <div>
-      <div
-        className={styles.grid}
-        style={{ gridTemplateColumns: `1.6fr repeat(${windowRounds.length}, 1fr) 1.1fr` }}
-      >
-        <div className={styles.headerCell}>MEMBER</div>
-        {windowRounds.map((r) => (
-          <div
-            key={r.id}
-            className={`${styles.headerCell} ${styles.headerCellCenter} ${r.roundNumber === group.currentRound ? styles.headerCellCurrent : ""}`}
-          >
-            R{r.roundNumber}
-          </div>
-        ))}
-        <div className={`${styles.headerCell} ${styles.headerCellRight}`}>RECEIVES</div>
-
-        {visibleMembers.map(({ member, user }) => {
-          const myRound = rounds.find((r) => r.recipientMemberId === member.id);
-          const isOrganizer = member.role === "organizer";
-          return (
-            <Fragment key={member.id}>
-              <div className={styles.memberCell}>
-                <Avatar initials={user?.initials ?? "?"} size={22} />
-                <div>
-                  <div className={styles.memberName}>
-                    {user?.name}
-                    {isOrganizer ? " (you)" : ""}
-                  </div>
-                  <div className={styles.memberSub}>
-                    {isOrganizer ? "organizer" : user?.mykadVerified ? "✓ verified" : ""}
-                  </div>
-                </div>
-              </div>
-              {windowRounds.map((r) => {
-                const payment = getPaymentForMemberRound(bundle, member.id, r.roundNumber);
-                const isCurrent = r.roundNumber === group.currentRound;
-                let symbol = "○";
-                let cls = styles.dotFuture;
-                if (r.status !== "upcoming") {
-                  if (payment?.status === "paid") {
-                    symbol = "●";
-                    cls = styles.dotPaid;
-                  } else if (payment?.status === "paid-late") {
-                    symbol = "◐";
-                    cls = styles.dotLate;
-                  } else if (payment?.status === "unpaid" || (isCurrent && !payment)) {
-                    symbol = "✕";
-                    cls = styles.dotUnpaid;
-                  }
-                }
-                return (
-                  <div
-                    key={`${member.id}-${r.id}`}
-                    className={`${styles.dotCell} ${cls} ${isCurrent ? styles.dotCellCurrent : ""}`}
-                  >
-                    {symbol}
-                  </div>
-                );
-              })}
-              <div className={styles.receivesCell}>
-                {myRound
-                  ? myRound.status === "paid-out"
-                    ? `R${myRound.roundNumber} · paid out`
-                    : myRound.status === "current"
-                      ? `R${myRound.roundNumber} · this round`
-                      : `R${myRound.roundNumber} · ${formatDate(myRound.scheduledDate)}`
-                  : "—"}
-              </div>
-            </Fragment>
-          );
-        })}
-
-        {hiddenCount > 0 ? (
-          <div className={styles.moreRow}>
-            <span>{hiddenCount} more members</span>
-            <button type="button" className={styles.showAllLink} onClick={() => setShowAll(true)}>
-              Show all
-            </button>
-          </div>
-        ) : null}
+    <div className={styles.wrap}>
+      <div className={`${styles.scroller} ${seriesClass(group.id)}`} tabIndex={0} role="region" aria-label="Payments by round, scrolls sideways">
+        <table className={styles.table}>
+          <caption className="visually-hidden">Who has paid each round of {group.name}</caption>
+          <thead>
+            <tr>
+              <th scope="col" className={styles.memberHead}>
+                Member
+              </th>
+              {rounds.map((r) => (
+                <th
+                  key={r.id}
+                  scope="col"
+                  className={`${styles.roundHead} ${r.roundNumber === group.currentRound ? styles.current : ""}`}
+                  aria-current={r.roundNumber === group.currentRound ? "true" : undefined}
+                >
+                  <span className="serial">R{r.roundNumber.toString().padStart(2, "0")}</span>
+                  <span className={styles.roundDate}>{formatDate(r.scheduledDate)}</span>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {members.map((entry) => {
+              const { member, user } = entry;
+              const mine = member.userId === currentUserId;
+              const myRound = receivesAt(member.id);
+              return (
+                <tr key={member.id} className={mine ? styles.mine : undefined}>
+                  <th scope="row" className={styles.memberCell}>
+                    <Avatar initials={user?.initials ?? "?"} size={28} self={mine} />
+                    <span className={styles.memberText}>
+                      <span className={styles.memberName}>{memberName(entry, currentUserId)}</span>
+                      <span className={styles.memberSub}>
+                        {member.role === "organizer" ? "Organizer · " : ""}
+                        {myRound ? `Receives round ${myRound.roundNumber}` : "No payout round"}
+                      </span>
+                    </span>
+                  </th>
+                  {rounds.map((r) => {
+                    const payment = getPaymentForMemberRound(bundle, member.id, r.roundNumber);
+                    const kind: MarkKind =
+                      r.status === "upcoming" && !payment?.paidAt ? "upcoming" : (payment?.status ?? "unpaid");
+                    const receives = r.recipientMemberId === member.id;
+                    return (
+                      <td
+                        key={r.id}
+                        className={`${styles.cell} ${r.roundNumber === group.currentRound ? styles.current : ""} ${receives ? styles.receives : ""}`}
+                      >
+                        <StatusMark
+                          kind={kind}
+                          size={18}
+                          label={`Round ${r.roundNumber}: ${kind === "upcoming" ? "not due yet" : kind.replace("-", " ")}${receives ? ", receives this round's pot" : ""}`}
+                        />
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
 
-      <div className={styles.legend}>
-        <span className={styles.dotPaid}>● paid</span>
-        <span className={styles.dotLate}>◐ paid late</span>
-        <span className={styles.dotUnpaid}>✕ unpaid</span>
-        <span className={styles.dotFuture}>○ future round</span>
-      </div>
+      <ul className={styles.legend} aria-label="Key">
+        <li>
+          <StatusMark kind="paid" showLabel />
+        </li>
+        <li>
+          <StatusMark kind="paid-late" showLabel />
+        </li>
+        <li>
+          <StatusMark kind="unpaid" showLabel />
+        </li>
+        <li>
+          <StatusMark kind="failed" showLabel />
+        </li>
+        <li>
+          <StatusMark kind="upcoming" showLabel />
+        </li>
+        <li className={`${styles.legendReceives} ${seriesClass(group.id)}`}>
+          <span className={styles.receivesSwatch} aria-hidden="true" />
+          Their payout round
+        </li>
+      </ul>
     </div>
   );
 }

@@ -1,0 +1,24 @@
+.screen {
+  flex: 1;
+  min-height: 60svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.spin {
+  animation: turn 6s linear infinite;
+}
+
+@keyframes turn {
+  to {
+    rotate: 360deg;
+  }
+}
+
+.label {
+  color: var(--ink-2);
+  font-weight: 560;
+}

@@ -1,73 +1,126 @@
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 12px;
-  flex-wrap: wrap;
+.back {
+  display: inline-flex;
 }
 
-.identity {
-  display: flex;
-  gap: 11px;
-  align-items: center;
+@media (min-width: 900px) {
+  .back {
+    display: none;
+  }
 }
 
-.avatar {
-  width: 38px;
-  height: 38px;
-  border-radius: 9px;
-  background: var(--avatar-bg);
+.top {
   display: grid;
-  place-items: center;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--text);
-  flex-shrink: 0;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  align-items: start;
 }
 
-.names {
+.roundCol {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 24px;
+  min-width: 0;
 }
 
-.nameRow {
+.round {
   display: flex;
-  gap: 8px;
-  align-items: center;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.name {
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--text-h);
-}
-
-.meta {
-  font-size: 11px;
-  color: var(--text);
-}
-
-.actions {
-  display: flex;
-  gap: 8px;
-}
-
-.statsRow {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.tabPanel {
+.roundHead {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.stub {
-  padding: 40px 0;
-  text-align: center;
-  color: var(--text-tertiary);
-  font-size: 12px;
+.roundMeta {
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.overdue {
+  color: var(--late);
+  font-weight: 600;
+}
+
+.toPay {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.toPayHead {
+  font-size: 0.9375rem;
+  color: var(--ink-2);
+  font-weight: 620;
+  padding-bottom: 6px;
+  border-bottom: 1.5px solid var(--ink);
+}
+
+.people {
+  margin: 0;
+  padding: 0;
+}
+
+.allPaid,
+.youPaid,
+.sent {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 560;
+}
+
+.primary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.primaryNote {
+  font-size: 0.875rem;
+  color: var(--ink-2);
+}
+
+.live:empty {
+  display: none;
+}
+
+.latest {
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.latestHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.latestNote {
+  font-size: 0.8125rem;
+  color: var(--ink-3);
+}
+
+.tabs {
+  scroll-margin-top: 16px;
+}
+
+@media (min-width: 1080px) {
+  .top {
+    grid-template-columns: minmax(0, 1.55fr) minmax(300px, 1fr);
+    gap: 40px;
+  }
+  .latest {
+    display: flex;
+    position: sticky;
+    top: 32px;
+    padding-left: 32px;
+    border-left: 1px solid var(--rule);
+  }
 }

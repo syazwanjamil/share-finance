@@ -1,23 +1,32 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import type { FormEvent } from "react";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "../../components/ui/Button";
+import { BrandMark } from "../../components/ui/BrandMark";
+import { FormError } from "../../components/ui/Field";
 import { OtpInput } from "../../components/ui/OtpInput";
 import { ApiRequestError, requestOtp, verifyOtp } from "../../lib/api";
 import { useAppData } from "../../state/AppDataContext";
 import styles from "./AuthLayout.module.css";
 
+const RESEND_SECONDS = 24;
+
+function displayPhone(e164: string): string {
+  const local = e164.replace(/^\+60/, "");
+  return `+60 ${local.slice(0, 2)}-${local.slice(2, 5)} ${local.slice(5)}`;
+}
+
 export function VerifyPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { actions } = useAppData();
-  const locationState = location.state as
-    | { phone?: string; inviteCode?: string }
-    | null;
-  const phone = locationState?.phone ?? "+60123456789";
+  const locationState = location.state as { phone?: string; inviteCode?: string } | null;
+  const phone = locationState?.phone;
   const inviteCode = locationState?.inviteCode;
   const [code, setCode] = useState("");
-  const [seconds, setSeconds] = useState(24);
+  const [seconds, setSeconds] = useState(RESEND_SECONDS);
   const [error, setError] = useState<string | null>(null);
+  const [resent, setResent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -25,7 +34,11 @@ export function VerifyPage() {
     return () => clearInterval(id);
   }, []);
 
-  async function handleVerify() {
+  if (!phone) return <Navigate to="/login" replace />;
+
+  async function handleVerify(e: FormEvent) {
+    e.preventDefault();
+    if (code.length < 6 || submitting || !phone) return;
     setError(null);
     setSubmitting(true);
     try {
@@ -40,11 +53,12 @@ export function VerifyPage() {
   }
 
   async function handleResend() {
-    if (seconds > 0) return;
+    if (seconds > 0 || !phone) return;
     setError(null);
     try {
       await requestOtp(phone);
-      setSeconds(24);
+      setSeconds(RESEND_SECONDS);
+      setResent(true);
     } catch (err) {
       setError(err instanceof ApiRequestError ? err.message : "Couldn't resend the code. Please try again.");
     }
@@ -52,41 +66,43 @@ export function VerifyPage() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.center}>
-        <div className={styles.title}>Enter your code</div>
-        <p className={styles.hint}>
-          Sent to {phone} ·{" "}
-          <a
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              navigate("/login");
-            }}
-          >
-            change
-          </a>
-        </p>
-        <OtpInput value={code} onChange={setCode} />
-        {error && <p className={styles.hint}>{error}</p>}
-        <p className={styles.hint}>
+      <div className={styles.top}>
+        <BrandMark />
+      </div>
+      <form className={styles.center} onSubmit={handleVerify}>
+        <div className={styles.centerHead}>
+          <h1>Enter your code</h1>
+          <p className={styles.inlineRow} id="otp-sent-to">
+            Sent on WhatsApp to <strong className="tabular">{displayPhone(phone)}</strong>
+            <button type="button" className={styles.linkButton} onClick={() => navigate("/login")}>
+              Change number
+            </button>
+          </p>
+        </div>
+
+        <OtpInput value={code} onChange={setCode} invalid={!!error} describedBy="otp-sent-to" />
+
+        {error ? <FormError>{error}</FormError> : null}
+
+        <Button type="submit" block disabled={code.length < 6 || submitting}>
+          {submitting ? "Checking…" : "Verify"}
+        </Button>
+
+        <p className={styles.inlineRow} aria-live="polite">
           {seconds > 0 ? (
-            `Resend code in 0:${seconds.toString().padStart(2, "0")}`
+            <span className="tabular">
+              {resent ? "New code sent. " : "Didn't get it? "}You can resend in 0:{seconds.toString().padStart(2, "0")}
+            </span>
           ) : (
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                handleResend();
-              }}
-            >
-              Resend code
-            </a>
+            <>
+              Didn't get it?
+              <button type="button" className={styles.linkButton} onClick={handleResend}>
+                Send a new code
+              </button>
+            </>
           )}
         </p>
-        <Button block disabled={code.length < 6 || submitting} onClick={handleVerify}>
-          {submitting ? "Verifying…" : "Verify"}
-        </Button>
-      </div>
+      </form>
     </div>
   );
 }

@@ -1,0 +1,107 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.label {
+  font-size: 0.9375rem;
+  font-weight: 620;
+  color: var(--ink);
+}
+
+.hint {
+  font-size: 0.875rem;
+  color: var(--ink-2);
+  margin-top: -2px;
+}
+
+.control {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  background: var(--paper-raised);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius);
+  transition: border-color 140ms var(--ease-out), box-shadow 140ms var(--ease-out);
+}
+
+.control:hover {
+  border-color: var(--ink-3);
+}
+
+.control:focus-within {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 22%, transparent);
+}
+
+.invalid,
+.invalid:hover {
+  border-color: var(--failed);
+}
+
+.prefix {
+  padding-left: 14px;
+  font-weight: 620;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 12px 14px;
+  font-size: 1rem;
+  color: var(--ink);
+  outline: none;
+}
+
+.input:focus-visible {
+  outline: none;
+}
+
+.serialInput {
+  font-size: 1.0625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.textarea {
+  min-height: 96px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.selectControl {
+  position: relative;
+}
+
+.select {
+  appearance: none;
+  padding-right: 40px;
+  background-image: linear-gradient(45deg, transparent 50%, var(--ink-2) 50%),
+    linear-gradient(135deg, var(--ink-2) 50%, transparent 50%);
+  background-position:
+    calc(100% - 20px) 50%,
+    calc(100% - 15px) 50%;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+}
+
+.error {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 0.875rem;
+  color: var(--failed);
+  font-weight: 540;
+}
+
+.error svg {
+  margin-top: 2px;
+  flex-shrink: 0;
+}
